@@ -21,9 +21,9 @@ Pendo does **not** ship a hosted sandbox app for prospects. Closest first-party 
 **Recommended path for a web demo (faster):**
 - Fork any small open-source React/Next.js dashboard template
 - Rename routes/components to look like a healthcare SaaS:
-  - `/login` → Login
-  - `/dashboard` → Dashboard
-  - `/patient-portal` → Patient Portal *(this is your tagged Feature target)*
+  - `/home` → Welcome
+  - `/visits` → My Visits *(host page for the tagged button)*
+  - `/patient-portal` → Patient Portal *(destination after click)*
 - Drop in the Pendo snippet from `Settings → Subscription Settings`
 - **Critical:** define `visitor.id` and `account.id` *before* `pendo.initialize()` runs, or no events fire
 - Deploy to Vercel (5 min) so it has a real URL Pendo can tag against
@@ -38,8 +38,9 @@ Pendo does **not** ship a hosted sandbox app for prospects. Closest first-party 
 **Do not tag live on camera.** DOM fumbling looks bad. Pre-tag and walk through them as if reviewing.
 
 Pre-tag this list before recording:
-- **Pages:** Login, Dashboard, Patient Portal
-- **Feature:** "Open Patient Portal" button (the click target on Dashboard that opens the portal)
+- **Pages:** My Visits (`/visits`), Patient Portal (`/patient-portal`)
+- **Feature:** "Open Patient Portal" button (the click target on My Visits — visible label reads "View Summary", but Feature name in Pendo stays `Open Patient Portal` for naming stability)
+- **Note:** the deployed app at `lumen-health-niroo.vercel.app` has no login wall (public demo mode), so there's no Login page to tag.
 
 ### 1.5 Pre-build artifacts as drafts
 - **NPS survey** — built but **Save Draft**, do not Publish (no real responses needed for the demo)
@@ -69,7 +70,7 @@ Pre-tag this list before recording:
 
 **What viewer sees:** Pendo Visual Design Studio with the Lumen Health app rendered in main panel, right-side panel showing CSS selector rule, highlight box around tagged button.
 
-**Honest gotcha to mention on-camera:** "CSS-class selectors break when devs change classnames — in a real onboarding I'd walk the dev team through Pendo's `data-pendo` attribute pattern."
+**Honest gotcha to mention on-camera:** "CSS-class selectors break when devs change classnames — in a real onboarding I'd walk the dev team through Pendo's `data-pendo` attribute pattern. Notice the visible button text is 'View Summary' but I'm naming the Feature 'Open Patient Portal' — that's intentional. Feature names should describe user intent, not button copy. If marketing renames the button next quarter, my Path report doesn't break."
 
 ---
 
@@ -98,7 +99,7 @@ This is more credible than a fabricated stat and sounds exactly like how a real 
 
 - `Guides → + Create Guide` (top-right)
 - Choose **Layout → Tooltip** from the gallery
-- **Step 1 panel:** set **Page Location** = Dashboard *(fire it before users reach the portal, not after)*
+- **Step 1 panel:** set **Page Location** = My Visits *(fire it before users reach the portal, not after)*
 - **Anchor element:** click the patient-portal button in live preview — tooltip pins to it
 - **Edit copy** in WYSIWYG: *"New: Patient Portal — see your test results in one place →"*
 - Adjust Location tab in Edit container for tooltip position (top/right/etc.)
@@ -142,11 +143,11 @@ This single sentence proves you've read the knowledge base. It's the strongest s
 
 ### Customer setup — 10s
 *[Switch to Pendo workspace, Lumen Health workspace name visible]*
-> Quick scenario: Lumen Health, mid-market SaaS, 8,000 MAU. They bought Pendo because their new patient portal has flat adoption, and the VP of Product needs a number by end of month.
+> Quick scenario: Lumen Health is a post-visit patient companion — patients log in to read the plain-language summary of their consultation. 8,000 MAU. They bought Pendo because adoption of the summary view is flat, and the VP of Product needs a number by end of month.
 
 ### Tag — 12s
 *[Show Product → Features view with "Open Patient Portal" Feature visible]*
-> Day one, I tag the patient portal as a Feature, plus the Login and Dashboard pages around it. Two minutes of setup, no engineering ticket. From here every interaction is on the record.
+> Day one, I tag the summary button as a Feature — I'll call it "Open Patient Portal" in Pendo regardless of the visible button text — plus the My Visits and Patient Portal pages. Two minutes of setup, no engineering ticket. From here every interaction is on the record.
 
 ### Paths — 22s
 *[Open Paths report, "Leading to Open Patient Portal", Last 30 days]*
@@ -157,8 +158,8 @@ This single sentence proves you've read the knowledge base. It's the strongest s
 > [READ ACTUAL %] of users never reach the feature. The ones who do, drop off here *[point at node]*. So the VP doesn't have an adoption problem — they have a discoverability problem. Different fix, visible in the data.
 
 ### Guide — 18s
-*[Open Guide Designer with tooltip on Dashboard]*
-> So we ship a Guide — a one-line tooltip on the Dashboard that surfaces the portal on the next session. Targeted at users who haven't clicked it in seven days. No code, no deploy, live in an hour.
+*[Open Guide Designer with tooltip on My Visits]*
+> So we ship a Guide — a one-line tooltip on the My Visits page that nudges users toward the summary on their next session. Targeted at users who haven't opened a summary in seven days. No code, no deploy, live in an hour.
 >
 > Two weeks later we re-run the Path report. The lift becomes the number the VP takes to their board.
 
@@ -171,14 +172,19 @@ This single sentence proves you've read the knowledge base. It's the strongest s
 
 **Total runtime target: 92 seconds. If over: cut the Paths section by removing the "Different fix, visible in the data" sentence.**
 
+**Bonus 5s if you go under time** *(only if you have headroom)*:
+> "And because Lumen Health tracks ongoing action items as weekly streaks, every day a patient comes back becomes a behavioural signal Pendo can instrument. That's the kind of engagement metric customers will pay to expand into."
+
+This signals you understand Pendo's expansion motion, not just the land.
+
 ---
 
 ## 4. Recording day checklist
 
 ### Before hitting record
 - [ ] Pendo workspace open, logged in
-- [ ] Lumen Health sample app open in second tab (or split window)
-- [ ] All four pre-tagged artifacts visible: Pages, Feature, Guide draft, NPS draft, Segment
+- [ ] Lumen Health sample app open at `lumen-health-niroo.vercel.app` in second tab (or split window) — public, no login required
+- [ ] All four pre-tagged artifacts visible: Pages (My Visits, Patient Portal), Feature (`Open Patient Portal`), Guide draft, NPS draft, Segment
 - [ ] Paths report pre-loaded and showing real numbers (refresh if stale)
 - [ ] Loom set to **face cam bottom-right**, screen full
 - [ ] Notifications silenced, browser bookmarks bar hidden

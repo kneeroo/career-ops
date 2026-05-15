@@ -196,6 +196,9 @@
     <button class="tab-btn active" data-tab="setup">
       <i data-lucide="list-checks" class="w-4 h-4 inline mr-1.5"></i>Setup
     </button>
+    <button class="tab-btn" data-tab="install">
+      <i data-lucide="plug" class="w-4 h-4 inline mr-1.5"></i>Pendo Install
+    </button>
     <button class="tab-btn" data-tab="clickpath">
       <i data-lucide="mouse-pointer-click" class="w-4 h-4 inline mr-1.5"></i>Click-Path
     </button>
@@ -237,19 +240,30 @@
         </h3>
         <label class="check-item" data-key="setup-3">
           <input type="checkbox">
-          <div class="check-text text-sm">Fork a small open-source React/Next.js dashboard template</div>
+          <div class="check-text text-sm">
+            <strong>Create a sample project to instrument with Pendo</strong> — for this demo, <a href="https://lumen-health-niroo.vercel.app" target="_blank" class="text-blue-600 hover:underline">Lumen Health</a>, a patient-facing post-visit companion that sits between a clinical scribe and patient messaging.
+            <ul class="mt-2 ml-4 space-y-1 list-disc text-slate-600">
+              <li>Built on Next.js 16 (App Router) + shadcn/ui + Tailwind v4 — modern stack the prospect will recognise</li>
+              <li>Healthcare flavour gives a realistic mid-market SaaS story (8,000 MAU, ANZ market, flat feature adoption)</li>
+              <li>Mock patient profile (Demo Patient) hardcoded — no auth, public demo so the Loom viewer can click in without a login wall</li>
+              <li>Key interaction loops to instrument: <span class="kbd">My Visits → View Summary → Patient Portal</span>, Action Items, Messages, Lab Results</li>
+              <li>Source: <a href="https://github.com/kneeroo/Lumen-Health" target="_blank" class="text-blue-600 hover:underline">github.com/kneeroo/Lumen-Health</a></li>
+            </ul>
+          </div>
         </label>
         <label class="check-item" data-key="setup-4">
           <input type="checkbox">
-          <div class="check-text text-sm">Rename routes to look like a healthcare SaaS: <span class="kbd">/login</span>, <span class="kbd">/dashboard</span>, <span class="kbd">/patient-portal</span></div>
+          <div class="check-text text-sm">Routes in Lumen Health: <span class="kbd">/home</span> (welcome), <span class="kbd">/visits</span> (host page for tagged button), <span class="kbd">/patient-portal</span> (destination) — no <span class="kbd">/login</span>, public demo</div>
         </label>
         <label class="check-item" data-key="setup-5">
           <input type="checkbox">
-          <div class="check-text text-sm">Drop in Pendo snippet from <span class="kbd">Settings → Subscription Settings</span></div>
+          <div class="check-text text-sm">
+            <strong>Install Pendo with the <a href="https://github.com/pendo-io/ai-setup-assistant/blob/main/claude-prompt" target="_blank" class="text-blue-600 hover:underline">Claude Code prompt</a></strong> instead of manually pasting the snippet from <span class="kbd">Settings → Subscription Settings</span>. The <span class="kbd">@pendo-install</span> flow detects the framework, places the loader, structures the visitor + account, and handles the App Router page-load gotcha. Full breakdown in the <strong>Pendo Install</strong> tab.
+          </div>
         </label>
         <label class="check-item" data-key="setup-6">
           <input type="checkbox">
-          <div class="check-text text-sm"><strong>CRITICAL:</strong> define <span class="kbd">visitor.id</span> and <span class="kbd">account.id</span> <em>before</em> <span class="kbd">pendo.initialize()</span> runs, or no events fire</div>
+          <div class="check-text text-sm"><strong>Already handled by the install.</strong> Lumen has no auth flow, so <span class="kbd">visitor.id</span> and <span class="kbd">account.id</span> are hardcoded into the same <span class="kbd">pendo.initialize()</span> call inside <span class="kbd">useEffect</span> — no race condition. See <strong>Pendo Install</strong> tab.</div>
         </label>
         <label class="check-item" data-key="setup-7">
           <input type="checkbox">
@@ -273,11 +287,11 @@
         </h3>
         <label class="check-item" data-key="setup-10">
           <input type="checkbox">
-          <div class="check-text text-sm">Tag Pages: <strong>Login</strong>, <strong>Dashboard</strong>, <strong>Patient Portal</strong></div>
+          <div class="check-text text-sm">Tag Pages: <strong>My Visits</strong> (<span class="kbd">/visits</span>), <strong>Patient Portal</strong> (<span class="kbd">/patient-portal</span>) — no Login page (public demo)</div>
         </label>
         <label class="check-item" data-key="setup-11">
           <input type="checkbox">
-          <div class="check-text text-sm">Tag Feature: <strong>"Open Patient Portal"</strong> button</div>
+          <div class="check-text text-sm">Tag Feature: name it <strong>"Open Patient Portal"</strong> in Pendo even though the visible button reads <strong>"View Summary"</strong> — Feature names = user intent, not button copy</div>
         </label>
 
         <h3 class="text-sm font-semibold text-slate-700 mt-4 mb-2 flex items-center gap-2">
@@ -297,6 +311,220 @@
         </label>
       </div>
     </div>
+  </section>
+
+  <!-- TAB: PENDO INSTALL -->
+  <section id="tab-install" class="tab-content hidden">
+
+    <div class="card p-6 mb-4">
+      <h2 class="text-xl font-semibold mb-1 flex items-center gap-2">
+        <i data-lucide="plug" class="w-5 h-5 text-emerald-600"></i>
+        Installing Pendo into Lumen Health
+      </h2>
+      <p class="text-sm text-slate-600 mb-4">
+        How the snippet was actually wired in — using <strong>Claude Code</strong> as the implementation partner, following Pendo's own
+        <a href="https://github.com/pendo-io/ai-setup-assistant" target="_blank" class="text-blue-600 hover:underline">AI Setup Assistant prompt</a>.
+      </p>
+      <p class="text-sm text-slate-700 leading-relaxed">
+        I ran the <code class="bg-slate-100 px-1.5 py-0.5 rounded text-xs">@pendo-install</code> flow Pendo ships for
+        Claude / Cursor / Windsurf inside Claude Code. The assistant analysed the codebase, proposed a configuration plan,
+        and I approved each step before any code shipped. Total install time, including build verification and the Vercel
+        deploy, was under twenty minutes.
+      </p>
+    </div>
+
+    <div class="card p-6 mb-4">
+      <h3 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <i data-lucide="search" class="w-5 h-5 text-blue-600"></i>
+        What Claude Code detected automatically
+      </h3>
+      <ul class="space-y-2 text-sm text-slate-700">
+        <li class="flex gap-2"><span class="text-blue-600">•</span><div><strong>Framework:</strong> Next.js 16 App Router (route groups in <code class="bg-slate-100 px-1 rounded text-xs">src/app/</code>)</div></li>
+        <li class="flex gap-2"><span class="text-blue-600">•</span><div><strong>Auth posture:</strong> none &mdash; Lumen Health is a public, login-less demo</div></li>
+        <li class="flex gap-2"><span class="text-blue-600">•</span><div><strong>User data source:</strong> hardcoded mock patient profile in <code class="bg-slate-100 px-1 rounded text-xs">profile/page.tsx</code> (no auth store to read from)</div></li>
+        <li class="flex gap-2"><span class="text-blue-600">•</span><div><strong>Existing scaffold:</strong> a previous Pendo loader stub mounted in <code class="bg-slate-100 px-1 rounded text-xs">providers.tsx</code>, but using an anonymous random visitor ID &mdash; not ready for segmentation</div></li>
+      </ul>
+    </div>
+
+    <div class="card p-6 mb-4">
+      <h3 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <i data-lucide="git-compare" class="w-5 h-5 text-purple-600"></i>
+        Before vs after — what Pendo gives you vs what we shipped
+      </h3>
+      <p class="text-sm text-slate-700 leading-relaxed mb-4">
+        Pendo's <span class="kbd">Settings → Subscription Settings</span> hands you a single snippet that combines two
+        things: the <strong>agent loader</strong> (IIFE that injects <span class="kbd">pendo.js</span> from their CDN)
+        and a <strong>template <span class="kbd">pendo.initialize()</span> call</strong> with placeholder visitor /
+        account fields. You're expected to replace the placeholders with real values from your auth context.
+      </p>
+      <p class="text-sm text-slate-700 leading-relaxed mb-4">
+        Because Lumen is a React/Next.js App Router app, we <strong>split the snippet across two locations</strong>
+        for proper lifecycle handling, then enriched the initialize call with realistic demo-patient metadata.
+      </p>
+
+      <div class="grid md:grid-cols-2 gap-4">
+        <div class="border border-slate-300 rounded-lg overflow-hidden">
+          <div class="bg-slate-100 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-slate-600">Before — Pendo's template snippet</div>
+          <pre class="text-xs p-3 overflow-x-auto bg-slate-50 leading-relaxed"><code>(function(apiKey){
+  (function(p,e,n,d,o){...})
+  (window,document,'script','pendo');
+
+  pendo.initialize({
+    visitor: {
+      id: 'VISITOR-UNIQUE-ID',
+      // email:
+      // full_name:
+      // role:
+    },
+    account: {
+      id: 'ACCOUNT-UNIQUE-ID',
+      // name:
+      // is_paying:
+      // planLevel:
+    }
+  });
+})('12b1789d-576f-414e-8bd8-eb6f02e89e95');</code></pre>
+        </div>
+
+        <div class="border border-emerald-300 rounded-lg overflow-hidden">
+          <div class="bg-emerald-100 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-emerald-800">After — split + enriched in Lumen Health</div>
+          <pre class="text-xs p-3 overflow-x-auto bg-emerald-50 leading-relaxed"><code>// pendo-snippet.tsx
+// (loader part) — &lt;Script&gt; element
+//   injects cdn.pendo.io/agent/static/&#123;key&#125;/pendo.js
+
+// (initialize part) — inside useEffect
+window.pendo.initialize({
+  visitor: {
+    id: 'demo-patient-001',
+    email: 'demo@lumenhealth.app',
+    full_name: 'Demo Patient',
+    role: 'patient',
+    created_at: '2024-01-15',
+    anonymous_session_id: getOrCreateAnonId(),
+    state: 'VIC',
+    country: 'AU',
+    is_demo_user: true
+  },
+  account: {
+    id: 'lumen-health-demo',
+    name: 'Lumen Health Demo',
+    plan_level: 'demo',
+    region: 'ANZ',
+    industry: 'Healthcare',
+    is_demo_account: true
+  }
+});</code></pre>
+        </div>
+      </div>
+
+      <p class="text-xs text-slate-600 mt-3 italic">
+        Plus a separate <code class="bg-slate-100 px-1 rounded">pendo-page-tracker.tsx</code> client component
+        that calls <code class="bg-slate-100 px-1 rounded">pendo.pageLoad()</code> on every
+        <code class="bg-slate-100 px-1 rounded">usePathname()</code> change — see point 2 below.
+      </p>
+    </div>
+
+    <div class="card p-6 mb-4">
+      <h3 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <i data-lucide="wrench" class="w-5 h-5 text-emerald-600"></i>
+        What got implemented
+      </h3>
+
+      <div class="mb-4">
+        <h4 class="font-semibold text-sm mb-2">1. Structured visitor &amp; account identity</h4>
+        <p class="text-sm text-slate-700 leading-relaxed">
+          Replaced the anonymous random ID with a real-looking demo visitor
+          (<code class="bg-slate-100 px-1 rounded text-xs">id: demo-patient-001</code>, email, full name, role,
+          state/country, <code class="bg-slate-100 px-1 rounded text-xs">is_demo_user: true</code>) so segments like
+          <em>"Patient Portal not used in 7 days"</em> actually work. The localStorage random ID was preserved as
+          <code class="bg-slate-100 px-1 rounded text-xs">anonymous_session_id</code> metadata so multiple browser
+          sessions still register as distinct for Paths.
+        </p>
+        <p class="text-sm text-slate-700 leading-relaxed mt-2">
+          Account expanded with <code class="bg-slate-100 px-1 rounded text-xs">plan_level</code>,
+          <code class="bg-slate-100 px-1 rounded text-xs">region: ANZ</code>,
+          <code class="bg-slate-100 px-1 rounded text-xs">industry: Healthcare</code> &mdash; useful for segment rules
+          and visible in Pendo Settings on camera.
+        </p>
+      </div>
+
+      <div class="mb-4">
+        <h4 class="font-semibold text-sm mb-2 flex items-center gap-1.5">
+          <i data-lucide="alert-circle" class="w-4 h-4 text-amber-600"></i>
+          2. App Router page-load tracker (the critical fix)
+        </h4>
+        <p class="text-sm text-slate-700 leading-relaxed">
+          Created <code class="bg-slate-100 px-1 rounded text-xs">pendo-page-tracker.tsx</code>, a client component
+          that listens to <code class="bg-slate-100 px-1 rounded text-xs">usePathname()</code> and calls
+          <code class="bg-slate-100 px-1 rounded text-xs">pendo.pageLoad()</code> on every route change.
+        </p>
+        <p class="text-sm text-slate-700 leading-relaxed mt-2">
+          <strong>This is non-obvious and breaks most na&iuml;ve Pendo installs on Next.js App Router.</strong>
+          The App Router does client-side navigation without firing the URL events Pendo's auto-tracker depends on,
+          so without this hook, Paths and Funnel reports only see the first page per session. Fixing this matters
+          because the whole demo is built around a Paths report.
+        </p>
+      </div>
+
+      <div class="mb-4">
+        <h4 class="font-semibold text-sm mb-2">3. Resilient <code class="bg-slate-100 px-1 rounded text-xs">data-pendo-id</code> selectors</h4>
+        <p class="text-sm text-slate-700 leading-relaxed">
+          Added <code class="bg-slate-100 px-1 rounded text-xs">data-pendo-id</code> attributes to the key tap
+          targets &mdash; every sidebar nav button (<code class="bg-slate-100 px-1 rounded text-xs">nav-home</code>,
+          <code class="bg-slate-100 px-1 rounded text-xs">nav-visits</code>,
+          <code class="bg-slate-100 px-1 rounded text-xs">nav-actions</code>, etc.), the "Ask a question" button on
+          the patient portal, and the existing View Summary button
+          (<code class="bg-slate-100 px-1 rounded text-xs">open-patient-portal</code>).
+        </p>
+        <p class="text-sm text-slate-700 leading-relaxed mt-2">
+          Feature tagging now uses stable selectors that survive classname or button-text changes &mdash; the pattern
+          Pendo's own docs recommend for production installs. This is the same gotcha I deliver on camera in Segment A.
+        </p>
+      </div>
+
+      <div>
+        <h4 class="font-semibold text-sm mb-2">4. Env-var gating preserved</h4>
+        <p class="text-sm text-slate-700 leading-relaxed">
+          The snippet stays gated on <code class="bg-slate-100 px-1 rounded text-xs">NEXT_PUBLIC_PENDO_API_KEY</code>.
+          Without the key, the component returns <code class="bg-slate-100 px-1 rounded text-xs">null</code> so local
+          dev keeps working. The key (the <strong>App ID</strong> from Pendo's Subscription Settings) sits in Vercel
+          env vars only &mdash; never committed.
+        </p>
+      </div>
+    </div>
+
+    <div class="card p-6 mb-4">
+      <h3 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <i data-lucide="film" class="w-5 h-5 text-purple-600"></i>
+        Why this matters for the demo
+      </h3>
+      <p class="text-sm text-slate-700 leading-relaxed mb-3">
+        When the Loom rolls, the prospect sees:
+      </p>
+      <ul class="space-y-2 text-sm text-slate-700">
+        <li class="flex gap-2"><span class="text-purple-600">•</span><div>A real-looking identified visitor in the Pendo dashboard (<em>Demo Patient</em>), not <code class="bg-slate-100 px-1 rounded text-xs">demo-abc123</code></div></li>
+        <li class="flex gap-2"><span class="text-purple-600">•</span><div>A Paths report with multi-page flows that reflect the actual user journey &mdash; not a single first-page node</div></li>
+        <li class="flex gap-2"><span class="text-purple-600">•</span><div>Feature tagging working off <code class="bg-slate-100 px-1 rounded text-xs">data-pendo-id</code> &mdash; which lets me deliver the <em>"in a real onboarding I'd walk the dev team through the data-pendo attribute pattern"</em> line and back it up by pointing at the live HTML</div></li>
+      </ul>
+    </div>
+
+    <div class="card p-6">
+      <h3 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <i data-lucide="sparkles" class="w-5 h-5 text-emerald-600"></i>
+        Why Claude Code was the right tool
+      </h3>
+      <p class="text-sm text-slate-700 leading-relaxed mb-3">
+        The Pendo AI Setup Assistant is purpose-built for agentic AI coders. I didn't write the integration
+        line-by-line &mdash; I described what I wanted, Claude Code analysed the codebase, proposed the file
+        changes, I reviewed the diff, approved, and shipped.
+      </p>
+      <p class="text-sm text-slate-700 leading-relaxed">
+        That's a working pattern I'd bring into customer onboardings as a Senior CE: meet customers where their dev
+        teams already are (Cursor, Copilot, Claude Code) and use Pendo's own AI tooling to compress a half-day
+        install into a half-hour pairing session.
+      </p>
+    </div>
+
   </section>
 
   <!-- TAB: CLICK-PATH -->
@@ -349,7 +577,7 @@
             <i data-lucide="alert-triangle" class="w-4 h-4 text-amber-600 mt-0.5"></i>
             <div class="text-sm">
               <div class="font-medium mb-1">Honest gotcha to mention on-camera</div>
-              <p class="text-slate-700 italic">"CSS-class selectors break when devs change classnames — in a real onboarding I'd walk the dev team through Pendo's <span class="kbd">data-pendo</span> attribute pattern."</p>
+              <p class="text-slate-700 italic">"CSS-class selectors break when devs change classnames — in a real onboarding I'd walk the dev team through Pendo's <span class="kbd">data-pendo</span> attribute pattern. Notice the visible button text is 'View Summary' but I'm naming the Feature 'Open Patient Portal' — that's intentional. Feature names should describe user intent, not button copy. If marketing renames the button next quarter, my Path report doesn't break."</p>
             </div>
           </div>
         </div>
@@ -414,7 +642,7 @@
         <ol class="text-sm space-y-1.5 text-slate-700 list-decimal list-inside ml-2">
           <li><span class="kbd">Guides → + Create Guide</span> (top-right)</li>
           <li>Choose <strong>Layout → Tooltip</strong> from gallery</li>
-          <li>Step 1 panel: <strong>Page Location</strong> = Dashboard <em>(fire it before users reach the portal)</em></li>
+          <li>Step 1 panel: <strong>Page Location</strong> = My Visits <em>(fire it before users reach the portal)</em></li>
           <li><strong>Anchor element:</strong> click the patient-portal button — tooltip pins to it</li>
           <li>Edit copy: <em>"New: Patient Portal — see your test results in one place →"</em></li>
           <li><strong>Activation card:</strong> Automatic on page load, or Automatic with Badge</li>
@@ -507,7 +735,7 @@
             </button>
           </div>
           <div class="stage-direction">[Switch to Pendo workspace, "Lumen Health" workspace name visible]</div>
-          <p class="script-quote" id="seg-customer">Quick scenario: Lumen Health, mid-market SaaS, 8,000 MAU. They bought Pendo because their new patient portal has flat adoption, and the VP of Product needs a number by end of month.</p>
+          <p class="script-quote" id="seg-customer">Quick scenario: Lumen Health is a post-visit patient companion — patients log in to read the plain-language summary of their consultation. 8,000 MAU. They bought Pendo because adoption of the summary view is flat, and the VP of Product needs a number by end of month.</p>
         </div>
 
         <!-- Tag -->
@@ -522,7 +750,7 @@
             </button>
           </div>
           <div class="stage-direction">[Show Product → Features view with "Open Patient Portal" Feature visible]</div>
-          <p class="script-quote" id="seg-tag">Day one, I tag the patient portal as a Feature, plus the Login and Dashboard pages around it. Two minutes of setup, no engineering ticket. From here every interaction is on the record.</p>
+          <p class="script-quote" id="seg-tag">Day one, I tag the summary button as a Feature — I'll call it "Open Patient Portal" in Pendo regardless of the visible button text — plus the My Visits and Patient Portal pages. Two minutes of setup, no engineering ticket. From here every interaction is on the record.</p>
         </div>
 
         <!-- Paths -->
@@ -551,8 +779,8 @@
               <i data-lucide="copy" class="w-3 h-3"></i>Copy
             </button>
           </div>
-          <div class="stage-direction">[Open Guide Designer with tooltip on Dashboard]</div>
-          <p class="script-quote" id="seg-guide">So we ship a Guide — a one-line tooltip on the Dashboard that surfaces the portal on the next session. Targeted at users who haven't clicked it in seven days. No code, no deploy, live in an hour. Two weeks later we re-run the Path report. The lift becomes the number the VP takes to their board.</p>
+          <div class="stage-direction">[Open Guide Designer with tooltip on My Visits]</div>
+          <p class="script-quote" id="seg-guide">So we ship a Guide — a one-line tooltip on the My Visits page that nudges users toward the summary on their next session. Targeted at users who haven't opened a summary in seven days. No code, no deploy, live in an hour. Two weeks later we re-run the Path report. The lift becomes the number the VP takes to their board.</p>
         </div>
 
         <!-- NPS -->
@@ -596,7 +824,7 @@
       </h2>
       <div class="space-y-1">
         <label class="check-item" data-key="rec-1"><input type="checkbox"><div class="check-text text-sm">Pendo workspace open, logged in</div></label>
-        <label class="check-item" data-key="rec-2"><input type="checkbox"><div class="check-text text-sm">Lumen Health sample app open in second tab</div></label>
+        <label class="check-item" data-key="rec-2"><input type="checkbox"><div class="check-text text-sm">Lumen Health sample app open at <a href="https://lumen-health-niroo.vercel.app" target="_blank" class="text-blue-600 hover:underline">lumen-health-niroo.vercel.app</a> in second tab — public, no login required</div></label>
         <label class="check-item" data-key="rec-3"><input type="checkbox"><div class="check-text text-sm">All 4 pre-tagged artifacts visible: Pages, Feature, Guide draft, NPS draft, Segment</div></label>
         <label class="check-item" data-key="rec-4"><input type="checkbox"><div class="check-text text-sm">Paths report pre-loaded showing real numbers (refresh if stale)</div></label>
         <label class="check-item" data-key="rec-5"><input type="checkbox"><div class="check-text text-sm">Loom set to face cam <strong>bottom-right</strong>, screen full</div></label>
