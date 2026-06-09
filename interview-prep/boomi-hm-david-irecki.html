@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Boomi HM Interview — David Irecki (Niroo Arjuna)</title>
+<style>
+  :root {
+    --bg: #0f172a;
+    --panel: #ffffff;
+    --ink: #0f172a;
+    --muted: #475569;
+    --soft: #f1f5f9;
+    --line: #e2e8f0;
+    --accent: #0066ff;
+    --accent-soft: #e0ecff;
+    --boomi: #0c4ee0;
+    --warn-bg: #fff7ed;
+    --warn-ink: #9a3412;
+    --good-bg: #ecfdf5;
+    --good-ink: #047857;
+    --rose-bg: #fff1f2;
+    --rose-ink: #be123c;
+    --amber-bg: #fef3c7;
+    --amber-ink: #92400e;
+    --radius: 14px;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: #f8fafc;
+    color: var(--ink);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  header.hero {
+    background: linear-gradient(135deg, #0c4ee0 0%, #0066ff 60%, #38bdf8 100%);
+    color: #ffffff;
+    padding: 28px 32px 24px;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  header.hero h1 { margin: 0 0 6px; font-size: 26px; letter-spacing: -0.01em; }
+  header.hero p { margin: 0; opacity: 0.92; font-size: 14px; }
+  .hero-meta { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 10px; border-radius: 999px;
+    background: rgba(255,255,255,0.18); color: #ffffff;
+    font-size: 12px; font-weight: 500;
+    border: 1px solid rgba(255,255,255,0.25);
+  }
+  .layout {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 24px;
+    gap: 24px;
+  }
+  nav.toc {
+    position: sticky; top: 16px; align-self: start;
+    background: var(--panel); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 16px;
+    max-height: calc(100vh - 32px); overflow-y: auto;
+  }
+  nav.toc h3 {
+    margin: 0 0 10px; font-size: 12px; text-transform: uppercase;
+    letter-spacing: 0.06em; color: var(--muted);
+  }
+  nav.toc a {
+    display: block; padding: 6px 8px; border-radius: 6px;
+    color: var(--ink); text-decoration: none;
+    font-size: 13px; line-height: 1.4;
+  }
+  nav.toc a:hover { background: var(--soft); color: var(--boomi); }
+  nav.toc a.section { font-weight: 600; margin-top: 10px; color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; padding: 4px 8px; }
+  main { min-width: 0; }
+  .card {
+    background: var(--panel); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 22px 24px;
+    margin-bottom: 16px;
+    scroll-margin-top: 16px;
+  }
+  .card h2 {
+    margin: 0 0 4px; font-size: 18px; letter-spacing: -0.01em;
+    display: flex; align-items: baseline; gap: 10px;
+  }
+  .card h2 .num {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    color: var(--boomi); font-size: 14px; font-weight: 700;
+    background: var(--accent-soft); padding: 2px 8px; border-radius: 6px;
+  }
+  .card .qmeta {
+    color: var(--muted); font-size: 12px; margin: 4px 0 14px;
+    font-style: italic;
+  }
+  .card h3 {
+    margin: 18px 0 8px; font-size: 14px; color: var(--boomi);
+    text-transform: uppercase; letter-spacing: 0.04em;
+  }
+  .card p { margin: 8px 0; font-size: 14px; }
+  .card ul, .card ol { margin: 8px 0; padding-left: 22px; font-size: 14px; }
+  .card li { margin: 4px 0; }
+  .script {
+    background: var(--soft); border-left: 3px solid var(--boomi);
+    padding: 12px 16px; border-radius: 8px; margin: 10px 0;
+    font-size: 14px; line-height: 1.6;
+  }
+  .script strong.tag { color: var(--boomi); }
+  .callout {
+    background: var(--good-bg); color: var(--good-ink);
+    border: 1px solid #a7f3d0; padding: 10px 14px;
+    border-radius: 8px; font-size: 13px; margin: 10px 0;
+  }
+  .warn {
+    background: var(--warn-bg); color: var(--warn-ink);
+    border: 1px solid #fed7aa; padding: 10px 14px;
+    border-radius: 8px; font-size: 13px; margin: 10px 0;
+  }
+  .danger {
+    background: var(--rose-bg); color: var(--rose-ink);
+    border: 1px solid #fecaca; padding: 10px 14px;
+    border-radius: 8px; font-size: 13px; margin: 10px 0;
+  }
+  .amber {
+    background: var(--amber-bg); color: var(--amber-ink);
+    border: 1px solid #fde68a; padding: 10px 14px;
+    border-radius: 8px; font-size: 13px; margin: 10px 0;
+  }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+  .mini {
+    background: var(--soft); padding: 12px 14px;
+    border-radius: 8px; font-size: 13px;
+  }
+  .mini h4 { margin: 0 0 6px; font-size: 13px; color: var(--boomi); }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 10px 0; }
+  th, td { border: 1px solid var(--line); padding: 8px 10px; text-align: left; vertical-align: top; }
+  th { background: var(--soft); font-weight: 600; color: var(--boomi); }
+  kbd {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 12px; background: #1e293b; color: #e2e8f0;
+    padding: 2px 6px; border-radius: 4px;
+  }
+  .footnote { color: var(--muted); font-size: 12px; margin-top: 10px; font-style: italic; }
+  @media print {
+    body { background: white; }
+    nav.toc { display: none; }
+    .layout { display: block; padding: 12px; }
+    .card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
+    header.hero { background: white; color: black; border-bottom: 2px solid #0c4ee0; }
+    header.hero .pill { background: white; color: black; border-color: #ccc; }
+  }
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: 1fr; }
+    nav.toc { position: static; max-height: none; }
+    .grid2, .grid3 { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <h1>Boomi HM Interview — David Irecki</h1>
+  <p>Presales Solutions Consultant — Commercial (ANZ) · Niroo Arjuna · Wed 27 May 2026</p>
+  <div class="hero-meta">
+    <span class="pill">HM round</span>
+    <span class="pill">~45 min</span>
+    <span class="pill">Focus: narrative + commercial instinct</span>
+    <span class="pill">NOT the technical round</span>
+  </div>
+</header>
+
+<div class="layout">
+
+<nav class="toc">
+  <h3>Quick Jump</h3>
+  <a class="section">Strategy</a>
+  <a href="#headline">1. Headline story</a>
+  <a href="#insider-intel">★ Insider intel on David</a>
+  <a href="#what-david-wants">2. What David wants</a>
+  <a href="#narrative-map">3. Boomi narrative map</a>
+  <a class="section">The 4 Pillars</a>
+  <a href="#pillar-ai">4. AI / data activation</a>
+  <a href="#pillar-control">5. Single control plane</a>
+  <a href="#pillar-core">6. Core capabilities</a>
+  <a href="#pillar-acq">7. Acquisitions</a>
+  <a class="section">Likely Questions</a>
+  <a href="#q-openers">8. Opener questions</a>
+  <a href="#q-narrative">9. Narrative questions</a>
+  <a href="#q-technical-probe">★ Integration tools probe</a>
+  <a href="#q-commercial">10. Commercial / sales</a>
+  <a href="#q-curveballs">11. Curveballs</a>
+  <a class="section">Your Turn</a>
+  <a href="#ask-david">12. Questions to ask David</a>
+  <a href="#cheat-card">13. Cheat card (1-line)</a>
+  <a href="#donts">14. Things to avoid</a>
+</nav>
+
+<main>
+
+<div class="card" id="headline">
+  <h2><span class="num">01</span> Your headline story</h2>
+  <p class="qmeta">The one anchor sentence everything else hangs off. Open with this if David asks "tell me about yourself" or "why Boomi?".</p>
+  <div class="script">
+    <strong class="tag">Anchor:</strong> "I've spent 6+ years in enterprise SaaS, moving through implementations at Phocas, enterprise tender work at UbiPark, and most recently Pre-Sales at inforcer running the full motion across the M365 security stack in ANZ. The thread is the same — owning enterprise integrations end-to-end across REST, SSO/SAML/OAuth/SCIM and ERP middleware for customers like Monash Health, Melbourne Airport and Charter Hall, and translating that into commercial outcomes. What pulled me to Boomi is that you're the only iPaaS that's already moved past the "we have an AI feature" stage and built AgentStudio as a real single control plane for agents and MCPs — sitting on top of the integration, data and APIM layer customers already trust. I've already started on Boomi University — finished <em>Getting Started with the Boomi Platform</em> and I'm halfway through <em>Integration Essentials</em> — because I want to walk in technically credible from day one. That's exactly where I want to sell."
+  </div>
+  <div class="callout">Why it works: it grounds your 6+ years in real companies (Phocas, UbiPark, inforcer) and real customers (Monash Health, Melbourne Airport, Charter Hall — all integration-heavy ANZ accounts David will recognise), then ties to Boomi's specific 2026 narrative with AgentStudio and MCPs unprompted, and ends on commercial intent ("where I want to sell") which is what David screens for.</div>
+</div>
+
+<div class="card" id="insider-intel">
+  <h2><span class="num">★</span> Insider intel on David (from ex-colleague in Boomi Presales)</h2>
+  <p class="qmeta">This is the most important card on the page. Reframes the whole interview strategy.</p>
+
+  <div class="amber">
+    <strong>Three things to internalise before the call:</strong>
+    <ol style="margin:8px 0 0;padding-left:20px;">
+      <li><strong>David cares more about <em>technical experience</em> than Presales polish.</strong> Lean into the integration work, the APIs, the stacks you've actually used. De-emphasise the smooth Presales-narrative answers if you have to pick.</li>
+      <li><strong>He's open, direct, and will say what Boomi is looking for.</strong> Match his energy — be direct back. Don't over-rehearse. If he asks a hard question, answer it straight.</li>
+      <li><strong>He will probe on integration experience and ask which tools you've used.</strong> Have this answer ready (see Section 10b below). Be honest — do not claim Boomi, MuleSoft or Workato production experience you don't have.</li>
+    </ol>
+  </div>
+
+  <h3>What this changes about your approach</h3>
+  <table>
+    <tr><th>Before (default Presales playbook)</th><th>After (David-specific)</th></tr>
+    <tr><td>Lead with narrative + commercial instinct</td><td>Lead with technical depth + integration substance, then layer narrative</td></tr>
+    <tr><td>Polish every answer</td><td>Match his directness — short, honest, specific. Polish is a tell here, not a strength.</td></tr>
+    <tr><td>Position around capability</td><td>Position around what you've <em>actually</em> built and integrated. Name the stack.</td></tr>
+    <tr><td>Hedge on what you don't know</td><td>Say "I don't know that yet — here's how I'd learn it" directly. He'll respect it.</td></tr>
+  </table>
+
+  <div class="callout"><strong>The honesty trade:</strong> the moment David asks you something technical you don't fully know, your instinct will be to bridge to something adjacent. Don't. Say "I haven't gone deep there yet — what I have done is X, and the way I'd ramp on Y is Z." That answer wins more points with David than a smooth half-truth.</div>
+</div>
+
+<div class="card" id="what-david-wants">
+  <h2><span class="num">02</span> What David is actually screening for</h2>
+  <p class="qmeta">Decoded from the brief the recruiter relayed. He'll test 4 things — answer them whether or not he asks.</p>
+  <table>
+    <tr><th>What he wants to see</th><th>How you prove it</th></tr>
+    <tr><td><strong>Can you tell the Boomi 2026 story?</strong></td><td>Use "data activation", "single control plane", "AgentStudio", "MCP", "governed agents" — unprompted, in your own sentences.</td></tr>
+    <tr><td><strong>Do you respect the core, not just the shiny?</strong></td><td>Lead with AI but always close back to the integration + APIM + data management base. AI is the upsell motion, not the replacement.</td></tr>
+    <tr><td><strong>Do you understand the acquisition logic?</strong></td><td>Name Rivery (ELT), Thru (MFT), Lunar.dev (governed agent connectivity) and explain why each one extends a specific gap.</td></tr>
+    <tr><td><strong>Will the AEs love working with you?</strong></td><td>Lean into "partnered with the AE", "owned the technical-win plan", "qualify-out is a win too". Avoid lone-wolf framing.</td></tr>
+  </table>
+
+  <h3>Scripted lines for each signal — drop these naturally during the conversation</h3>
+
+  <p style="margin-top:14px;"><strong>1. Boomi 2026 story (data activation + AgentStudio)</strong></p>
+  <div class="script">
+    <strong class="tag">Say:</strong> "What I find compelling about Boomi right now is the data activation message — Steve Lucas's framing that the real bottleneck for AI isn't model access, it's getting data integrated, governed and AI-ready. AgentStudio sits on top of that as a single control plane for agents and MCPs. It's the only iPaaS story I've seen this year where the AI layer is actually built, not just promised."
+  </div>
+
+  <p style="margin-top:14px;"><strong>2. Respect the core (integration + APIM + DataHub)</strong></p>
+  <div class="script">
+    <strong class="tag">Say:</strong> "The AI conversation gets you the meeting, but the integration core is what gets you the contract. Boomi has 20,000+ customers running production integrations, APIM at scale, DataHub for MDM — that's the trust layer that makes the AgentStudio story credible. You can't sell a customer on governed AI agents if the underlying integration platform drops messages. The core is the proof point."
+  </div>
+
+  <p style="margin-top:14px;"><strong>3. Acquisition logic (Rivery + Thru + Lunar.dev)</strong></p>
+  <div class="script">
+    <strong class="tag">Say:</strong> "What I like about the recent acquisitions is they're not vanity plays — each one closes a real gap. Rivery brings cloud ELT and CDC, which closes the analytics-pipeline side of data activation into Snowflake and Databricks. Thru brings managed file transfer, which is the file-based integration layer that iPaaS historically deferred to legacy MFT vendors — big in regulated industries. And Lunar.dev brings governed agent-to-API connectivity, which closes the safety loop for the AgentStudio story end-to-end. That's a buyer-led roadmap, not a hype roadmap."
+  </div>
+
+  <p style="margin-top:14px;"><strong>4. AE partnership instinct</strong></p>
+  <div class="script">
+    <strong class="tag">Say:</strong> "The unit I optimise for is the AE+SC pair, not the AE alone or the SC alone. AE owns the relationship and the close — I own the technical-win plan. In practice that means I'm in every discovery, I draft the architecture before the demo, I scope the POC with exit gates so we don't waste anyone's quarter, and I do a post-mortem with the AE after every deal — won or lost — so we sharpen the next one. At inforcer that's how I built my strongest internal relationships, and it's how I'd want to operate here from day one."
+  </div>
+
+  <h3>Three extra signals David flagged (via coach)</h3>
+  <table>
+    <tr><th>Signal</th><th>How to land it naturally</th></tr>
+    <tr><td><strong>Staying on top of technical updates</strong></td><td>Drop a specific recent example: "I follow the Boomi release notes and the AgentStudio updates closely — the MCP server work is the one I've been digging into most." Or for your own track record: "Same way I kept up with the M365 stack — release notes weekly, build something with the new feature within the sprint."</td></tr>
+    <tr><td><strong>Mentoring</strong></td><td>Don't wait for a "do you mentor?" question. Weave it in: "At Phocas I ended up being the person newer consultants would come to for ERP integration scoping" / "I want to grow into being the person AEs ping when they need someone in the room for the AI conversation — and the person newer SCs come to for the AgentStudio narrative."</td></tr>
+    <tr><td><strong>Good with learning new technologies</strong></td><td>Proof points beat claims: Anthropic AI Fluency cert, AI-queryable portfolio shipped on Claude API, Lumen Health Next.js + AI Setup Assistant demo, the Dhaniro headless CMS build. <strong>Closer to the role:</strong> signed up for Boomi University ahead of today, finished <em>Getting Started with the Boomi Platform</em>, halfway through <em>Integration Essentials</em>. Name it — it shows you started ramping before being asked.</td></tr>
+  </table>
+</div>
+
+<div class="card" id="narrative-map">
+  <h2><span class="num">03</span> The Boomi narrative map (memorise this shape)</h2>
+  <p class="qmeta">Sketch this in your head. Every answer should land somewhere on this map.</p>
+  <div class="mini">
+    <h4>The pyramid</h4>
+    <p style="margin:0;font-size:13px;line-height:1.7;">
+      <strong>Top:</strong> <span style="color:var(--boomi)">Data activation for AI</span> — Steve Lucas's CEO-level message. Get data ready for AI, govern the agents that consume it.<br>
+      <strong>Upper-middle:</strong> <span style="color:var(--boomi)">AgentStudio</span> — single control plane for agents, MCPs and governance. The 2026 differentiator.<br>
+      <strong>Middle:</strong> <span style="color:var(--boomi)">APIM + DataHub + Integration</span> — the trusted core. iPaaS that already runs in production at 20,000+ customers.<br>
+      <strong>Base:</strong> <span style="color:var(--boomi)">Rivery (ELT) + Thru (MFT) + Lunar.dev (governed agent connectivity)</span> — the acquisitions that close the gaps and feed the layers above.
+    </p>
+  </div>
+  <div class="callout">Why it matters: David needs to hear that you understand AgentStudio doesn't replace the core — it sits on top of it. Customers won't buy AgentStudio without trusting the integration + data layer underneath. That's the whole "data activation" thesis.</div>
+</div>
+
+<div class="card" id="pillar-ai">
+  <h2><span class="num">04</span> Pillar 1 — AI / Data Activation</h2>
+  <p class="qmeta">The big one. David explicitly said he'll gauge how you position Boomi's value prop in the context of AI.</p>
+
+  <h3>The 30-second pitch</h3>
+  <div class="script">
+    <strong class="tag">Say:</strong> "Every Commercial customer right now has a CEO asking about AI. The problem isn't model access — that's solved. The problem is that their data lives in 12 systems, none of it is clean, and there's no governance layer for the agents they want to deploy. That's the gap Boomi closes. Integration moves the data, DataHub trusts it, APIM exposes it, and AgentStudio governs the agents that consume it. We're not selling AI — we're selling the runway that makes AI actually work in production."
+  </div>
+
+  <h3>Why "data activation" matters as a phrase</h3>
+  <ul>
+    <li>It's Steve Lucas's deliberate reframe — away from "integration" (commodity) toward "making data usable for AI" (board-level priority).</li>
+    <li>For a Commercial buyer, it translates as: <em>"we get you to AI ROI without rebuilding your stack."</em></li>
+    <li>For an AE, it translates as: <em>"bigger deals, faster TCV growth, AgentStudio attach on every renewal."</em></li>
+  </ul>
+
+  <h3>How to talk about AI governance</h3>
+  <p>Don't be hand-wavy. Three concrete governance moments to name:</p>
+  <ul>
+    <li><strong>Identity & access:</strong> which agent can call which API, with which credentials, on whose behalf.</li>
+    <li><strong>Data scoping:</strong> agents only see the data they're authorised to see (MCP servers enforce this).</li>
+    <li><strong>Observability:</strong> every agent call is logged, traceable, replayable — Commercial CTOs need this for audit and renewal.</li>
+  </ul>
+
+  <div class="callout">If David pushes: "Most iPaaS vendors are saying the same AI story. What's different?" — your answer is <strong>"the control plane is built, not promised"</strong>. AgentStudio is GA, MuleSoft Topic Center is still positioning. That's a 12-month head start in Commercial deals.</div>
+</div>
+
+<div class="card" id="pillar-control">
+  <h2><span class="num">05</span> Pillar 2 — Single Control Plane (AgentStudio + MCPs)</h2>
+  <p class="qmeta">David's headline framing. Be able to explain this in one breath, then unpack it.</p>
+
+  <h3>The one-breath version</h3>
+  <div class="script">
+    <strong class="tag">Say:</strong> "AgentStudio is the single place a Commercial customer designs, deploys, observes and governs every AI agent they're running — regardless of which model or which MCP server those agents call. Same place you already build integrations. Same governance. One pane of glass."
+  </div>
+
+  <h3>What MCP is, in plain English</h3>
+  <p><strong>Model Context Protocol (MCP)</strong> — an open standard (originated by Anthropic) that lets AI agents discover and call tools and data sources in a uniform way. Think of it as USB-C for agents: instead of bespoke integration per agent per data source, an agent can talk to any MCP-compliant server.</p>
+  <p>Why Boomi cares: Boomi can expose every existing integration, every APIM endpoint, every DataHub entity as an MCP server — instantly making 20,000+ customers' data and APIs available to any agent, governed.</p>
+
+  <h3>Why "single control plane" is the win</h3>
+  <table>
+    <tr><th>Without it (status quo)</th><th>With AgentStudio</th></tr>
+    <tr><td>Agents built in 4 different tools (LangChain, custom, vendor-specific, internal).</td><td>One place to design, version, deploy.</td></tr>
+    <tr><td>Governance handled (or not) per agent.</td><td>One governance layer, enforced at runtime.</td></tr>
+    <tr><td>Observability fragmented across model providers, log systems, integration logs.</td><td>Unified agent telemetry — what was called, by whom, with what result.</td></tr>
+    <tr><td>Each agent re-integrates with the same APIs and data sources.</td><td>One MCP layer, every agent reuses it.</td></tr>
+  </table>
+
+  <div class="callout">The Commercial sales motion: AgentStudio is the <em>land-and-expand multiplier</em>. Customer buys Boomi for integration, builds 5 processes. Six months later, AgentStudio attaches on top to deploy their first agent against those processes. Bigger TCV, stickier renewal.</div>
+</div>
+
+<div class="card" id="pillar-core">
+  <h2><span class="num">06</span> Pillar 3 — Core Capabilities (don't forget the base)</h2>
+  <p class="qmeta">David will test whether you can also sell the bread-and-butter. AI gets you the meeting; integration gets you the contract.</p>
+
+  <div class="grid3">
+    <div class="mini">
+      <h4>Integration (AtomSphere)</h4>
+      <p style="margin:0;font-size:12px;">Low-code iPaaS. Drag-drop canvas, 200+ connectors, runs on customer-managed Atoms or cloud. The 20-year-old asset that keeps the lights on.</p>
+      <p style="margin:6px 0 0;font-size:12px;color:var(--muted);"><strong>Commercial win:</strong> faster time-to-value than MuleSoft, lower TCO, lean integration teams can own it.</p>
+    </div>
+    <div class="mini">
+      <h4>API Management (APIM)</h4>
+      <p style="margin:0;font-size:12px;">Design, publish, secure, monetise APIs. Federated model — distribute gateways across regions/clouds, govern from one plane. JD explicitly calls out Federated APIM.</p>
+      <p style="margin:6px 0 0;font-size:12px;color:var(--muted);"><strong>Commercial win:</strong> ANZ buyers want sovereignty (data stays in AU) without losing central governance.</p>
+    </div>
+    <div class="mini">
+      <h4>Data Management (DataHub)</h4>
+      <p style="margin:0;font-size:12px;">MDM. Golden records for customer, product, supplier. Removes the "which CRM record is correct?" problem.</p>
+      <p style="margin:6px 0 0;font-size:12px;color:var(--muted);"><strong>Commercial win:</strong> the data quality layer that makes AI actually usable downstream.</p>
+    </div>
+  </div>
+
+  <h3>The line to land</h3>
+  <div class="script">
+    <strong class="tag">Say:</strong> "Boomi's core is what makes the AI story credible. You can't sell a customer on a single control plane for agents if your underlying integration layer drops messages or your MDM is theoretical. The 20,000+ production customers on Integration + APIM + DataHub are the proof point that the runway is real."
+  </div>
+</div>
+
+<div class="card" id="pillar-acq">
+  <h2><span class="num">07</span> Pillar 4 — Acquisitions (Rivery, Thru, Lunar.dev)</h2>
+  <p class="qmeta">David said he'll specifically check this. Know what each one is, what gap it closes, and how it slots into the narrative.</p>
+
+  <table>
+    <tr>
+      <th>Acquisition</th>
+      <th>What it does</th>
+      <th>Gap it closes</th>
+      <th>Sales motion</th>
+    </tr>
+    <tr>
+      <td><strong>Rivery</strong><br>(acquired 2024)</td>
+      <td>Cloud-native ELT and CDC (change data capture). Moves bulk and streaming data into warehouses (Snowflake, Databricks, BigQuery) with low-code pipelines.</td>
+      <td>Boomi's classic integration is great for transactional / event-style flows. Rivery handles the analytics-pipeline side — replicating operational data into the warehouse where AI models actually train and run.</td>
+      <td>Attach to any deal where the customer is investing in Snowflake or Databricks. Position as "the analytics-ready half of data activation".</td>
+    </tr>
+    <tr>
+      <td><strong>Thru</strong><br>(recent acquisition)</td>
+      <td>Managed File Transfer (MFT). Secure, governed B2B file exchange — replaces legacy FTP, Aspera, MOVEit.</td>
+      <td>Closes the file-based integration gap that iPaaS historically deferred to legacy MFT vendors (especially in finance, supply chain, healthcare). Big in regulated industries.</td>
+      <td>Land in any account with B2B partner ecosystems, healthcare data exchange, or financial messaging. Also a defensive play against MOVEit after the 2023 breach fallout.</td>
+    </tr>
+    <tr>
+      <td><strong>Lunar.dev</strong><br>(intent to acquire, 2026)</td>
+      <td>Governed agent-to-API connectivity. Lets agents safely call third-party APIs with guardrails, rate limiting, observability.</td>
+      <td>The "last mile" of the single control plane — when AgentStudio agents need to call external APIs, Lunar provides the safety layer. Closes the governance loop end-to-end.</td>
+      <td>Reinforces the AgentStudio story. Every AI deal in 2026/27 will need this.</td>
+    </tr>
+  </table>
+
+  <div class="callout">Synthesis line if David asks "what do these acquisitions tell you about Boomi's strategy?" — <strong>"They tell me Boomi isn't trying to win on AI marketing. It's filling the practical gaps customers actually hit when they try to operationalise AI: analytics data movement (Rivery), regulated file exchange (Thru), and external-API guardrails for agents (Lunar). That's a buyer-led roadmap, not a hype roadmap."</strong></div>
+</div>
+
+<div class="card" id="q-openers">
+  <h2><span class="num">08</span> Likely opener questions</h2>
+
+  <h3>"Tell me about yourself / walk me through your background."</h3>
+  <div class="script">
+    <strong class="tag">Answer (75 sec):</strong> "6+ years across enterprise SaaS, spanning implementations, product, and most recently Pre-Sales. I studied a double degree in Business and IT at Monash, majoring in Accounting and Business Information Systems.<br><br>
+    I started at Phocas Software, a BI scale-up at the time, where I delivered 50+ enterprise BI implementations including ERP integrations with MYOB. That role taught me how to sit with a customer, understand their problem, and design a solution before jumping into configuration.<br><br>
+    Next was UbiPark, scaling smart-parking IoT deployments across APAC. I wore a lot of hats, but the part that shaped my career was preparing technical responses for enterprise tenders with clients like Melbourne Airport, Monash Health and Charter Hall. That's where I first got a taste of Pre-Sales.<br><br>
+    Most recently I was Pre-Sales Engineer at inforcer, running the full Pre-Sales motion across the M365 security stack in ANZ — Entra ID, Defender, Sentinel, Purview, Intune — partnering with AEs through discovery, demos, POCs and commercial close. About 100+ technical engagements there. That role ended in a redundancy when the team was restructured, which is what's brought me to market.<br><br>
+    Alongside the day job I've gone deep on AI — Anthropic AI Fluency certified, shipped an AI-queryable portfolio on Claude, and a Lumen Health Next.js demo instrumented end-to-end via an AI Setup Assistant. And ahead of today I've started on Boomi University — finished <em>Getting Started with the Boomi Platform</em> and I'm halfway through <em>Integration Essentials</em> — so I'm already on the ramp.<br><br>
+    I'm at the point in my career where I want to put both halves together: the integration discipline that keeps things running in production, and the AI fluency to lead the conversation customers are actually trying to have right now. That's why Boomi."
+  </div>
+  <div class="callout">Hits all the right beats: real companies, real customers David will recognise, honest framing on the inforcer redundancy (don't hide it — David already knows you're between roles), specific AI projects rather than vague "I'm AI-curious".</div>
+
+  <h3>"Why Boomi specifically? Why not MuleSoft or Workato?"</h3>
+  <div class="script">
+    <strong class="tag">Answer:</strong> "Three reasons. One — the AgentStudio bet is real product, not slideware. MuleSoft is still positioning Topic Center; Boomi has a control plane in market. Two — the acquisition logic shows a buyer-led roadmap: Rivery, Thru, Lunar.dev each close a practical gap, not a competitive scoreboard. Three — Commercial segment in ANZ is the right patch size for me right now. Mid-market customers move fast, you see the full cycle, and the AI conversation lands harder there than in F500 where it's still a board paper."
+  </div>
+
+  <h3>"What do you know about my team / the ANZ Commercial pod?"</h3>
+  <div class="warn">Recover honestly if you don't know specifics. Say: "I know you lead ANZ Customer Engineering, and I've read the broader signals — BoomiWorld coverage, the LinkedIn announcements on AgentStudio and the recent acquisitions. What I'd love to learn from you is the shape of the Commercial pod specifically — how the SC and AE pairings work in ANZ, and where you're investing the most in the next six months."</div>
+</div>
+
+<div class="card" id="q-narrative">
+  <h2><span class="num">09</span> Narrative + product questions</h2>
+
+  <h3>"How would you pitch Boomi to a Commercial customer who's never heard of us?"</h3>
+  <div class="script">
+    <strong class="tag">Answer:</strong> "I'd open with their CEO problem, not our product. Something like: 'Your board is asking about AI. Your CIO is telling them the data isn't ready. We solve that gap. Boomi gets your data integrated, governed and AI-ready in weeks, not quarters — and gives you a single control plane to deploy and govern the agents once you're ready.' Then I'd anchor on a specific scenario in their stack — Shopify to NetSuite to Salesforce, AgentStudio on top to deploy a customer-service agent — so it's not abstract."
+  </div>
+
+  <h3>"What's the AgentStudio elevator pitch?"</h3>
+  <div class="script">
+    <strong class="tag">Answer:</strong> "One place to design, deploy, observe and govern every AI agent in the business. Same canvas you already use for integrations. Pluggable to any model, any MCP server. The shortest path from 'we want to use AI' to 'we have a governed agent in production'."
+  </div>
+
+  <h3>"How do you keep up with the Boomi roadmap when it's moving this fast?"</h3>
+  <div class="script">
+    <strong class="tag">Answer:</strong> "Honestly, the same way I kept up with the M365 security stack at inforcer — product release notes weekly, SC Slack or community channels, shadow live deals to hear what AEs are actually pitching this month, and pick one new module to go deep on every sprint. Same instinct is why I signed up for Boomi University ahead of today and started ramping on Integration Essentials before being asked. I treat my own onboarding as the first POC I have to run."
+  </div>
+</div>
+
+<div class="card" id="q-technical-probe">
+  <h2><span class="num">★</span> The integration tools probe (most likely technical question)</h2>
+  <p class="qmeta">Your ex-colleague flagged this directly. David <em>will</em> ask. Have this answer locked.</p>
+
+  <h3>"What integration tools have you used? Walk me through your hands-on integration experience."</h3>
+  <div class="script">
+    <strong class="tag">Answer (be honest, lead with stack):</strong> "Let me be upfront — I haven't run Boomi, MuleSoft or Workato in production. My hands-on integration work has been on the customer-side of the stack rather than on a dedicated iPaaS platform. Specifically:<br><br>
+    <strong>APIs and auth:</strong> Built and consumed REST APIs across most of my roles, plus enterprise SSO/SAML, OAuth and SCIM provisioning — that was the bread and butter at inforcer with the M365 stack and at UbiPark for enterprise rollouts to Monash Health, Melbourne Airport and Charter Hall.<br><br>
+    <strong>ERP integration:</strong> At Phocas I delivered 50+ BI implementations including ERP middleware integrations with MYOB — data modelling, transforms, the lot.<br><br>
+    <strong>Microsoft 365 security stack:</strong> Entra ID, Defender, Sentinel, Purview, Intune — integrated, configured and demoed across ANZ at inforcer.<br><br>
+    <strong>API tooling:</strong> Postman for design and testing, Meta Graph API for the Dhaniro client build, Sanity and Supabase as headless backends.<br><br>
+    <strong>Languages:</strong> Python, JavaScript, TypeScript, SQL — comfortable shipping production code.<br><br>
+    What I haven't done is run a low-code iPaaS canvas like Boomi's AtomSphere in a live customer environment. That's what I've started ramping on with Boomi University this week — and honestly, the canvas paradigm maps closely to how I already think about integration flows, so I expect the curve to be more about Boomi-specific vocabulary than the underlying patterns."
+  </div>
+
+  <h3>If David pushes: "So you've never actually built a production iPaaS integration?"</h3>
+  <div class="script">
+    <strong class="tag">Answer:</strong> "Correct — not on a dedicated iPaaS. I've built the integrations directly, point-to-point and via APIs, which means I understand <em>why</em> teams move to an iPaaS like Boomi: governance, reuse, observability, time-to-value. I haven't yet run the canvas in production. The fastest way I'd close that gap is exactly what I'm doing — Integration Essentials this week, ship a working process in my trial in week 1, and shadow live SC engagements for the first 30 days. Honest answer."
+  </div>
+
+  <h3>If David asks: "How does the Boomi canvas compare to what you've used?"</h3>
+  <div class="amber"><strong>Don't bluff.</strong> "Honestly, I've only spent a few hours in the platform so far via the Getting Started course — I don't want to give you a comparison I haven't earned. What I can say is the canvas, connector library and atom-based runtime model map cleanly to the integration patterns I've already worked with at the API and middleware layer. I'd love to walk through how it compares once I've shipped my first process — that's where the real intuition will land."</div>
+
+  <div class="callout"><strong>Why this answer wins with David:</strong> it's the opposite of a Presales bluff. It names exactly what you've done and exactly what you haven't, gives him a clean picture of the gap, and shows you've already started closing it. According to your insider intel, this is the answer he's been hoping for from candidates and rarely gets.</div>
+</div>
+
+<div class="card" id="q-commercial">
+  <h2><span class="num">10</span> Commercial / sales-instinct questions</h2>
+
+  <h3>"How do you partner with an AE?"</h3>
+  <div class="script">
+    <strong class="tag">Answer:</strong> "AE owns the relationship and the close. I own the technical-win plan. In practice: I'm in every discovery, I draft the architecture before the demo, I scope the POC with exit gates so we don't waste anyone's quarter, and I do a post-mortem with the AE after every deal — won or lost — so we sharpen the next one. The unit is the AE+SC pair, not the AE alone or the SC alone."
+  </div>
+
+  <h3>"Tell me about a complex deal you supported."</h3>
+  <p><strong>Your strongest story — the inforcer MSP / ANZ bug escalation. Tighten to 90 seconds:</strong></p>
+  <div class="script">
+    <strong class="tag">Context:</strong> "At inforcer I was supporting a mid-market MSP deal — ~$25K ARR but strategic, because they were rolling out across 500 managed organisations. Mid-POC the customer hit a real product bug specific to how certain security policies behaved in the Australian region. Not a blocker for UK or US customers, but it killed the workflow this MSP needed.<br><br>
+    <strong class="tag">Actions:</strong> I replicated the bug myself to confirm it wasn't customer-side, documented it cleanly with repro steps and commercial impact, and submitted it through the normal product channel. ANZ is a smaller market so it didn't get prioritised on the roadmap. With the deal stalling, I escalated to our RVP, walked him through the dollar impact and the fix complexity, and made the case for prioritisation. Internally that escalation landed because I'd already built trust with leadership. Externally, I kept the customer transparent — telling them we were advocating for them rather than going quiet.<br><br>
+    <strong class="tag">Result:</strong> Bug was fixed in the next sprint, customer completed the trial, deal closed at full value. And it became an internal proof point that ANZ needed a stronger voice in product prioritisation.<br><br>
+    <strong class="tag">Learning:</strong> Relationships — internal and external — are the unlock. Internal trust gives you the credibility to escalate; external transparency gives you the runway to keep the customer while you fix it. Now my default playbook for any product blocker mid-deal is: replicate, document, quantify commercial impact, escalate with a solution."
+  </div>
+  <div class="callout">Why this story works for David: shows AE partnership instinct, internal escalation muscle, customer-outcome bias, and a learning. Maps perfectly to a Commercial SC role.</div>
+
+  <h3>"Tell me about a deal you lost. What happened?"</h3>
+  <div class="amber">Have a real story ready. Honest, specific, what you'd do differently. Don't blame the customer, the AE, or pricing. Lead with what <em>you</em> would change.</div>
+  <p><strong>Story shape:</strong> situation → what you owned → what went wrong → what the AE and you decided afterward → the change you made on the next deal.</p>
+
+  <h3>"What's your read on the AI buying cycle right now in ANZ Commercial?"</h3>
+  <div class="script">
+    <strong class="tag">Answer:</strong> "Two segments. The first is 'we have to be seen doing something' — board pressure, no production goal yet. That's a discovery-heavy cycle, lean into education, AgentStudio + MCP demo, talk governance early. The second is 'we have a real use case but the data isn't ready' — that's a faster cycle and lands the integration + DataHub story first, with AgentStudio as the obvious follow-up. The mistake is treating them the same."
+  </div>
+</div>
+
+<div class="card" id="q-curveballs">
+  <h2><span class="num">11</span> Curveballs to be ready for</h2>
+
+  <h3>"What's the weakest part of the Boomi story right now?"</h3>
+  <div class="amber">Don't dodge. A real answer signals confidence. Try: "Honestly, the breadth of the portfolio after the acquisitions is a double-edged sword — Commercial buyers can find it confusing whether to lead with iPaaS, APIM, Rivery or AgentStudio. The SC's job is to simplify that for them: anchor on their one problem and bring in the rest as it becomes relevant. That's where I think I add value."</div>
+
+  <h3>"What if a customer says 'we already have MuleSoft, why switch?'"</h3>
+  <div class="script">
+    <strong class="tag">Answer:</strong> "I wouldn't go for switch. I'd go for AgentStudio attach. MuleSoft is a sunk cost; pulling it out is a 12-month project with political risk. But AgentStudio doesn't compete with MuleSoft's installed base — it sits above it. Land AgentStudio on top, prove governance and time-to-agent, and the next renewal cycle the conversation about the core changes naturally."
+  </div>
+
+  <h3>"Where do you see yourself in 3 years?"</h3>
+  <div class="script">
+    <strong class="tag">Answer:</strong> "Honestly — running a Commercial patch with a clear AI specialism, mentoring newer SCs on the AgentStudio narrative, and being the person AEs in ANZ ping when they need someone in the room for the AI conversation. I'm not chasing management as a title; I'm chasing being the technical leader on the deals that matter."
+  </div>
+
+  <h3>"Why are you between roles right now?"</h3>
+  <div class="script">
+    <strong class="tag">Answer:</strong> "My role at inforcer was impacted by a redundancy — small company, they restructured the team. I had a great run there, particularly getting hands-on with the full Pre-Sales motion across ANZ. But I'm taking it as an opportunity to be deliberate about my next step rather than rushing into something.<br><br>
+    What I'm looking for now is an established Pre-Sales function with strong leadership and a product I can actually stand behind technically. Boomi is exactly that — the Commercial SC scope is the right shape, the AgentStudio bet is real product not slideware, and ANZ is where I want to be selling. That's the pull."
+  </div>
+  <div class="callout">Honest, short, forward-looking. Doesn't dwell on the redundancy, doesn't trash inforcer, lands on what you're walking <em>toward</em>.</div>
+</div>
+
+<div class="card" id="ask-david">
+  <h2><span class="num">12</span> Sharp questions to ask David</h2>
+  <p class="qmeta">Have 5–6 ready. Ask 3. Pick based on what's come up in the conversation.</p>
+
+  <h3>Strategy / vision</h3>
+  <ul>
+    <li>"Of the recent acquisitions — Rivery, Thru, Lunar.dev — which one is moving the needle fastest in ANZ Commercial deals right now?"</li>
+    <li>"Where is AgentStudio winning, and where is it still a story you're educating the market on?"</li>
+    <li>"Steve Lucas talks a lot about data activation. What does that actually mean for an ANZ SC's quarterly motion?"</li>
+  </ul>
+
+  <h3>Team / role / deal cycle</h3>
+  <ul>
+    <li><strong>"What does the AE/SC ratio look like in ANZ Commercial, and how do you decide which SC gets which deals?"</strong></li>
+    <li><strong>"What does a typical deal cycle look like at Boomi, and where do SEs spend most of their time — discovery, demos, POCs, pilots?"</strong> <em>(replaces the "when do SCs get involved" question — better framing, asks for the time-allocation answer not just the entry point)</em></li>
+    <li>"What's the difference between an SC who's hitting bar and one who's exceptional on your team? What do the exceptional ones do differently?"</li>
+    <li>"What's the first 90 days look like in terms of enablement vs. live-deal exposure?"</li>
+  </ul>
+
+  <h3>Personal / career growth (David's own journey)</h3>
+  <div class="callout"><strong>David's arc:</strong> joined Boomi June 2015 as Boomi's <em>first-ever</em> APJ Solutions Consultant → Senior Manager (2017) → Director, Solution Consulting APJ (2019) → CTO + Sr Director SE APJ (2024–present). 11 years, same company, single-person APJ SC team grown into a multi-country org spanning Sydney, Melbourne, Singapore, Hong Kong, Tokyo. He'll love a question that lets him reflect on that arc.</div>
+  <ul>
+    <li><strong>"You've been at Boomi 11 years and grown from being the first APJ SC into CTO and SE leader for the region. What's worked for you about staying and growing at one company — and what would you tell someone earlier in their Pre-Sales career who's trying to build a similar arc?"</strong></li>
+    <li>"You built the APJ SC function from one person to a multi-country team. What did you look for in the early hires that ended up being the ones who scaled with the business?"</li>
+    <li>"As you've moved from IC SC into leadership and now CTO for APJ, what's the part of the SC craft you've worked hardest to keep sharp?"</li>
+  </ul>
+  <div class="amber"><strong>Why this question lands:</strong> it shows you've actually researched David, not just Boomi. It invites him into reflection (people love being asked about their journey). It gives you a window into mentorship style — which the coach explicitly flagged David wants to see you care about. And it sets up follow-up: when he answers, you can naturally ask about how he mentors SCs on the team today.</div>
+
+  <h3>Honest / signal-of-intent</h3>
+  <ul>
+    <li>"If I land this role, what would you want me to have shipped or learned by end of Q1 that would tell you it's working?"</li>
+  </ul>
+
+  <h3>The closer (always end with this)</h3>
+  <div class="script">
+    <strong class="tag">Ask:</strong> "Is there anything you're apprehensive about — either with my experience or my fit for this role?"
+  </div>
+  <div class="callout">Asking this at the end shows self-awareness without sounding defensive. It gives David a natural opening to share any reservation, and gives you a chance to address it while you're still in the room. Most HMs respond well to it because it signals you care about the fit as much as they do.</div>
+</div>
+
+<div class="card" id="cheat-card">
+  <h2><span class="num">13</span> Cheat card (1-line answers for live recall)</h2>
+  <table>
+    <tr><th>Concept</th><th>One-line answer</th></tr>
+    <tr><td>Boomi core</td><td>Integration + APIM + DataHub — 20,000+ production customers, 20 years of trust.</td></tr>
+    <tr><td>Data activation</td><td>Getting data integrated, governed and AI-ready so customers can actually deploy agents in production.</td></tr>
+    <tr><td>AgentStudio</td><td>Single control plane to design, deploy, observe and govern every AI agent — pluggable to any model or MCP.</td></tr>
+    <tr><td>MCP</td><td>Open standard for how AI agents discover and call tools/data. USB-C for agents.</td></tr>
+    <tr><td>Federated APIM</td><td>Distributed gateways across regions/clouds, one central governance plane.</td></tr>
+    <tr><td>Rivery</td><td>Cloud ELT/CDC into Snowflake/Databricks — closes the analytics-pipeline half of data activation.</td></tr>
+    <tr><td>Thru</td><td>Managed File Transfer — secure B2B file exchange, big in regulated industries.</td></tr>
+    <tr><td>Lunar.dev</td><td>Governed agent-to-API connectivity — the safety layer for agents calling external APIs.</td></tr>
+    <tr><td>Commercial vs Enterprise</td><td>Commercial = mid-market, faster cycles, fewer stakeholders, AI conversation lands harder than F500.</td></tr>
+    <tr><td>vs MuleSoft</td><td>Faster time-to-value, leaner ops, AgentStudio in market while Topic Center still positioning.</td></tr>
+    <tr><td>vs Workato</td><td>Workflow automation strength, less depth on data integration and APIM.</td></tr>
+    <tr><td>vs Azure Integration Svc</td><td>Great if you're all-in Azure, harder for multi-cloud Commercial customers.</td></tr>
+  </table>
+</div>
+
+<div class="card" id="donts">
+  <h2><span class="num">14</span> Things to avoid</h2>
+  <div class="danger">
+    <ul style="margin:0;padding-left:18px;">
+      <li><strong>Don't bash MuleSoft.</strong> Many of David's customers (and possibly some of his team) come from MuleSoft. Contrast, don't trash.</li>
+      <li><strong>Don't oversell AI.</strong> If you sound like a hype merchant, you'll lose the credibility check. AI is the topline; integration is the substance.</li>
+      <li><strong>Be honest about your Boomi platform depth.</strong> You've signed up for Boomi University, completed <em>Getting Started with the Boomi Platform</em>, and you're halfway through <em>Integration Essentials</em>. That's a credible starting point — name it. Don't overclaim production experience you don't have, but don't undersell either.</li>
+      <li><strong>Don't quote a salary number in this round.</strong> If it comes up, defer: "I'd love to align with the recruiter on package once we've established mutual fit."</li>
+      <li><strong>Don't ask about WFH / leave / perks.</strong> Wrong round. Save for the recruiter.</li>
+      <li><strong>Don't say "patch" if you haven't used it before in conversation.</strong> Use "accounts" or "territory" until it's clearly the in-house word.</li>
+      <li><strong>Don't run long.</strong> 60–90 seconds per answer. If David wants more he'll ask. If you run 3 minutes on every question, you're cooking yourself.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="card">
+  <h2><span class="num">★</span> Final 60 seconds before the call</h2>
+  <ol>
+    <li>Re-read your <strong>headline story</strong> at the top of this page. Out loud.</li>
+    <li>Open the <strong>cheat card</strong> in a second tab.</li>
+    <li>Have your <strong>30/60/180 deck</strong> on the desktop in case David asks to walk through it.</li>
+    <li>Glass of water. Camera at eye level. Smile before the call connects.</li>
+    <li>Last thought: <em>this is a conversation between two people who already think you might be the right person. Act like it.</em></li>
+  </ol>
+  <p class="footnote">Built 26 May 2026. Print this page for paper backup if you want one in front of you off-screen.</p>
+</div>
+
+</main>
+</div>
+
+</body>
+</html>

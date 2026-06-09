@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Boomi SC Presentation Round — Demo Exercise (Niroo Arjuna)</title>
+<style>
+  :root {
+    --bg: #0f172a;
+    --panel: #ffffff;
+    --ink: #0f172a;
+    --muted: #475569;
+    --soft: #f1f5f9;
+    --line: #e2e8f0;
+    --accent: #0066ff;
+    --accent-soft: #e0ecff;
+    --boomi: #0c4ee0;
+    --good-bg: #ecfdf5;
+    --good-ink: #047857;
+    --amber-bg: #fef3c7;
+    --amber-ink: #92400e;
+    --rose-bg: #fff1f2;
+    --rose-ink: #be123c;
+    --radius: 14px;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    background: #f8fafc;
+    color: var(--ink);
+    line-height: 1.55;
+  }
+  header.hero {
+    background: linear-gradient(135deg, #0c4ee0 0%, #0066ff 60%, #38bdf8 100%);
+    color: #ffffff;
+    padding: 24px 32px;
+  }
+  header.hero h1 { margin: 0 0 6px; font-size: 24px; }
+  header.hero p { margin: 0; opacity: 0.92; font-size: 13px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+  .pill {
+    padding: 4px 10px; border-radius: 999px;
+    background: rgba(255,255,255,0.18); color: #ffffff;
+    font-size: 12px; border: 1px solid rgba(255,255,255,0.25);
+  }
+  .layout {
+    display: grid; grid-template-columns: 240px 1fr;
+    max-width: 1280px; margin: 0 auto; padding: 24px; gap: 24px;
+  }
+  nav.toc {
+    position: sticky; top: 16px; align-self: start;
+    background: var(--panel); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 14px;
+    max-height: calc(100vh - 32px); overflow-y: auto;
+  }
+  nav.toc h3 { margin: 0 0 8px; font-size: 11px; text-transform: uppercase; color: var(--muted); letter-spacing: 0.06em; }
+  nav.toc a {
+    display: block; padding: 5px 8px; border-radius: 6px;
+    color: var(--ink); text-decoration: none; font-size: 12px;
+  }
+  nav.toc a:hover { background: var(--soft); color: var(--boomi); }
+  nav.toc a.section { font-weight: 600; margin-top: 8px; color: var(--muted); font-size: 11px; text-transform: uppercase; }
+  main { min-width: 0; }
+  .card {
+    background: var(--panel); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 20px 22px;
+    margin-bottom: 16px; scroll-margin-top: 16px;
+  }
+  .card.star { border: 2px solid var(--boomi); }
+  .card h2 {
+    margin: 0 0 4px; font-size: 17px;
+    display: flex; align-items: baseline; gap: 10px;
+  }
+  .card h2 .num {
+    font-family: ui-monospace, Menlo, monospace;
+    color: var(--boomi); font-size: 13px; font-weight: 700;
+    background: var(--accent-soft); padding: 2px 8px; border-radius: 6px;
+  }
+  .card .qmeta { color: var(--muted); font-size: 12px; margin: 4px 0 14px; font-style: italic; }
+  .card h3 { margin: 16px 0 6px; font-size: 13px; color: var(--boomi); text-transform: uppercase; letter-spacing: 0.04em; }
+  .card h4 { margin: 12px 0 4px; font-size: 14px; color: var(--ink); }
+  .card p { margin: 6px 0; font-size: 14px; }
+  .card ul, .card ol { margin: 6px 0; padding-left: 22px; font-size: 14px; }
+  .card li { margin: 3px 0; }
+  .script {
+    background: var(--soft); border-left: 3px solid var(--boomi);
+    padding: 10px 14px; border-radius: 8px; margin: 8px 0;
+    font-size: 13px; line-height: 1.55;
+  }
+  .script strong.tag { color: var(--boomi); }
+  .callout {
+    background: var(--good-bg); color: var(--good-ink);
+    border: 1px solid #a7f3d0; padding: 10px 14px;
+    border-radius: 8px; font-size: 12px; margin: 8px 0;
+  }
+  .amber {
+    background: var(--amber-bg); color: var(--amber-ink);
+    border: 1px solid #fde68a; padding: 10px 14px;
+    border-radius: 8px; font-size: 12px; margin: 8px 0;
+  }
+  .danger {
+    background: var(--rose-bg); color: var(--rose-ink);
+    border: 1px solid #fecaca; padding: 10px 14px;
+    border-radius: 8px; font-size: 12px; margin: 8px 0;
+  }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 8px 0; }
+  th, td { border: 1px solid var(--line); padding: 7px 10px; text-align: left; vertical-align: top; }
+  th { background: var(--soft); font-weight: 600; color: var(--boomi); }
+  code { background: var(--soft); padding: 1px 6px; border-radius: 4px; font-size: 12px; font-family: ui-monospace, Menlo, monospace; }
+  @media print {
+    body { background: white; }
+    nav.toc { display: none; }
+    .layout { display: block; padding: 12px; }
+    .card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
+  }
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: 1fr; }
+    nav.toc { position: static; max-height: none; }
+  }
+</style>
+</head>
+<body>
+<header class="hero">
+  <h1>Boomi SC Presentation Round — Demo Exercise</h1>
+  <p>Presales Solutions Consultant, Commercial ANZ &middot; Final round: solution design + live demo + "sell to the customer"</p>
+  <div class="hero-meta">
+    <span class="pill">Round 4 of 4 — the decider</span>
+    <span class="pill">Exercise received 2026-06-09 (Yashitha V)</span>
+    <span class="pill">Slot: TBC — scheduled soon</span>
+    <span class="pill">Trial Boomi account: live</span>
+  </div>
+</header>
+
+<div class="layout">
+<nav class="toc">
+  <h3>Contents</h3>
+  <a class="section">Strategy</a>
+  <a href="#read-first">★ Read first — how to win this</a>
+  <a href="#exercise">★ The exercise at a glance</a>
+  <a class="section">The Solution</a>
+  <a href="#scenario">1. Scenario + the customer's pain</a>
+  <a href="#mapping">2. Requirement → Boomi capability</a>
+  <a href="#diagram">3. The conceptual architecture</a>
+  <a href="#resilience">4. The resilience play (differentiator)</a>
+  <a href="#security">5. Security + assumptions</a>
+  <a class="section">The Demo</a>
+  <a href="#build">6. What to build + why</a>
+  <a class="section">The Deck</a>
+  <a href="#deck">7. Deck as a sales narrative</a>
+  <a href="#bonus">8. The 2026 bonus layer</a>
+  <a class="section">Delivery</a>
+  <a href="#flow">9. Presentation flow + timing</a>
+  <a href="#qa">10. Q&amp;A you must own</a>
+  <a href="#pitfalls">11. Pitfalls to avoid</a>
+  <a href="#dayof">12. Day-of checklist</a>
+</nav>
+
+<main>
+
+<div class="card star" id="read-first">
+  <h2><span class="num">★</span> Read first — how this round is actually won</h2>
+  <p class="qmeta">The brief, twice: "gauge your technical fit … and to assess your 'salesmanship' presentation skills." You "present your solution to the customer."</p>
+  <p>This is a <strong>role-play sales presentation</strong>, not a tech walkthrough. You are presenting to a customer (the panel plays the customer). The live Boomi build is your <strong>proof point</strong>, not the main act. The single biggest trap is over-engineering a slick integration and then presenting it like an engineer. Richard Yang already named the bar: articulate value and why/how throughout, not just demonstrate the tech.</p>
+  <h3>The three things that win it</h3>
+  <ul>
+    <li><strong>You sell, you do not narrate.</strong> Open on the customer's business pain, frame everything as outcomes (risk removed on $1M orders, CSRs who can finally answer "where's my order", nightly reporting that actually lands), close on value. The demo proves a claim you already made.</li>
+    <li><strong>Your architecture is right, not just runnable.</strong> Every one of the seven requirements maps to a specific Boomi pattern (§2). The one that separates a real SC from a connector-dragger is the WMS maintenance window — answer it with decoupling and guaranteed delivery (§4).</li>
+    <li><strong>You are visibly current.</strong> The deck they gave you is the legacy 2019-era platform overview. Layering the 2026 "Data Activation Company / control layer / Agentstudio / MCP" story (§8) on the bonus slide signals homework nobody else will show.</li>
+  </ul>
+  <div class="callout"><strong>Time split in their heads:</strong> roughly 60% can-you-sell / 40% can-you-build. Plan your prep the opposite of your engineering instinct. A clean, confident pitch over a simple working demo beats a complex build presented flat.</div>
+  <div class="amber"><strong>Companion docs:</strong> deep platform answers live in <code>boomi-integration-prep.html</code> (2026-refreshed). Step-by-step build click-path is in <code>boomi-sc-demo-build-guide.md</code>. The deck skeleton is <code>boomi-sc-demo-deck.pptx</code>.</div>
+</div>
+
+<div class="card star" id="exercise">
+  <h2><span class="num">★</span> The exercise at a glance</h2>
+  <p>A $150M national corporation is replacing its homegrown CRM with Salesforce. Salesforce becomes the system of record for customer acquisition and order generation. Four systems must work together.</p>
+  <table>
+    <tr><th>System</th><th>Role</th><th>Location / quirk</th></tr>
+    <tr><td><strong>Salesforce.com</strong></td><td>CRM — account mgmt + order creation</td><td>Cloud. Used by sales AMs + customer service reps.</td></tr>
+    <tr><td><strong>Oracle E-Business</strong></td><td>ERP — financials, invoicing, payments</td><td>On-premises.</td></tr>
+    <tr><td><strong>Proprietary WMS</strong></td><td>Warehouse mgmt — fulfilment + shipping</td><td>On-prem .NET app, custom <strong>XML-over-HTTP</strong> API. Down 4 hrs/week for maintenance.</td></tr>
+    <tr><td><strong>Proprietary data warehouse</strong></td><td>Reporting + analytics</td><td>On-prem Microsoft SQL Server.</td></tr>
+  </table>
+  <h3>What they hand you</h3>
+  <ul>
+    <li>This exercise PDF (scenario + requirements).</li>
+    <li>A dated Boomi Platform Overview deck (15 slides) + a recording — reference material, you reuse the good slides.</li>
+    <li>A trial Boomi (AtomSphere) account to build in — already live.</li>
+  </ul>
+  <h3>What you deliver</h3>
+  <ol>
+    <li>A <strong>prototype integration</strong> built in Boomi covering one or more touch points, with visible logic (routing, decisions, validation, error handling).</li>
+    <li>A <strong>PowerPoint</strong> covering Boomi value props + the scenario + your solution design.</li>
+    <li>A <strong>live presentation</strong> to "the customer", answering questions on the fly.</li>
+    <li>Bonus for <strong>expanding beyond the use case</strong> to other parts of the platform.</li>
+  </ol>
+  <div class="callout">Their own steer: <strong>"Content is much more important than format."</strong> "The process does not have to be overly complex or production ready, but think through the steps and any potential pitfalls." Translation: do not gold-plate. Show judgement, not volume.</div>
+</div>
+
+<div class="card" id="scenario">
+  <h2><span class="num">1</span> The scenario, told as the customer's pain</h2>
+  <p>Never recite the requirements as a checklist. Lead with what hurts, in the customer's voice. This is your opening.</p>
+  <table>
+    <tr><th>The pain (their words)</th><th>The business cost</th></tr>
+    <tr><td>"Our systems do not talk. Sales is in Salesforce, finance is in Oracle, the warehouse is its own island."</td><td>Manual re-keying, errors, slow order-to-cash.</td></tr>
+    <tr><td>"A rep can book a $1M+ order with no controls."</td><td>Revenue and margin risk; no approval trail.</td></tr>
+    <tr><td>"When a customer rings asking where their order is, our service reps have no idea."</td><td>Poor CX, lost loyalty, reps blind in the system of record.</td></tr>
+    <tr><td>"The warehouse goes down every week and we are scared to take orders during that window."</td><td>Either lost orders or a fragile manual workaround.</td></tr>
+    <tr><td>"Finance exports half a million balance records every night and someone babysits the load."</td><td>Brittle reporting pipeline, no error visibility.</td></tr>
+  </table>
+  <div class="script"><strong class="tag">Opening line:</strong> "You have made the right call moving to Salesforce. But Salesforce on its own does not fix the real problem, which is that none of these systems talk to each other today. What I want to show you is how Boomi becomes the connective tissue, so an order placed in Salesforce flows cleanly to Oracle, to the warehouse, and back, with the controls and visibility your business actually needs."</div>
+</div>
+
+<div class="card star" id="mapping">
+  <h2><span class="num">2</span> Requirement → Boomi capability — own this cold</h2>
+  <p class="qmeta">This is the core IP. Be able to whiteboard the whole table without notes. Each row is a deliberate "I reached for the right pattern" signal.</p>
+  <table>
+    <tr><th>#</th><th>Requirement</th><th>Boomi answer (the pattern they want)</th></tr>
+    <tr><td>1</td><td>New orders created in Salesforce</td><td>Salesforce connector, listen/query for new orders. SFDC is the trigger and the system of record.</td></tr>
+    <tr><td>2</td><td>Orders &gt; $1M need senior-manager approval; pending ones emailed periodically; status updated in SFDC</td><td><strong>Decision shape</strong> routing on order amount. A scheduled process emails the pending-approval list (Mail connector) and writes status back to Salesforce. Human-in-the-loop governance.</td></tr>
+    <tr><td>3</td><td>On approval, create the order in Oracle immediately; return the Oracle sales order number to SFDC</td><td>Real-time process, Oracle / Database connector, then <strong>write the new SO number back to Salesforce</strong> so the user sees it succeeded. Round-trip confirmation.</td></tr>
+    <tr><td>4</td><td>Order also sent to WMS for fulfilment (custom XML-over-HTTP)</td><td>HTTP Client connector + an XML profile; map the SFDC order to the WMS XML contract. Shows you handle a proprietary, non-standard API.</td></tr>
+    <tr><td>5</td><td><strong>WMS down 4 hrs/week, but SFDC orders keep coming</strong></td><td><strong>The money requirement.</strong> Decouple SFDC from WMS with a queue (Boomi Event Streams / Atom Queue) so order capture never blocks. The queue buffers during maintenance; a consumer drains the backlog on resume. Retry + dead-letter for failures. See §4.</td></tr>
+    <tr><td>6</td><td>Order status (Oracle invoice/payment + WMS shipping) visible in SFDC for service reps</td><td>Scheduled or event-driven status sync, aggregate both sources, update Salesforce custom fields. Bi-directional, so reps answer customer queries from the CRM.</td></tr>
+    <tr><td>7</td><td>Nightly, 500,000+ customer-balance records (CSV) → data warehouse</td><td>High-volume <strong>batch</strong>: flat-file profile, <strong>batching / document splitting</strong> for performance, validate and route bad rows, load to SQL Server. The classic ETL load.</td></tr>
+  </table>
+  <div class="callout"><strong>The framing sentence that ties it together:</strong> "Notice the same platform handles real-time order flow, scheduled batch, human approvals, and a resilient queue for the flaky warehouse. That is the point of an integration platform. You are not buying four tools, you are buying one control point for how your business data moves."</div>
+</div>
+
+<div class="card" id="diagram">
+  <h2><span class="num">3</span> The conceptual architecture diagram</h2>
+  <p>One clean diagram earns more trust than ten bullets. Put Salesforce (cloud) on the left, Boomi in the middle as the hub, and the three on-prem systems (Oracle, WMS, SQL Server warehouse) on the right behind a firewall. Draw a local <strong>Atom runtime</strong> sitting inside the firewall, with an outbound-only connection up to the Boomi control plane.</p>
+  <h3>The flows to draw on it</h3>
+  <ul>
+    <li><strong>Order flow (real-time):</strong> SFDC → Boomi → Decision ($1M) → Oracle (create order, return SO#) → back to SFDC. Branch out to the <strong>queue</strong> → WMS.</li>
+    <li><strong>Status sync (scheduled / event):</strong> Oracle + WMS → Boomi → SFDC custom fields.</li>
+    <li><strong>Nightly batch:</strong> Oracle CSV export → Boomi → SQL Server warehouse.</li>
+  </ul>
+  <div class="callout"><strong>Reuse their slides.</strong> The provided deck's topology slides (cloud-to-on-premise, hybrid, private Atom cloud — slides 10 to 12) are genuinely good and on-brand. Drop one in to explain the Atom-behind-the-firewall story instead of drawing it from scratch.</div>
+  <div class="amber"><strong>Vocabulary check:</strong> the legacy deck says "Atom / AtomSphere / control plane." Current Boomi says "Boomi Runtime" and increasingly "control layer." Either is fine; if you say "Atom" just show you know it is the runtime engine that executes processes wherever you deploy it (cloud, on-prem, edge).</div>
+</div>
+
+<div class="card star" id="resilience">
+  <h2><span class="num">4</span> The resilience play — your differentiator</h2>
+  <p class="qmeta">Requirement 5 (WMS down 4 hrs/week, orders still arriving) is the question most candidates fumble. Artur's worldview is "integration is the core" — resilience is exactly the depth he rewards.</p>
+  <p>The naive answer is "the order fails and we retry." Wrong instinct: it couples order capture to a system you know is unavailable. The SC answer is <strong>decouple and guarantee delivery</strong>:</p>
+  <ol>
+    <li>SFDC order is captured and acknowledged <strong>immediately</strong> — capture never depends on the WMS being up.</li>
+    <li>The order to the WMS is <strong>published to a queue</strong> (Boomi Event Streams or an Atom Queue), not pushed synchronously.</li>
+    <li>A separate consumer process drains the queue and calls the WMS. During the 4-hour window the queue simply <strong>buffers</strong>; nothing is lost.</li>
+    <li>On resume, the consumer works through the <strong>backlog</strong> automatically.</li>
+    <li>Failures get <strong>retry with backoff</strong>, and anything that still fails lands in a <strong>dead-letter</strong> path that alerts an operator, rather than vanishing.</li>
+  </ol>
+  <div class="script"><strong class="tag">Say it like this:</strong> "Your warehouse goes down four hours a week, and that is fine. We never let order capture depend on the warehouse being awake. Salesforce confirms the order instantly, the order to the warehouse goes onto a queue, and the queue just holds the work until the warehouse is back. Nothing is dropped, nobody is babysitting it, and your sales team never stops selling during the maintenance window."</div>
+  <div class="callout">Same decoupling instinct also answers "what if Oracle is down when we try to create the order?" — queue or retry-with-alert, never silent failure. Reuse the pattern.</div>
+</div>
+
+<div class="card" id="security">
+  <h2><span class="num">5</span> Security + assumptions (state them, do not hide them)</h2>
+  <p>The brief explicitly says: document assumptions, talk through security. Doing it unprompted reads as senior.</p>
+  <h3>Security story</h3>
+  <ul>
+    <li><strong>On-prem access without opening the firewall:</strong> a local Atom runs inside the customer network and makes an <strong>outbound-only</strong> connection to the Boomi control plane. No inbound holes, no exposing Oracle / WMS / SQL Server to the internet.</li>
+    <li><strong>Data residency:</strong> the control plane holds metadata only; actual order and customer data is processed by the local Atom and never has to leave the customer's environment unnecessarily. 256-bit encryption in transit.</li>
+    <li><strong>Credentials:</strong> connection credentials are stored and managed in Boomi, not hard-coded in processes.</li>
+  </ul>
+  <h3>Assumptions to declare</h3>
+  <ul>
+    <li>Oracle E-Business is reachable via its DB / web services; WMS exposes the documented XML-over-HTTP endpoint.</li>
+    <li>In the live demo I use a Salesforce <strong>Opportunity</strong> (it has a native Amount field) as a stand-in for an order, and a database / file as a stand-in for Oracle and the WMS, because I do not have those live systems. The pattern is identical.</li>
+    <li>"Immediately" for order creation means low-latency real-time, not literally synchronous-or-fail.</li>
+  </ul>
+  <div class="amber"><strong>The senior move:</strong> "Where I was not certain, I made an assumption and I will call it out as I go. In a real engagement these become discovery questions for your team." That sentence alone signals you have done real pre-sales.</div>
+</div>
+
+<div class="card star" id="build">
+  <h2><span class="num">6</span> What to build, and why</h2>
+  <p class="qmeta">Full click-path is in <code>boomi-sc-demo-build-guide.md</code>. This card is the strategy behind it.</p>
+  <p>Brief says "one or more", "not production ready", content over format. <strong>Build one process end-to-end well, with visible logic, and talk through the rest on slides.</strong> Two builds, in this order:</p>
+  <h3>Build A — your bulletproof baseline (do first)</h3>
+  <p><strong>CSV customer balances → validated → output (requirement 7).</strong> Flat-file profile in, a Cleanse / Decision step to validate records, a Map, then write to a database if you have one reachable, otherwise to a file or Return Documents. Add a Try/Catch that routes bad rows to an error file. This is trivial to make reliable and demonstrates batch + validation + error handling cleanly. It is your guarantee that <em>something</em> works live.</p>
+  <h3>Build B — the headline (do second)</h3>
+  <p><strong>Salesforce order → Decision (&gt;$1M) → map → create record + write-back.</strong> Query an Opportunity from your real SFDC Dev org, branch on Amount with a Decision shape, map the order, create a record in a DB / transform to the WMS XML, and write a confirmation back. This shows the actual business process (requirements 1 to 4) with the $1M routing front and centre.</p>
+  <div class="callout"><strong>Authenticity:</strong> use your real Salesforce Developer org as the live source. A real connector pulling real records is far more convincing than mock data.</div>
+  <div class="danger"><strong>Live-demo insurance:</strong> things break in front of people. Have Build A as the safe one, take screenshots / a short screen recording of both processes running green, and be ready to walk the screenshots if the live run misbehaves. Never let a failed live run derail the pitch — "here it is running earlier, let me show you the design" recovers gracefully.</div>
+</div>
+
+<div class="card" id="deck">
+  <h2><span class="num">7</span> The deck — reframe theirs as a sales narrative</h2>
+  <p>Do not present the 15 legacy slides in order; that is a product tour and it is dated. Restructure as a customer pitch. Skeleton is in <code>boomi-sc-demo-deck.pptx</code>.</p>
+  <table>
+    <tr><th>#</th><th>Slide</th><th>Borrow from their deck</th></tr>
+    <tr><td>1</td><td>Title — your name, the role, "Solution for [Client]"</td><td>—</td></tr>
+    <tr><td>2</td><td>The customer's problem — silos, manual orders, $1M risk, blind CSRs</td><td>Slides 3 to 5 (data locked in silos → connected)</td></tr>
+    <tr><td>3</td><td>Boomi as the answer — what an integration platform is</td><td>Slide 2 (pillars), slide 6 (5 essential characteristics)</td></tr>
+    <tr><td>4</td><td>Solution architecture — the conceptual diagram + requirement mapping</td><td>Slides 8 to 12 (architecture + topologies)</td></tr>
+    <tr><td>5</td><td>Design highlights — the $1M decision, the resilient queue, the nightly batch</td><td>Slide 13 (component reuse) optional</td></tr>
+    <tr><td>6</td><td>Live demo — switch to Boomi</td><td>Slide 14 (Demo)</td></tr>
+    <tr><td>7</td><td>Value + outcomes — time to value, cost, agility, governance, CX</td><td>—</td></tr>
+    <tr><td>8</td><td>Bonus — where Boomi goes next (§8)</td><td>—</td></tr>
+    <tr><td>9</td><td>Close — recap + "what I would do in a real engagement"</td><td>—</td></tr>
+  </table>
+  <div class="callout"><strong>Salesmanship through-line:</strong> every slide answers "so what for the customer?" Architecture slide is not "here are boxes", it is "here is how your order reaches the warehouse safely even on maintenance day."</div>
+</div>
+
+<div class="card" id="bonus">
+  <h2><span class="num">8</span> The 2026 bonus layer — expand beyond the use case</h2>
+  <p class="qmeta">The brief awards bonus points for "expanding the conversation beyond this use case to other parts of the Boomi platform." This is where you out-prepare every other candidate, who will be working only off the dated deck.</p>
+  <p>Pull the current story from <code>boomi-integration-prep.html</code>. The thread: this order-integration use case is the foundation; what you are really building is governed, activated data, and that is exactly what makes the customer ready for AI.</p>
+  <ul>
+    <li><strong>Boomi is "The Data Activation Company."</strong> The thesis: AI agents are useless without governed access to enterprise data. The integration layer becomes the <strong>control layer</strong>.</li>
+    <li><strong>Agentstudio</strong> — build, deploy and govern AI agents on the same platform. 75,000+ agents in production.</li>
+    <li><strong>Boomi Connect / MCP</strong> — 1,000+ managed MCP tools bridging Claude / Copilot / Gemini to enterprise apps. The same connectivity you just showed becomes how AI safely reaches Oracle and the warehouse.</li>
+    <li><strong>Master Data Hub / Meta Hub</strong> — golden customer records and semantic meaning, so "customer balance" means the same thing everywhere.</li>
+    <li><strong>API Management + Flow</strong> — expose the order service as a governed API; build the approval UI as a low-code Flow app.</li>
+  </ul>
+  <div class="script"><strong class="tag">Bonus-slide line:</strong> "Everything I showed you today is integration, but notice what you actually end up with: clean, governed, real-time data flowing across your business. That is the foundation for everything next. Once your data is activated, the same Boomi platform lets you put AI agents on top of it safely, expose any of these flows as a governed API, or master your customer records in one place. You are not just connecting Salesforce to Oracle, you are building the control layer for an AI-ready business."</div>
+</div>
+
+<div class="card" id="flow">
+  <h2><span class="num">9</span> Presentation flow + timing</h2>
+  <p>Confirm the time box with Yashitha, but assume ~20 to 30 minutes presenting + Q&amp;A. A safe shape:</p>
+  <table>
+    <tr><th>Phase</th><th>~Time</th><th>What you do</th></tr>
+    <tr><td>Hook + problem</td><td>3 min</td><td>The customer's pain (§1). Earn the "yes, that is us."</td></tr>
+    <tr><td>Boomi + your solution</td><td>6 min</td><td>Platform in one breath, then the architecture diagram + requirement mapping (§2, §3).</td></tr>
+    <tr><td>Design highlights</td><td>3 min</td><td>The $1M decision, the resilient queue (§4), the nightly batch. Show judgement.</td></tr>
+    <tr><td>Live demo</td><td>6 min</td><td>Build A then Build B. Narrate value, not clicks (§6).</td></tr>
+    <tr><td>Value + bonus</td><td>3 min</td><td>Outcomes, then the 2026 expansion (§8).</td></tr>
+    <tr><td>Close + Q&amp;A</td><td>rest</td><td>Recap, invite questions, handle on the fly (§10).</td></tr>
+  </table>
+  <div class="callout"><strong>Demo narration rule:</strong> for every shape you click, say the <em>why</em> and the <em>customer benefit</em>, not the mechanic. Not "I add a Decision shape" but "here is where we enforce your $1M approval rule, automatically, on every order."</div>
+</div>
+
+<div class="card" id="qa">
+  <h2><span class="num">10</span> Q&amp;A you must own</h2>
+  <table>
+    <tr><th>Likely question</th><th>Your answer in one breath</th></tr>
+    <tr><td>How do you handle the WMS maintenance window?</td><td>Decouple with a queue; capture never blocks; queue buffers and drains on resume; retry + dead-letter. (§4)</td></tr>
+    <tr><td>500,000 records nightly — performance?</td><td>Batch processing, document splitting / batching so we are not holding it all in memory, load in chunks; the Atom scales for throughput.</td></tr>
+    <tr><td>Security for the on-prem systems?</td><td>Local Atom inside the firewall, outbound-only to the control plane, no inbound ports, metadata-only in the cloud, 256-bit in transit. (§5)</td></tr>
+    <tr><td>What if Oracle is down at order time?</td><td>Same decoupling instinct: retry with alert or queue; never a silent failure; the user is told if it could not be confirmed.</td></tr>
+    <tr><td>Why Boomi over MuleSoft / native point-to-point?</td><td>One low-code platform across real-time, batch, API, EDI and now AI; fast time to value; distributed runtime you can put anywhere; you are not stitching tools together.</td></tr>
+    <tr><td>How long to build this for real?</td><td>Reframe as value: a prototype of the core order flow in days because of reuse and low-code, then iterate with your team. Avoid a hard number; anchor on speed-to-value.</td></tr>
+    <tr><td>What did you assume?</td><td>Name them confidently (§5). Assumptions stated up front read as senior; assumptions exposed by a question read as gaps.</td></tr>
+  </table>
+  <div class="amber">If you genuinely do not know something: "Good question — in a real engagement that is a discovery item I would take to your team. My instinct is X, but I would validate it." Never bluff a fake Boomi feature; Artur will know.</div>
+</div>
+
+<div class="card" id="pitfalls">
+  <h2><span class="num">11</span> Pitfalls to avoid</h2>
+  <ul>
+    <li><strong>Presenting like an engineer.</strong> The number-one failure mode. Sell first, prove with the demo second.</li>
+    <li><strong>Over-building.</strong> They told you: not production ready, content over format. A complex build presented flat loses to a simple one sold well.</li>
+    <li><strong>Reading the legacy deck verbatim.</strong> It is dated reference material, not your script. Reframe it (§7) and layer 2026 on top (§8).</li>
+    <li><strong>Skipping the queue answer.</strong> Requirement 5 is the trap that finds the real SC. Lead with it, do not wait to be asked.</li>
+    <li><strong>Live-demo with no fallback.</strong> Have screenshots / a recording of green runs. (§6)</li>
+    <li><strong>Invented Boomi features.</strong> Stick to what the platform really does. The 2026 features in §8 are real and public; do not improvise beyond them.</li>
+    <li><strong>No assumptions stated.</strong> Silence on assumptions reads as you did not notice the gaps. State them (§5).</li>
+  </ul>
+</div>
+
+<div class="card" id="dayof">
+  <h2><span class="num">12</span> Day-of checklist</h2>
+  <ul>
+    <li>Deck final, exported, opens cleanly. Backup PDF copy on the desktop.</li>
+    <li>Boomi processes deployed and tested green within the last hour. Browser tab already logged in.</li>
+    <li>Salesforce Dev org logged in, a high-value (&gt;$1M) and a normal Opportunity present so the Decision branch visibly forks.</li>
+    <li>Screenshots / short recording of both processes running, saved locally as the fallback.</li>
+    <li>Sample CSV ready on disk for Build A.</li>
+    <li>The architecture diagram printed or on a slide you can return to during Q&amp;A.</li>
+    <li>Opening line rehearsed out loud (§1). First 30 seconds set the tone.</li>
+    <li>Water, quiet room, screen-share tested, notifications off.</li>
+    <li>Two sharp questions ready for them at the end (about the SC team, the deal motion, how they enable customers).</li>
+  </ul>
+  <div class="callout"><strong>Last thing before you join:</strong> reread §1 (opening) and §4 (the queue). Those two carry the round.</div>
+</div>
+
+</main>
+</div>
+</body>
+</html>

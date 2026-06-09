@@ -162,7 +162,7 @@
           <i data-lucide="circle-play" class="w-3 h-3 mr-1"></i>
           Loom Recording
         </span>
-        <span class="badge badge-muted">90 seconds</span>
+        <span class="badge badge-muted">~1 min 50 sec</span>
         <span class="badge badge-muted">Pendo Senior CE — ANZ</span>
       </div>
       <span class="text-xs text-slate-500">Niroo Arjuna · 2026-05-15</span>
@@ -287,27 +287,23 @@
         </h3>
         <label class="check-item" data-key="setup-10">
           <input type="checkbox">
-          <div class="check-text text-sm">Tag Pages: <strong>My Visits</strong> (<span class="kbd">/visits</span>), <strong>Patient Portal</strong> (<span class="kbd">/patient-portal</span>) — no Login page (public demo)</div>
+          <div class="check-text text-sm">Tag Pages: <strong>Home</strong> (<span class="kbd">/home</span>) and <strong>My Visits</strong> (<span class="kbd">/visits</span>) — the source pages in the funnel. Tag Feature: <strong>View Summary</strong> (the button bridging /visits to the patient portal view). Tagging the source pages lets the Paths report show <em>where in the funnel</em> patients drop off (Home → My Visits → View Summary), not just whether they arrive. No Login page (public demo).</div>
         </label>
         <label class="check-item" data-key="setup-11">
           <input type="checkbox">
-          <div class="check-text text-sm">Tag Feature: name it <strong>"Open Patient Portal"</strong> in Pendo even though the visible button reads <strong>"View Summary"</strong> — Feature names = user intent, not button copy</div>
+          <div class="check-text text-sm">Tag Feature: name it <strong>"View Summary"</strong> in Pendo to match the button text. In a real onboarding I'd argue for intent-based naming like <em>"Open Patient Portal"</em> with a <span class="kbd">data-pendo</span> attribute, so the Feature survives marketing renames. Calling out that trade-off on camera is the senior move.</div>
         </label>
 
         <h3 class="text-sm font-semibold text-slate-700 mt-4 mb-2 flex items-center gap-2">
           <i data-lucide="file-edit" class="w-4 h-4"></i>5. Pre-build artifacts as drafts
         </h3>
-        <label class="check-item" data-key="setup-12">
-          <input type="checkbox">
-          <div class="check-text text-sm">NPS survey built and <strong>Save Draft</strong> (do not Publish)</div>
-        </label>
         <label class="check-item" data-key="setup-13">
           <input type="checkbox">
           <div class="check-text text-sm">Tooltip Guide built and <strong>Save Draft</strong></div>
         </label>
         <label class="check-item" data-key="setup-14">
           <input type="checkbox">
-          <div class="check-text text-sm">Segment created: <strong>"Patient Portal not used in last 7 days"</strong></div>
+          <div class="check-text text-sm">Segment selected: <strong>"Time Since First Visit: < 30 days"</strong> (Pendo built-in time-based segment)</div>
         </label>
       </div>
     </div>
@@ -436,7 +432,7 @@ window.pendo.initialize({
           Replaced the anonymous random ID with a real-looking demo visitor
           (<code class="bg-slate-100 px-1 rounded text-xs">id: demo-patient-001</code>, email, full name, role,
           state/country, <code class="bg-slate-100 px-1 rounded text-xs">is_demo_user: true</code>) so segments like
-          <em>"Patient Portal not used in 7 days"</em> actually work. The localStorage random ID was preserved as
+          <em>"Time Since First Visit < 30 days"</em> actually work. The localStorage random ID was preserved as
           <code class="bg-slate-100 px-1 rounded text-xs">anonymous_session_id</code> metadata so multiple browser
           sessions still register as distinct for Paths.
         </p>
@@ -536,48 +532,79 @@ window.pendo.initialize({
         <div class="flex items-center gap-3">
           <span class="badge badge-primary">A</span>
           <div>
-            <div class="font-semibold">Tag Feature + Pages</div>
-            <div class="text-xs text-slate-500">Script timing: 0:22 – 0:34 · 12 seconds</div>
+            <div class="font-semibold">Install + Tag overlay</div>
+            <div class="text-xs text-slate-500">Script timing: 0:30 – 0:50 · 20 seconds</div>
           </div>
         </div>
         <i data-lucide="chevron-right" class="chevron w-5 h-5 text-slate-400"></i>
       </summary>
       <div class="mt-4 pt-4 border-t border-slate-200 space-y-4">
+
+        <div class="border-l-4 border-blue-400 bg-blue-50 p-3 rounded-r-md">
+          <div class="text-xs font-semibold text-blue-900 mb-1">WHAT YOU SAY (Script narration)</div>
+          <div class="stage-direction">[Switch to Pendo workspace overlay → Product → Pages (show Home Page + My Visits) → Product → Features (show View Summary)]</div>
+          <p class="text-sm text-slate-800 italic mt-1">"For the purpose of this micro demo, I installed Pendo into Lumen Health using Pendo's own AI Setup Assistant. About a twenty-minute install. I then tagged Home Page and My Visits, plus the View Summary button as a Feature. Here in the Product section you can see all three already set up in Pages and Features."</p>
+        </div>
+
+        <div class="bg-amber-50 border border-amber-200 rounded-md p-3">
+          <div class="flex items-start gap-2">
+            <i data-lucide="alert-triangle" class="w-4 h-4 text-amber-600 mt-0.5"></i>
+            <div class="text-sm">
+              <div class="font-medium mb-1 text-amber-900">Important: tagging happens BEFORE recording</div>
+              <p class="text-slate-700">DOM fumbling on camera looks unprofessional. Tag everything once, then walk through the pre-tagged list on camera.</p>
+            </div>
+          </div>
+        </div>
+
         <div>
-          <h4 class="font-medium text-sm mb-2">Tag Pages</h4>
+          <h4 class="font-medium text-sm mb-2">Pre-recording: Tag Pages (Home + My Visits as the funnel source)</h4>
           <ol class="text-sm space-y-1.5 text-slate-700 list-decimal list-inside ml-2">
             <li><span class="kbd">Product → Pages → Tag Pages</span> (top-right button)</li>
-            <li>Enter URL → name Page (e.g., "Patient Portal")</li>
-            <li>Visual Design Studio loads → confirm URL rule → <strong>Save</strong></li>
+            <li>Tag <strong>Home</strong> → URL rule <span class="kbd">/home</span> → Save</li>
+            <li>Tag <strong>My Visits</strong> → URL rule <span class="kbd">/visits</span> → Save</li>
           </ol>
+          <p class="mt-2 text-xs text-slate-500 italic">Why these two? The story is the funnel: <strong>Home → My Visits → View Summary</strong>. Tagging the source pages lets the Paths report show <em>where</em> patients drop off, not just whether they hit the destination.</p>
         </div>
+
         <div>
-          <h4 class="font-medium text-sm mb-2">Tag Feature</h4>
+          <h4 class="font-medium text-sm mb-2">Pre-recording: Tag Feature (the View Summary button)</h4>
           <ol class="text-sm space-y-1.5 text-slate-700 list-decimal list-inside ml-2">
             <li><span class="kbd">Product → Features → Tag Features</span> (top-right)</li>
-            <li>Enter URL of the Page hosting the patient-portal button</li>
-            <li>Choose <strong>Tag side-by-side</strong> (better for demo)</li>
-            <li>Click the patient-portal button in the live preview</li>
+            <li>Enter URL of the Page hosting the View Summary button (<span class="kbd">/visits</span>)</li>
+            <li>Choose <strong>Tag side-by-side</strong></li>
+            <li>Click the <strong>View Summary</strong> button in the live preview</li>
             <li>Use up/down arrows top-right of Studio to walk DOM tree if needed</li>
             <li>Under <strong>Feature Element Matching</strong>, accept <strong>Suggested Match</strong></li>
-            <li>Name: <strong>"Open Patient Portal"</strong> → Save</li>
+            <li>Name: <strong>"View Summary"</strong> → Save</li>
           </ol>
         </div>
+
+        <div>
+          <h4 class="font-medium text-sm mb-2">On-camera (the 15 seconds the viewer actually sees)</h4>
+          <ol class="text-sm space-y-1.5 text-slate-700 list-decimal list-inside ml-2">
+            <li>Click <span class="kbd">Product → Pages</span> in the left nav; pre-tagged Home + My Visits visible in the list</li>
+            <li>Click <span class="kbd">Product → Features</span>; pre-tagged View Summary visible</li>
+            <li>Narrate over the navigation (see "What you say" above)</li>
+            <li>Move on (don't dwell)</li>
+          </ol>
+        </div>
+
         <div class="bg-slate-50 border border-slate-200 rounded-md p-3">
           <div class="flex items-start gap-2">
             <i data-lucide="eye" class="w-4 h-4 text-slate-500 mt-0.5"></i>
             <div class="text-sm">
               <div class="font-medium mb-1">What viewer sees</div>
-              <p class="text-slate-600">Pendo Visual Design Studio with the Lumen Health app rendered in main panel, right-side panel showing CSS selector rule, highlight box around tagged button.</p>
+              <p class="text-slate-600">Pendo Pages list with Home Page and My Visits visible, then Features list with View Summary visible. Clean and pre-built.</p>
             </div>
           </div>
         </div>
+
         <div class="bg-amber-50 border border-amber-200 rounded-md p-3">
           <div class="flex items-start gap-2">
             <i data-lucide="alert-triangle" class="w-4 h-4 text-amber-600 mt-0.5"></i>
             <div class="text-sm">
-              <div class="font-medium mb-1">Honest gotcha to mention on-camera</div>
-              <p class="text-slate-700 italic">"CSS-class selectors break when devs change classnames — in a real onboarding I'd walk the dev team through Pendo's <span class="kbd">data-pendo</span> attribute pattern. Notice the visible button text is 'View Summary' but I'm naming the Feature 'Open Patient Portal' — that's intentional. Feature names should describe user intent, not button copy. If marketing renames the button next quarter, my Path report doesn't break."</p>
+              <div class="font-medium mb-1">Honest gotcha to mention on-camera (optional bonus)</div>
+              <p class="text-slate-700 italic">"CSS-class selectors break when devs change classnames. In a real onboarding I'd walk the dev team through Pendo's <span class="kbd">data-pendo</span> attribute pattern. The selector I ended up with for this Feature is <span class="kbd">a[href^=&quot;/patient-portal?visit=&quot;]</span>, which happens to be a stable href-prefix match — it survives any visit ID and any button-text change. I've named the Feature 'View Summary' to match the button text for the micro demo, but in production I'd push for intent-based naming like 'Open Patient Portal' so the Feature still makes sense if marketing renames the button next quarter."</p>
             </div>
           </div>
         </div>
@@ -590,36 +617,68 @@ window.pendo.initialize({
         <div class="flex items-center gap-3">
           <span class="badge badge-primary">B</span>
           <div>
-            <div class="font-semibold">Paths report</div>
-            <div class="text-xs text-slate-500">Script timing: 0:34 – 0:56 · 22 seconds</div>
+            <div class="font-semibold">Reports (show pre-built Paths)</div>
+            <div class="text-xs text-slate-500">Script timing: 0:50 – 1:10 · 20 seconds</div>
           </div>
         </div>
         <i data-lucide="chevron-right" class="chevron w-5 h-5 text-slate-400"></i>
       </summary>
       <div class="mt-4 pt-4 border-t border-slate-200 space-y-4">
-        <ol class="text-sm space-y-1.5 text-slate-700 list-decimal list-inside ml-2">
-          <li><span class="kbd">Analytics → Reports → Create report → Path</span></li>
-          <li><strong>Activity source:</strong> Select event → "Open Patient Portal" Feature click</li>
-          <li><strong>Anchor direction:</strong> dropdown → switch from "Starting from" to <strong>"Leading to"</strong></li>
-          <li><strong>Segment:</strong> Everyone (or "Active in last 30 days")</li>
-          <li><strong>Date range:</strong> Last 30 days → Run</li>
-        </ol>
+
+        <div class="border-l-4 border-blue-400 bg-blue-50 p-3 rounded-r-md">
+          <div class="text-xs font-semibold text-blue-900 mb-1">WHAT YOU SAY (Script narration)</div>
+          <div class="stage-direction">[Navigate Analytics → Reports → open the pre-built Paths report leading to View Summary]</div>
+          <p class="text-sm text-slate-800 italic mt-1">"Under Reports in Analytics, I've also built a report called 'View All Visits to View Visit Summary' to track where patients drop off in the funnel between My Visits and clicking View Summary. Of 60 visits to the My Visits page, only 25% clicked through to view the consultation summary. That's an adoption problem, and now we know exactly where to fix it."</p>
+        </div>
+
+        <div class="bg-amber-50 border border-amber-200 rounded-md p-3">
+          <div class="flex items-start gap-2">
+            <i data-lucide="alert-triangle" class="w-4 h-4 text-amber-600 mt-0.5"></i>
+            <div class="text-sm">
+              <div class="font-medium mb-1 text-amber-900">Important: report is pre-loaded BEFORE recording</div>
+              <p class="text-slate-700">Pendo data backfills take time and the report itself takes 30-60s to render. Both happen pre-recording so on camera you just open the pre-built report.</p>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="font-medium text-sm mb-2">Pre-recording: build the Paths report (do this the day before)</h4>
+          <ol class="text-sm space-y-1.5 text-slate-700 list-decimal list-inside ml-2">
+            <li>Seed data: click through Home → My Visits → View Summary in <strong>3-5 different browser sessions</strong> (incognito + Chrome + Safari) the night before so multiple visitor IDs are recorded</li>
+            <li><span class="kbd">Analytics → Reports → Create report → Path</span></li>
+            <li><strong>Activity source:</strong> Select event → <strong>"View Summary"</strong> Feature click</li>
+            <li><strong>Anchor direction:</strong> dropdown → switch from "Starting from" to <strong>"Leading to"</strong></li>
+            <li><strong>Segment:</strong> Everyone</li>
+            <li><strong>Date range:</strong> Last 30 days → Run → <strong>Save the report</strong> so you can reopen instantly on camera</li>
+          </ol>
+        </div>
+
+        <div>
+          <h4 class="font-medium text-sm mb-2">On-camera (the 20 seconds the viewer actually sees)</h4>
+          <ol class="text-sm space-y-1.5 text-slate-700 list-decimal list-inside ml-2">
+            <li>Navigate to the saved <strong>View All Visits → View Visit Summary</strong> report (one click from Analytics → Reports)</li>
+            <li>Narrate while the Sankey diagram renders (see "What you say" above)</li>
+            <li><strong>Point at the actual drop-off node</strong> on the chart when you say "[READ ACTUAL %]"</li>
+            <li>Read the real number off the screen; do not pre-write a number</li>
+          </ol>
+        </div>
+
         <div class="bg-slate-50 border border-slate-200 rounded-md p-3">
           <div class="flex items-start gap-2">
             <i data-lucide="eye" class="w-4 h-4 text-slate-500 mt-0.5"></i>
             <div class="text-sm">
               <div class="font-medium mb-1">What viewer sees</div>
-              <p class="text-slate-600">Sankey-style flow diagram with Page-to-Page transitions, percentages on each branch.</p>
+              <p class="text-slate-600">Sankey-style flow diagram, My Visits as the inbound node leading to the View Summary Feature click, with the drop-off percentage on the branch.</p>
             </div>
           </div>
         </div>
+
         <div class="bg-red-50 border border-red-200 rounded-md p-3">
           <div class="flex items-start gap-2">
             <i data-lucide="alert-octagon" class="w-4 h-4 text-red-600 mt-0.5"></i>
             <div class="text-sm">
-              <div class="font-medium mb-1 text-red-900">Honest call-out — DO NOT fabricate stats</div>
+              <div class="font-medium mb-1 text-red-900">Critical: DO NOT fabricate stats</div>
               <p class="text-slate-700">"10-second bounce" is <strong>NOT a native Paths metric</strong>. Read real numbers off the chart. If you need time-to-bounce, pair Paths + Funnel.</p>
-              <p class="mt-2 text-slate-700 italic">Recommended framing: "Paths shows me where they fall off — looks like [READ ACTUAL %] never reach the portal. I'd pair this with a Funnel for time-to-convert if I wanted the bounce-time number."</p>
             </div>
           </div>
         </div>
@@ -632,67 +691,71 @@ window.pendo.initialize({
         <div class="flex items-center gap-3">
           <span class="badge badge-primary">C</span>
           <div>
-            <div class="font-semibold">Tooltip Guide</div>
-            <div class="text-xs text-slate-500">Script timing: 0:56 – 1:14 · 18 seconds</div>
+            <div class="font-semibold">Tooltip Guide (show pre-built Draft)</div>
+            <div class="text-xs text-slate-500">Script timing: 1:10 – 1:30 · 20 seconds</div>
           </div>
         </div>
         <i data-lucide="chevron-right" class="chevron w-5 h-5 text-slate-400"></i>
       </summary>
       <div class="mt-4 pt-4 border-t border-slate-200 space-y-4">
-        <ol class="text-sm space-y-1.5 text-slate-700 list-decimal list-inside ml-2">
-          <li><span class="kbd">Guides → + Create Guide</span> (top-right)</li>
-          <li>Choose <strong>Layout → Tooltip</strong> from gallery</li>
-          <li>Step 1 panel: <strong>Page Location</strong> = My Visits <em>(fire it before users reach the portal)</em></li>
-          <li><strong>Anchor element:</strong> click the patient-portal button — tooltip pins to it</li>
-          <li>Edit copy: <em>"New: Patient Portal — see your test results in one place →"</em></li>
-          <li><strong>Activation card:</strong> Automatic on page load, or Automatic with Badge</li>
-          <li><strong>Segment:</strong> select "Patient Portal not used in 7 days"</li>
-          <li><strong>Schedule:</strong> Start date = today → <strong>Save Draft</strong></li>
-        </ol>
+
+        <div class="border-l-4 border-blue-400 bg-blue-50 p-3 rounded-r-md">
+          <div class="text-xs font-semibold text-blue-900 mb-1">WHAT YOU SAY (Script narration)</div>
+          <div class="stage-direction">[Navigate Guides → open the pre-built View Visit Summary Tooltip Draft → Guide Designer shows the tooltip overlaid on the Lumen Health My Visits page]</div>
+          <p class="text-sm text-slate-800 italic mt-1">"Over in the Guides section, I've already created the View Visit Summary Tooltip, a simple tooltip I designed in Pendo on the My Visits page, targeted at patients within their first 30 days on the platform. No code, live the moment I hit publish. You can see it previewed right here on the My Visits page."</p>
+        </div>
+
+        <div class="bg-slate-50 border border-slate-200 rounded-md p-3">
+          <p class="text-sm text-slate-700"><strong>What this Guide does:</strong> puts a tooltip on the <strong>View Summary</strong> button on the My Visits page, nudging patients within their first 30 days on the platform. This is the discoverability fix for new patients who haven't discovered the feature yet.</p>
+        </div>
+
+        <div class="bg-amber-50 border border-amber-200 rounded-md p-3">
+          <div class="flex items-start gap-2">
+            <i data-lucide="alert-triangle" class="w-4 h-4 text-amber-600 mt-0.5"></i>
+            <div class="text-sm">
+              <div class="font-medium mb-1 text-amber-900">Important: you're NOT creating the tooltip live on camera</div>
+              <p class="text-slate-700">8 build steps in 15 seconds is impossible. You build the Guide as a <strong>Draft once, before recording</strong>. On camera you just open the pre-built Guide Designer view and walk through what's already configured.</p>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="font-medium text-sm mb-2">Pre-recording: build the Guide as a Draft (do this the day before, takes ~2 minutes)</h4>
+          <ol class="text-sm space-y-1.5 text-slate-700 list-decimal list-inside ml-2">
+            <li><span class="kbd">Guides → + Create Guide</span> (top-right)</li>
+            <li>Choose <strong>Layout → Tooltip</strong> from gallery</li>
+            <li>Step 1 panel: <strong>Page Location</strong> = <strong>My Visits</strong> <em>(so the tooltip fires when patients land on the visits list, before they need to find the button themselves)</em></li>
+            <li><strong>Anchor element:</strong> click the <strong>View Summary</strong> button in the live preview; the tooltip pins to it</li>
+            <li>Edit copy: <em>"New: read your visit summary in plain language."</em></li>
+            <li><strong>Activation card:</strong> Automatic on page load, or Automatic with Badge</li>
+            <li><strong>Segment:</strong> select <strong>"Time Since First Visit: < 30 days"</strong> <em>(Pendo built-in time-based segment using visit metadata; targets new patients who may not have discovered the View Summary feature yet)</em></li>
+            <li><strong>Schedule:</strong> Start date = today → <strong>Save Draft</strong> (do NOT Publish)</li>
+          </ol>
+        </div>
+
+        <div>
+          <h4 class="font-medium text-sm mb-2">On-camera (the 15 seconds the viewer actually sees)</h4>
+          <ol class="text-sm space-y-1.5 text-slate-700 list-decimal list-inside ml-2">
+            <li>Click <span class="kbd">Guides</span> in the left nav; <strong>View Visit Summary Tooltip</strong> is visible in the Draft list</li>
+            <li>Open <strong>View Visit Summary Tooltip</strong> (one click)</li>
+            <li>Narrate while the Designer loads (see "What you say" above, peppered with the "for the purpose of this demo" framing)</li>
+            <li>Briefly hover-highlight the <strong>Segment</strong> card on the right panel so the viewer sees the targeting rule</li>
+            <li>Move on (don't dwell)</li>
+          </ol>
+        </div>
+
         <div class="bg-slate-50 border border-slate-200 rounded-md p-3">
           <div class="flex items-start gap-2">
             <i data-lucide="eye" class="w-4 h-4 text-slate-500 mt-0.5"></i>
             <div class="text-sm">
               <div class="font-medium mb-1">What viewer sees</div>
-              <p class="text-slate-600">Pendo Designer with the Lumen Health app rendered live, tooltip overlaid on patient-portal button, right-side panel with Activation/Segment/Schedule cards.</p>
+              <p class="text-slate-600">Pendo Designer with the Lumen Health <strong>My Visits</strong> page rendered live, tooltip already overlaid on the <strong>View Summary</strong> button, right-side panel with Activation, Segment, and Schedule cards already filled in.</p>
             </div>
           </div>
         </div>
       </div>
     </details>
 
-    <!-- Segment D -->
-    <details class="card p-5 mb-3">
-      <summary class="flex items-center justify-between">
-        <div class="flex items-center gap-3">
-          <span class="badge badge-primary">D</span>
-          <div>
-            <div class="font-semibold">NPS survey</div>
-            <div class="text-xs text-slate-500">Script timing: 1:14 – 1:22 · 8 seconds</div>
-          </div>
-        </div>
-        <i data-lucide="chevron-right" class="chevron w-5 h-5 text-slate-400"></i>
-      </summary>
-      <div class="mt-4 pt-4 border-t border-slate-200 space-y-4">
-        <ol class="text-sm space-y-1.5 text-slate-700 list-decimal list-inside ml-2">
-          <li><span class="kbd">NPS → + Create NPS Survey</span> → opens 4-step wizard</li>
-          <li><strong>Step 1 Content:</strong> customize 0–10 question + follow-up text</li>
-          <li><strong>Step 2 Segment:</strong> "Create new segment" → rule: Feature "Open Patient Portal" used ≥ 1 time in last 14 days</li>
-          <li><strong>Step 3 Schedule:</strong> Start now, recurring every 90 days</li>
-          <li><strong>Step 4 Review</strong> → Save Draft</li>
-        </ol>
-        <div class="bg-emerald-50 border border-emerald-200 rounded-md p-3">
-          <div class="flex items-start gap-2">
-            <i data-lucide="star" class="w-4 h-4 text-emerald-700 mt-0.5"></i>
-            <div class="text-sm">
-              <div class="font-medium mb-1 text-emerald-900">Strongest single line in the demo</div>
-              <p class="text-slate-700 italic">"Pendo's own guidance is to target NPS at visitors with first visit &gt;30 days ago. I'm loosening that here for early-signal feedback right after a feature launch — that's the trade-off I'd discuss with the customer's CS lead."</p>
-              <p class="mt-2 text-slate-700">Reading and intentionally diverging from a Pendo-published best practice = the most senior thing you can do in 90 seconds.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </details>
   </section>
 
   <!-- TAB: SCRIPT -->
@@ -700,8 +763,8 @@ window.pendo.initialize({
     <div class="card p-6 mb-4">
       <div class="flex items-start justify-between mb-4">
         <div>
-          <h2 class="text-xl font-semibold mb-1">90-Second Script</h2>
-          <p class="text-sm text-slate-600">Total runtime target: 92 seconds. If over, cut "Different fix, visible in the data" line in Paths.</p>
+          <h2 class="text-xl font-semibold mb-1">Loom Script (~1 min 50 sec)</h2>
+          <p class="text-sm text-slate-600">Target runtime: under 2 minutes. Value-led, not feature-led: 1-sentence pitch upfront, the rest is the Goal → Segment → Guide → Measure recipe applied to Lumen Health.</p>
         </div>
         <button class="copy-btn" onclick="copyFullScript(this)">
           <i data-lucide="copy" class="w-3.5 h-3.5"></i>Copy full script
@@ -709,63 +772,64 @@ window.pendo.initialize({
       </div>
 
       <div class="space-y-5">
-        <!-- Open -->
+        <!-- Intro Hook -->
         <div class="script-segment">
           <div class="flex items-center justify-between mb-2">
             <div class="flex items-center gap-2">
-              <span class="badge badge-accent">Open</span>
-              <span class="text-xs text-slate-500">12 seconds</span>
+              <span class="badge badge-accent">Intro Hook</span>
+              <span class="text-xs text-slate-500">0:00 – 0:15  ·  15 seconds</span>
             </div>
-            <button class="copy-btn" onclick="copySegment(this, 'open')">
+            <button class="copy-btn" onclick="copySegment(this, 'intro')">
               <i data-lucide="copy" class="w-3 h-3"></i>Copy
             </button>
           </div>
-          <p class="script-quote" id="seg-open">Hey Pendo team, I'm Niroo, applying for the Senior Customer Engineer role in ANZ. The thing I love about Pendo is that it's the flight recorder for product decisions. Most product teams are flying blind on adoption. Pendo gives them the black box. My job as a CE is to make sure customers know how to read it.</p>
+          <div class="stage-direction">[Face cam]</div>
+          <p class="script-quote" id="seg-intro">Hi, I'm Niroo. I have a question for you: how do you track the adoption rate of a feature you put your blood, sweat, and tears into? Most healthtech product teams are flying blind on whether users actually use the features they ship. Pendo helps find the answer in a week.</p>
         </div>
 
-        <!-- Customer setup -->
+        <!-- Lumen Health context -->
         <div class="script-segment">
           <div class="flex items-center justify-between mb-2">
             <div class="flex items-center gap-2">
-              <span class="badge badge-accent">Customer Setup</span>
-              <span class="text-xs text-slate-500">10 seconds</span>
+              <span class="badge badge-accent">Lumen Health Context</span>
+              <span class="text-xs text-slate-500">0:15 – 0:30  ·  15 seconds</span>
             </div>
-            <button class="copy-btn" onclick="copySegment(this, 'customer')">
+            <button class="copy-btn" onclick="copySegment(this, 'context')">
               <i data-lucide="copy" class="w-3 h-3"></i>Copy
             </button>
           </div>
-          <div class="stage-direction">[Switch to Pendo workspace, "Lumen Health" workspace name visible]</div>
-          <p class="script-quote" id="seg-customer">Quick scenario: Lumen Health is a post-visit patient companion — patients log in to read the plain-language summary of their consultation. 8,000 MAU. They bought Pendo because adoption of the summary view is flat, and the VP of Product needs a number by end of month.</p>
+          <div class="stage-direction">[Quick Lumen Health tour: land on /home → click into My Visits → click View Summary on a visit card → land on the full visit detail briefly]</div>
+          <p class="script-quote" id="seg-context">This is Lumen Health, a patient-facing post-visit companion I built as a thought experiment. Patients log in, click into My Visits to view their most recent consultations, and click View Summary to read their clinician's notes in plain language. But the main question is: are users actually doing that?</p>
         </div>
 
-        <!-- Tag -->
+        <!-- Install + Tag -->
         <div class="script-segment">
           <div class="flex items-center justify-between mb-2">
             <div class="flex items-center gap-2">
-              <span class="badge badge-accent">Tag</span>
-              <span class="text-xs text-slate-500">12 seconds</span>
+              <span class="badge badge-accent">Install + Tag</span>
+              <span class="text-xs text-slate-500">0:30 – 0:50  ·  20 seconds</span>
             </div>
             <button class="copy-btn" onclick="copySegment(this, 'tag')">
               <i data-lucide="copy" class="w-3 h-3"></i>Copy
             </button>
           </div>
-          <div class="stage-direction">[Show Product → Features view with "Open Patient Portal" Feature visible]</div>
-          <p class="script-quote" id="seg-tag">Day one, I tag the summary button as a Feature — I'll call it "Open Patient Portal" in Pendo regardless of the visible button text — plus the My Visits and Patient Portal pages. Two minutes of setup, no engineering ticket. From here every interaction is on the record.</p>
+          <div class="stage-direction">[Switch to Pendo workspace overlay → Product → Pages (show Home Page + My Visits) → Product → Features (show View Summary)]</div>
+          <p class="script-quote" id="seg-tag">For the purpose of this micro demo, I installed Pendo into Lumen Health using Pendo's own AI Setup Assistant. About a twenty-minute install. I then tagged Home Page and My Visits, plus the View Summary button as a Feature. Here in the Product section you can see all three already set up in Pages and Features.</p>
         </div>
 
-        <!-- Paths -->
+        <!-- Reports -->
         <div class="script-segment">
           <div class="flex items-center justify-between mb-2">
             <div class="flex items-center gap-2">
-              <span class="badge badge-accent">Paths</span>
-              <span class="text-xs text-slate-500">22 seconds</span>
+              <span class="badge badge-accent">Reports</span>
+              <span class="text-xs text-slate-500">0:50 – 1:10  ·  20 seconds</span>
             </div>
             <button class="copy-btn" onclick="copySegment(this, 'paths')">
               <i data-lucide="copy" class="w-3 h-3"></i>Copy
             </button>
           </div>
-          <div class="stage-direction">[Open Paths report, "Leading to Open Patient Portal", Last 30 days]</div>
-          <p class="script-quote" id="seg-paths">By day seven, I run a Path report leading to the portal. [READ ACTUAL %] of users never reach the feature. The ones who do, drop off here [point at node]. So the VP doesn't have an adoption problem — they have a discoverability problem. Different fix, visible in the data.</p>
+          <div class="stage-direction">[Navigate Analytics → Reports → open the pre-built Paths report leading to View Summary]</div>
+          <p class="script-quote" id="seg-paths">Under Reports in Analytics, I've also built a report called 'View All Visits to View Visit Summary' to track where patients drop off in the funnel between My Visits and clicking View Summary. Of 60 visits to the My Visits page, only 25% clicked through to view the consultation summary. That's an adoption problem, and now we know exactly where to fix it.</p>
         </div>
 
         <!-- Guide -->
@@ -773,29 +837,14 @@ window.pendo.initialize({
           <div class="flex items-center justify-between mb-2">
             <div class="flex items-center gap-2">
               <span class="badge badge-accent">Guide</span>
-              <span class="text-xs text-slate-500">18 seconds</span>
+              <span class="text-xs text-slate-500">1:10 – 1:30  ·  20 seconds</span>
             </div>
             <button class="copy-btn" onclick="copySegment(this, 'guide')">
               <i data-lucide="copy" class="w-3 h-3"></i>Copy
             </button>
           </div>
-          <div class="stage-direction">[Open Guide Designer with tooltip on My Visits]</div>
-          <p class="script-quote" id="seg-guide">So we ship a Guide — a one-line tooltip on the My Visits page that nudges users toward the summary on their next session. Targeted at users who haven't opened a summary in seven days. No code, no deploy, live in an hour. Two weeks later we re-run the Path report. The lift becomes the number the VP takes to their board.</p>
-        </div>
-
-        <!-- NPS -->
-        <div class="script-segment">
-          <div class="flex items-center justify-between mb-2">
-            <div class="flex items-center gap-2">
-              <span class="badge badge-accent">NPS</span>
-              <span class="text-xs text-slate-500">10 seconds</span>
-            </div>
-            <button class="copy-btn" onclick="copySegment(this, 'nps')">
-              <i data-lucide="copy" class="w-3 h-3"></i>Copy
-            </button>
-          </div>
-          <div class="stage-direction">[Show NPS wizard, Step 2 Segment with feature-usage rule]</div>
-          <p class="script-quote" id="seg-nps">Then we trigger NPS to the users who actually used it. Pendo's guidance says target visitors with 30+ days tenure — I'm loosening that here for early-signal feedback. That's the trade-off I'd discuss with the customer's CS lead. The loop closes.</p>
+          <div class="stage-direction">[Navigate Guides → open the pre-built View Visit Summary Tooltip Draft → Guide Designer shows the tooltip overlaid on the Lumen Health My Visits page]</div>
+          <p class="script-quote" id="seg-guide">Over in the Guides section, I've already created the View Visit Summary Tooltip, a simple tooltip I designed in Pendo on the My Visits page, targeted at patients within their first 30 days on the platform. No code, live the moment I hit publish. You can see it previewed right here on the My Visits page.</p>
         </div>
 
         <!-- Close -->
@@ -803,16 +852,18 @@ window.pendo.initialize({
           <div class="flex items-center justify-between mb-2">
             <div class="flex items-center gap-2">
               <span class="badge badge-accent">Close</span>
-              <span class="text-xs text-slate-500">8 seconds</span>
+              <span class="text-xs text-slate-500">1:30 – 1:50  ·  20 seconds</span>
             </div>
             <button class="copy-btn" onclick="copySegment(this, 'close')">
               <i data-lucide="copy" class="w-3 h-3"></i>Copy
             </button>
           </div>
-          <p class="script-quote" id="seg-close">Picture one of your existing ANZ customers — the one whose CSM is asking what to show in the next QBR. This is the motion I'd run for them on Monday. Looking forward to talking.</p>
+          <div class="stage-direction">[Face cam]</div>
+          <p class="script-quote" id="seg-close">From flying blind to seeing the funnel, in a week. The product team gets their answer, the tooltip is built to close that gap, and the feature you put your blood, sweat, and tears into finally gets the visibility it deserves.</p>
         </div>
       </div>
     </div>
+
   </section>
 
   <!-- TAB: RECORDING -->
@@ -825,11 +876,11 @@ window.pendo.initialize({
       <div class="space-y-1">
         <label class="check-item" data-key="rec-1"><input type="checkbox"><div class="check-text text-sm">Pendo workspace open, logged in</div></label>
         <label class="check-item" data-key="rec-2"><input type="checkbox"><div class="check-text text-sm">Lumen Health sample app open at <a href="https://lumen-health-niroo.vercel.app" target="_blank" class="text-blue-600 hover:underline">lumen-health-niroo.vercel.app</a> in second tab — public, no login required</div></label>
-        <label class="check-item" data-key="rec-3"><input type="checkbox"><div class="check-text text-sm">All 4 pre-tagged artifacts visible: Pages, Feature, Guide draft, NPS draft, Segment</div></label>
+        <label class="check-item" data-key="rec-3"><input type="checkbox"><div class="check-text text-sm">All pre-tagged artefacts visible: Home + My Visits Pages, View Summary Feature, Guide draft, Segment</div></label>
         <label class="check-item" data-key="rec-4"><input type="checkbox"><div class="check-text text-sm">Paths report pre-loaded showing real numbers (refresh if stale)</div></label>
         <label class="check-item" data-key="rec-5"><input type="checkbox"><div class="check-text text-sm">Loom set to face cam <strong>bottom-right</strong>, screen full</div></label>
         <label class="check-item" data-key="rec-6"><input type="checkbox"><div class="check-text text-sm">Notifications silenced, browser bookmarks bar hidden</div></label>
-        <label class="check-item" data-key="rec-7"><input type="checkbox"><div class="check-text text-sm">Practice run #3 completed and timed under 95s</div></label>
+        <label class="check-item" data-key="rec-7"><input type="checkbox"><div class="check-text text-sm">Practice run #3 completed and timed under <strong>2:00</strong></div></label>
       </div>
     </div>
 
@@ -852,7 +903,7 @@ window.pendo.initialize({
       <div class="space-y-1">
         <label class="check-item" data-key="post-1"><input type="checkbox"><div class="check-text text-sm">Watch playback at 1x once to confirm timing and clarity</div></label>
         <label class="check-item" data-key="post-2"><input type="checkbox"><div class="check-text text-sm">Add a chapter at each segment boundary in Loom</div></label>
-        <label class="check-item" data-key="post-3"><input type="checkbox"><div class="check-text text-sm">Set Loom title: <span class="kbd">Niroo Arjuna — Pendo Senior CE ANZ — 90s Onboarding Demo</span></div></label>
+        <label class="check-item" data-key="post-3"><input type="checkbox"><div class="check-text text-sm">Set Loom title: <span class="kbd">Niroo Arjuna — Pendo Micro Demo (Lumen Health) — under 2 min</span></div></label>
         <label class="check-item" data-key="post-4"><input type="checkbox"><div class="check-text text-sm">Set Loom thumbnail to a frame showing the Paths report (most visually distinctive)</div></label>
       </div>
     </div>
@@ -877,7 +928,7 @@ window.pendo.initialize({
             <tr><td>Page + Feature tagging</td><td><span class="badge badge-success">Unlimited</span></td><td><span class="badge badge-success">✓</span></td><td>Safe</td></tr>
             <tr><td>Paths, Funnels, behavior reports</td><td><span class="badge badge-success">✓</span></td><td><span class="badge badge-success">✓</span></td><td>Safe</td></tr>
             <tr><td>In-app Guides (tooltips)</td><td><span class="badge badge-warn">Pendo-branded</span></td><td><span class="badge badge-success">Unbranded</span></td><td>Trial = cleaner on camera</td></tr>
-            <tr><td>NPS surveys</td><td><span class="badge badge-warn">Pendo-branded</span></td><td><span class="badge badge-success">Unbranded</span></td><td>Trial = cleaner on camera</td></tr>
+            <tr><td>NPS surveys (Sentiment Surveys)</td><td><span class="badge" style="background:#fee2e2;color:#991b1b;border-color:#fecaca">Not available</span></td><td><span class="badge badge-success">✓</span></td><td>Premium feature on current Pendo plans; demo skips NPS entirely</td></tr>
             <tr><td>Resource Center</td><td><span class="badge badge-success">Basic</span></td><td><span class="badge badge-success">✓</span></td><td>Safe — mention if time</td></tr>
             <tr><td>Salesforce / Slack / Segment integrations</td><td><span class="badge" style="background:#fee2e2;color:#991b1b;border-color:#fecaca">Not available</span></td><td><span class="badge badge-success">✓</span></td><td>Don't demo</td></tr>
             <tr><td>Pendo Feedback module</td><td><span class="badge" style="background:#fee2e2;color:#991b1b;border-color:#fecaca">Not available</span></td><td><span class="badge badge-success">✓</span></td><td>Don't demo</td></tr>
@@ -1027,7 +1078,7 @@ window.pendo.initialize({
     copyText(text, btn);
   }
   function copyFullScript(btn) {
-    const ids = ['open', 'customer', 'tag', 'paths', 'guide', 'nps', 'close'];
+    const ids = ['intro', 'context', 'tag', 'paths', 'guide', 'close'];
     const text = ids.map(id => document.getElementById('seg-' + id).textContent.trim()).join('\n\n');
     copyText(text, btn);
   }

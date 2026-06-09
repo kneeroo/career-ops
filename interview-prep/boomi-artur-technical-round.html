@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Boomi Technical Round — Artur Gaffanov (Niroo Arjuna)</title>
+<style>
+  :root {
+    --bg: #0f172a;
+    --panel: #ffffff;
+    --ink: #0f172a;
+    --muted: #475569;
+    --soft: #f1f5f9;
+    --line: #e2e8f0;
+    --accent: #0066ff;
+    --accent-soft: #e0ecff;
+    --boomi: #0c4ee0;
+    --good-bg: #ecfdf5;
+    --good-ink: #047857;
+    --amber-bg: #fef3c7;
+    --amber-ink: #92400e;
+    --rose-bg: #fff1f2;
+    --rose-ink: #be123c;
+    --radius: 14px;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    background: #f8fafc;
+    color: var(--ink);
+    line-height: 1.55;
+  }
+  header.hero {
+    background: linear-gradient(135deg, #0c4ee0 0%, #0066ff 60%, #38bdf8 100%);
+    color: #ffffff;
+    padding: 24px 32px;
+  }
+  header.hero h1 { margin: 0 0 6px; font-size: 24px; }
+  header.hero p { margin: 0; opacity: 0.92; font-size: 13px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+  .pill {
+    padding: 4px 10px; border-radius: 999px;
+    background: rgba(255,255,255,0.18); color: #ffffff;
+    font-size: 12px; border: 1px solid rgba(255,255,255,0.25);
+  }
+  .layout {
+    display: grid; grid-template-columns: 240px 1fr;
+    max-width: 1280px; margin: 0 auto; padding: 24px; gap: 24px;
+  }
+  nav.toc {
+    position: sticky; top: 16px; align-self: start;
+    background: var(--panel); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 14px;
+    max-height: calc(100vh - 32px); overflow-y: auto;
+  }
+  nav.toc h3 { margin: 0 0 8px; font-size: 11px; text-transform: uppercase; color: var(--muted); letter-spacing: 0.06em; }
+  nav.toc a {
+    display: block; padding: 5px 8px; border-radius: 6px;
+    color: var(--ink); text-decoration: none; font-size: 12px;
+  }
+  nav.toc a:hover { background: var(--soft); color: var(--boomi); }
+  nav.toc a.section { font-weight: 600; margin-top: 8px; color: var(--muted); font-size: 11px; text-transform: uppercase; }
+  main { min-width: 0; }
+  .card {
+    background: var(--panel); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 20px 22px;
+    margin-bottom: 16px; scroll-margin-top: 16px;
+  }
+  .card.star { border: 2px solid var(--boomi); }
+  .card h2 {
+    margin: 0 0 4px; font-size: 17px;
+    display: flex; align-items: baseline; gap: 10px;
+  }
+  .card h2 .num {
+    font-family: ui-monospace, Menlo, monospace;
+    color: var(--boomi); font-size: 13px; font-weight: 700;
+    background: var(--accent-soft); padding: 2px 8px; border-radius: 6px;
+  }
+  .card .qmeta { color: var(--muted); font-size: 12px; margin: 4px 0 14px; font-style: italic; }
+  .card h3 { margin: 16px 0 6px; font-size: 13px; color: var(--boomi); text-transform: uppercase; letter-spacing: 0.04em; }
+  .card h4 { margin: 12px 0 4px; font-size: 14px; color: var(--ink); }
+  .card p { margin: 6px 0; font-size: 14px; }
+  .card ul, .card ol { margin: 6px 0; padding-left: 22px; font-size: 14px; }
+  .card li { margin: 3px 0; }
+  .script {
+    background: var(--soft); border-left: 3px solid var(--boomi);
+    padding: 10px 14px; border-radius: 8px; margin: 8px 0;
+    font-size: 13px; line-height: 1.55;
+  }
+  .script strong.tag { color: var(--boomi); }
+  .callout {
+    background: var(--good-bg); color: var(--good-ink);
+    border: 1px solid #a7f3d0; padding: 10px 14px;
+    border-radius: 8px; font-size: 12px; margin: 8px 0;
+  }
+  .amber {
+    background: var(--amber-bg); color: var(--amber-ink);
+    border: 1px solid #fde68a; padding: 10px 14px;
+    border-radius: 8px; font-size: 12px; margin: 8px 0;
+  }
+  .danger {
+    background: var(--rose-bg); color: var(--rose-ink);
+    border: 1px solid #fecaca; padding: 10px 14px;
+    border-radius: 8px; font-size: 12px; margin: 8px 0;
+  }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 8px 0; }
+  th, td { border: 1px solid var(--line); padding: 7px 10px; text-align: left; vertical-align: top; }
+  th { background: var(--soft); font-weight: 600; color: var(--boomi); }
+  code { background: var(--soft); padding: 1px 6px; border-radius: 4px; font-size: 12px; font-family: ui-monospace, Menlo, monospace; }
+  @media print {
+    body { background: white; }
+    nav.toc { display: none; }
+    .layout { display: block; padding: 12px; }
+    .card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
+  }
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: 1fr; }
+    nav.toc { position: static; max-height: none; }
+  }
+</style>
+</head>
+<body>
+<header class="hero">
+  <h1>Boomi Technical Round — Artur Gaffanov</h1>
+  <p>Presales Solutions Consultant, Commercial ANZ &middot; Peer technical / "get to know you" round</p>
+  <div class="hero-meta">
+    <span class="pill">Round 3 of 4</span>
+    <span class="pill">Artur Gaffanov — Senior Solution Consultant, Brisbane</span>
+    <span class="pill">Blend: tech + personal</span>
+    <span class="pill">Prep date: 2026-06-02 &middot; Interview: tomorrow</span>
+  </div>
+</header>
+
+<div class="layout">
+<nav class="toc">
+  <h3>Contents</h3>
+  <a class="section">Strategy</a>
+  <a href="#read-first">★ Read first — the play</a>
+  <a href="#artur">★ Artur + rapport</a>
+  <a class="section">The Tech</a>
+  <a href="#connectivity">1. Connectivity fundamentals</a>
+  <a href="#where">2. Where apps sit</a>
+  <a href="#runtime">3. The Boomi runtime (Atom)</a>
+  <a href="#story-2026">4. The full Boomi 2026 story</a>
+  <a href="#world-tour">5. World Tour + messaging</a>
+  <a href="#design">6. Live design scenario</a>
+  <a class="section">You</a>
+  <a href="#yourself">7. Talk about yourself</a>
+  <a href="#projects">8. Project deep-dives</a>
+  <a href="#honesty">9. Handling gaps</a>
+  <a class="section">Close</a>
+  <a href="#questions">10. Questions to ask Artur</a>
+  <a href="#cheat">11. Cheat lines</a>
+  <a href="#dayof">12. Day-of checklist</a>
+</nav>
+
+<main>
+
+<div class="card star" id="read-first">
+  <h2><span class="num">★</span> Read first — what this round actually is</h2>
+  <p class="qmeta">From your peer who did Artur's round: "a nice blend of the tech questions, but also Artur just getting to know who I am as a person."</p>
+  <p>This is <strong>not</strong> a gauntlet. Artur is a Senior SC (~5 yrs at Boomi, Brisbane) — a peer, not a gatekeeper. He's checking two things: (1) can you hold a real technical conversation about connectivity and the Boomi story, and (2) is this someone he'd want next to him on a deal. Treat it as a conversation between two pre-sales people, not an exam.</p>
+  <h3>The three things that win this round</h3>
+  <ul>
+    <li><strong>Fundamentals, said simply.</strong> Connectivity types, where apps live, how Boomi connects them. Plain language beats jargon — that's literally the SC skill he's assessing.</li>
+    <li><strong>The full Boomi story, current.</strong> Show you've absorbed the 2026 messaging (data activation, the agentic enterprise, Agentstudio) — not just "integration tool." Boomi World 2026 just happened; this is fresh and public.</li>
+    <li><strong>Visible investment in learning Boomi.</strong> Your peer flagged this as scored: "be open about your investment into learning all things Boomi." Name your Boomi University progress unprompted.</li>
+  </ul>
+  <div class="callout"><strong>Your unprompted opener line on learning:</strong> "Since the David conversation I've been going hard on Boomi University — finished Getting Started, working through Integration Essentials. I wanted to come into this round actually fluent in the platform, not just talking about it from the outside."</div>
+  <div class="amber"><strong>Pace yourself.</strong> Roughly half this call is rapport. Don't try to fill every silence with technical depth — let Artur drive into the personal stuff and lean into it genuinely.</div>
+</div>
+
+<div class="card star" id="artur">
+  <h2><span class="num">★</span> Artur Gaffanov — who he is & rapport notes</h2>
+  <ul>
+    <li><strong>Role:</strong> Senior Solution Consultant at Boomi, Brisbane, ~4 yrs 8 mo (since Oct 2021).</li>
+    <li><strong>What he does daily:</strong> discovery, demos, POCs; partners with account teams; self-described SME on the Boomi platform; evangelises in the Boomiverse community.</li>
+    <li><strong>What that means for you:</strong> he lives the SC craft. He'll respect demo instinct, discovery thinking, and "how would you position this to a customer" framing far more than textbook definitions.</li>
+  </ul>
+  <h3>Rapport hooks (use naturally, don't force)</h3>
+  <ul>
+    <li>He's <strong>community-active (Boomiverse)</strong> — you can ask what got him into evangelising / what the community's like. Genuine curiosity reads well.</li>
+    <li>He's <strong>Brisbane</strong>, you're Melbourne (open to Sydney) — light ANZ common ground, remote-team reality.</li>
+    <li>He came up <strong>through the SC craft over 5 years</strong> — mirrors the growth arc that landed well with David. Asking "what's kept you here 5 years?" is both rapport and intel.</li>
+  </ul>
+</div>
+
+<div class="card" id="connectivity">
+  <h2><span class="num">1</span> Connectivity fundamentals — say it simply</h2>
+  <p class="qmeta">Your peer: "important to understand connectivity as a whole — types of connectivity (Database, APIs, ETL)." This is the likely opener.</p>
+  <p>Integration = getting two systems that weren't built to talk to share data reliably. The main <strong>types of connectivity</strong>:</p>
+  <table>
+    <tr><th>Type</th><th>What it is</th><th>One-line example</th></tr>
+    <tr><td><strong>API / app</strong></td><td>Real-time request/response between applications over HTTP (REST/SOAP).</td><td>CRM asks the billing system "what's this customer's balance?" and gets an answer now.</td></tr>
+    <tr><td><strong>Database</strong></td><td>Reading/writing directly to a DB (SQL queries, stored procs) when there's no API.</td><td>Pull last night's orders straight out of an on-prem SQL Server table.</td></tr>
+    <tr><td><strong>ETL / data movement</strong></td><td>Bulk extract → transform → load, usually on a schedule, for analytics or migration.</td><td>Nightly: pull all sales records, reshape them, load into the data warehouse.</td></tr>
+    <tr><td><strong>Event / streaming</strong></td><td>Systems publish events; others react. Real-time, decoupled.</td><td>"Order placed" event fires; inventory, shipping and billing each react.</td></tr>
+    <tr><td><strong>File / MFT</strong></td><td>Structured files (CSV, EDI) moved securely between parties — still huge in enterprise.</td><td>A supplier drops a daily EDI file; you ingest and process it.</td></tr>
+  </table>
+  <div class="callout"><strong>The SC framing Artur wants:</strong> "Before I pick a connectivity type I ask the customer two things — does this need to be real-time or batch, and is there an API or am I going to the database? That answer picks the pattern. Boomi covers all of them in one platform, which is the whole point — you're not stitching three tools together."</div>
+  <p class="qmeta">Deeper detail (REST vs SOAP vs GraphQL, ETL vs ELT vs CDC, sync vs async, webhooks vs polling) is in <code>boomi-integration-prep.html</code> §6–10 — reread if Artur pushes past the basics.</p>
+</div>
+
+<div class="card" id="where">
+  <h2><span class="num">2</span> Where apps sit — cloud, on-prem, SaaS</h2>
+  <p class="qmeta">Your peer: "where apps normally sit (cloud, on-premises, SaaS)." This is the other half of the fundamentals opener.</p>
+  <table>
+    <tr><th>Location</th><th>What it means</th><th>Integration implication</th></tr>
+    <tr><td><strong>SaaS</strong></td><td>Vendor-hosted, multi-tenant, you consume via API (Salesforce, NetSuite, Workday).</td><td>Usually a clean REST API + OAuth. Easiest to connect.</td></tr>
+    <tr><td><strong>Cloud (IaaS/PaaS)</strong></td><td>Your own apps running in AWS/Azure/GCP.</td><td>API or DB access, but you own the network/security config.</td></tr>
+    <tr><td><strong>On-premises</strong></td><td>In the customer's own data centre, behind a firewall (legacy ERP, on-prem SQL).</td><td>Hardest — you can't reach it from the public cloud. <strong>This is where the Boomi runtime placement matters</strong> (see §3).</td></tr>
+  </table>
+  <div class="callout"><strong>The line that shows you get it:</strong> "Most enterprises are hybrid — a few SaaS apps, some cloud workloads, and a stubborn on-prem system that holds the crown-jewel data. The integration challenge is almost always reaching that on-prem system securely without opening a hole in the firewall — and that's exactly what Boomi's runtime model is built for."</div>
+</div>
+
+<div class="card" id="runtime">
+  <h2><span class="num">3</span> The Boomi runtime — the bit most candidates miss</h2>
+  <p>Boomi splits into <strong>control plane</strong> (the cloud platform where you design, deploy, govern and monitor) and the <strong>runtime</strong> (where integrations actually execute — you place it wherever the data lives).</p>
+  <ul>
+    <li><strong>Atom</strong> — a single lightweight runtime engine. Run it in Boomi's cloud, your cloud, or on-prem.</li>
+    <li><strong>Molecule</strong> — clustered Atoms for HA / load-balancing in production.</li>
+    <li><strong>Atom Cloud</strong> — Boomi-hosted runtime for pure cloud-to-cloud, zero infra to manage.</li>
+  </ul>
+  <div class="callout"><strong>Why this is the killer answer for on-prem:</strong> "If the data's on-prem behind a firewall, you drop an Atom <em>inside</em> the customer's network. It makes an outbound call to the Boomi control plane, so no inbound firewall holes — the runtime reaches the on-prem system locally and only the result travels out. Design in the cloud, execute next to the data. That's the architecture that wins security reviews."</div>
+  <div class="amber"><strong>Air-traffic-control analogy</strong> (from your David prep): control plane = the tower (designs, governs, observes); runtime/Atom = the planes (does the actual flying). Tower never touches the cargo; planes never decide the routes.</div>
+  <p class="qmeta">Note the 2026 extension: <strong>Distributed Agent Runtime</strong> applies the exact same "run it on-prem, keep sensitive data behind the firewall" idea to AI agents — same architecture, new layer. Great bridge from fundamentals into the AI story (§4).</p>
+</div>
+
+<div class="card" id="story-2026">
+  <h2><span class="num">4</span> The full Boomi 2026 story — beyond connectivity</h2>
+  <p class="qmeta">Your peer: "There is a whole world outside of just app connectivity — look into our AI solutions, data management as well. The full Boomi story and messaging." This is your biggest content gap and the easiest way to stand out.</p>
+
+  <h3>The one-sentence positioning</h3>
+  <div class="script"><strong class="tag">SAY:</strong> "Boomi's story in 2026 isn't 'integration tool' anymore — it's the <strong>active data foundation that connects, governs and orchestrates every layer of the business so enterprises can actually activate their data for AI.</strong> Integration and APIs are the substrate; data management and the agentic layer sit on top." (30,000+ customers, 800+ partners.)</p>
+
+  <h3>The platform, in four layers</h3>
+  <table>
+    <tr><th>Layer</th><th>What it does</th><th>Products</th></tr>
+    <tr><td><strong>Integration (the core)</strong></td><td>Connect any app/data, any pattern, anywhere it sits.</td><td>iPaaS, API Management, B2B/EDI</td></tr>
+    <tr><td><strong>Data Management</strong></td><td>Make the data trustworthy + movable — the "active data layer".</td><td>DataHub (MDM), <strong>Rivery</strong> (ELT/CDC), <strong>Thru</strong> (MFT, +270% adoption post-acq)</td></tr>
+    <tr><td><strong>AI / Agentic</strong></td><td>Build, govern and run AI agents grounded in that trusted data.</td><td><strong>Agentstudio</strong>, Boomi Connect, Knowledge Hub, Meta Hub</td></tr>
+    <tr><td><strong>Governance (across all)</strong></td><td>See, control and audit everything — agents and integrations alike.</td><td>Agent Control Tower</td></tr>
+  </table>
+
+  <h3>The 2026 AI announcements (Boomi World, May 2026) — know these names</h3>
+  <ul>
+    <li><strong>Agentstudio</strong> — build/manage AI agents. <strong>75,000+ agents in production</strong> across customers; exposes <strong>300,000+ endpoints as MCP interfaces</strong>; now <em>embeddable</em> into other apps/portals via APIs.</li>
+    <li><strong>Boomi Connect (GA)</strong> — governed, MCP-based connectivity between AI tools (<strong>Claude, Copilot, Gemini</strong>) and enterprise systems via <strong>1,000+ managed MCP-enabled tools</strong>.</li>
+    <li><strong>Boomi Knowledge Hub</strong> — governed search/retrieval across enterprise knowledge (kills knowledge silos, grounds agents in trusted info).</li>
+    <li><strong>Boomi Meta Hub</strong> — grounds agents in consistent, expert-endorsed business definitions (so agents don't invent their own logic).</li>
+    <li><strong>Boomi Orchestrate</strong> — combine agents, APIs, integrations, events and data models in natural language.</li>
+    <li><strong>Distributed Agent Runtime + Multi-region Instances</strong> — run agents on-prem / keep metadata in-region for compliance (the runtime story, applied to agents).</li>
+    <li><strong>Agent Control Tower</strong> — governance + auditability across every agent deployment.</li>
+  </ul>
+
+  <h3>Why this matters (MCP = the through-line)</h3>
+  <div class="callout"><strong>The insight to voice:</strong> "What clicked for me is that MCP is the bridge. Boomi already had 1,000+ connectors and an API layer — by exposing those as MCP tools, every integration Boomi ever built becomes something an AI agent can safely call. So the 'whole world outside connectivity' isn't a pivot away from integration — it's integration becoming the thing that makes enterprise AI actually work. That's why the message is 'data activation', not 'we built a chatbot'."</div>
+  <div class="amber"><strong>Steve Lucas (CEO) line to drop once:</strong> "2026 is the year organisations stop experimenting with AI and start activating it at scale." Pair with: data activation = data that's connected, governed and AI-ready.</div>
+</div>
+
+<div class="card" id="world-tour">
+  <h2><span class="num">5</span> Boomi World Tour — the public moment to reference</h2>
+  <p>Boomi World 2026 (May) was the big launch event; <strong>Boomi World Tour</strong> is the global roadshow taking that story to market now. Referencing it shows you follow the company, not just the job spec.</p>
+  <ul>
+    <li><strong>Boomi World Tour Sydney</strong> — 1–2 Sept 2026, W Sydney. Theme <strong>"ACCELERATE"</strong>: data readiness, integration & automation, agent management. Speakers incl. CEO Steve Lucas + CPO Ed Macosky. <em>ANZ-relevant — worth a mention given the role's region.</em></li>
+    <li><strong>The three pillars</strong> the Tour pushes: <em>data readiness → integration & automation → agent management</em>. That's the whole platform story in three words.</li>
+  </ul>
+  <div class="script"><strong class="tag">RAPPORT + INTEL:</strong> "I saw World Tour Sydney's coming in September around the 'ACCELERATE' / data-activation theme — is that the message you're already taking into ANZ deals, or is the market still catching up to the agentic story?" (Shows you're current, and pulls real field intel from Artur.)</div>
+</div>
+
+<div class="card" id="design">
+  <h2><span class="num">6</span> Live design scenario — "how would you integrate X with Y?"</h2>
+  <p class="qmeta">Peer round with an SC = high chance of a whiteboard-style "walk me through how you'd connect these two systems." Don't jump to a solution — run the SC playbook out loud.</p>
+  <ol>
+    <li><strong>Discover first.</strong> "Before I design — real-time or batch? Is there an API on both sides or am I hitting a database? Where do the systems live, cloud or on-prem? What's the data volume and how clean is it?"</li>
+    <li><strong>Place the runtime.</strong> Cloud-to-cloud → Atom Cloud. On-prem system → local Atom behind the firewall (§3).</li>
+    <li><strong>Pick the pattern.</strong> Sync API call vs scheduled ETL vs event-driven — justify it from the answers above.</li>
+    <li><strong>Map + transform.</strong> Boomi's visual mapping between the two schemas; call out data-quality / dedupe if it's master data (→ DataHub).</li>
+    <li><strong>Reliability.</strong> Error handling, retries, idempotency, logging/alerting. (Shows production maturity, not just happy-path.)</li>
+    <li><strong>Govern + extend.</strong> "And because it's on Boomi, that same connection can be exposed as an MCP tool later so an agent could call it — future-proofs the build."</li>
+  </ol>
+  <div class="callout"><strong>The meta-point Artur is grading:</strong> a great SC <em>asks before answering</em>. Talking through discovery questions out loud scores higher than a fast, confident, wrong architecture. Full scenario bank in <code>boomi-integration-prep.html</code> §17.</div>
+</div>
+
+<div class="card" id="yourself">
+  <h2><span class="num">7</span> Talk about yourself — the rapport half</h2>
+  <p class="qmeta">Peer: "expect to talk about yourself with Artur — your experience, projects, what you like to do outside of work." Have these ready as conversation, not a pitch.</p>
+  <h3>Your arc, in 60 seconds (loosened from the David prep)</h3>
+  <div class="script"><strong class="tag">SAY (conversational):</strong> "I came up through pre-sales — Phocas in BI, then UbiPark where I was the technical side of enterprise tenders for customers like Monash Health, Melbourne Airport, Charter Hall. Most recently inforcer, a year deep in M365 security. The thread is the same: I'm the person who translates a messy technical requirement into something a customer actually buys — and lately I've been backing that up by building real apps myself, not just demoing them."</div>
+  <h3>What you like doing (the "outside of work" / what-energises-you)</h3>
+  <ul>
+    <li><strong>You build for fun.</strong> WOP — a parts-ordering app you ship and iterate weekly for a real Melbourne appliance workshop. This is genuinely the thing that lights you up; let that show.</li>
+    <li><strong>You're hands-on with AI tooling</strong> (Claude Code, Cursor) — which is exactly Boomi's 2026 world. Natural bridge: "the reason the agentic story resonates with me is I'm already building this way."</li>
+    <li><strong>Have one real non-work answer ready</strong> — Artur asked his candidate about life outside work. Don't manufacture; pick something true and human.</li>
+  </ul>
+  <div class="amber"><strong>Framing guardrail (from your own past corrections):</strong> you're a <strong>pre-sales SC who also ships production apps end-to-end</strong> (Next.js + React on the front, Supabase + Clerk on the back) — not an "ex-engineer", not "front-end only". Say it that way.</div>
+</div>
+
+<div class="card" id="projects">
+  <h2><span class="num">8</span> Project deep-dives — pick the right one</h2>
+  <table>
+    <tr><th>Project</th><th>Lead with it when Artur asks about…</th><th>The hook</th></tr>
+    <tr><td><strong>WOP (Waiting On Parts)</strong></td><td>building things / hands-on / "what do you do for fun"</td><td>Full-stack app you ship + iterate weekly for a real Melbourne customer. Proof you build, not just demo. Stack: Next.js 16, React 19, TypeScript, Supabase (Postgres + RLS + Realtime), Clerk.</td></tr>
+    <tr><td><strong>UbiPark enterprise tenders</strong></td><td>SC craft / discovery / enterprise deals</td><td>Technical lead on tenders for Monash Health, Melbourne Airport, Charter Hall, CBRE. Real ANZ enterprise discovery + demo work.</td></tr>
+    <tr><td><strong>inforcer (M365 security)</strong></td><td>handling pressure / customer escalations</td><td>The MSP/ANZ bug-escalation story (CARL format) — owning a live customer problem under pressure.</td></tr>
+    <tr><td><strong>Phocas reusable templates</strong></td><td>scaling yourself / mentoring / efficiency</td><td>Built reusable demo/template assets so the wider team moved faster — the "force multiplier" story.</td></tr>
+  </table>
+  <p class="qmeta">Full STAR/CARL versions are in <code>story-bank.md</code> and the David HM doc. Portfolio (AI-queryable): niroo-arjuna.vercel.app — refresh its WOP/pipeline context before the call in case Artur clicks through.</p>
+</div>
+
+<div class="card" id="honesty">
+  <h2><span class="num">9</span> Handling gaps — the honesty trade</h2>
+  <p class="qmeta">The single most important behaviour from the David round, confirmed by insider intel: bluffing loses, hedging loses, <strong>honest gap + ramp plan wins</strong>. Artur, as an SC peer, will smell a bluff instantly.</p>
+  <p>If he probes something you haven't done in production (e.g. "have you built on Boomi / used an Atom in prod?"), the template is:</p>
+  <div class="script"><strong class="tag">FORMULA:</strong> "I haven't done <em>that</em> specifically — the closest adjacent thing I've done is <em>[X]</em> — and the way I'd ramp is <em>[Y]</em>." <br><br><strong>Worked example:</strong> "I haven't run an Atom in a customer prod environment yet. The adjacent experience is standing up and shipping production integrations and apps myself — auth, data layer, realtime. The way I'm ramping on Boomi specifically is Boomi University — I've done Getting Started and I'm mid Integration Essentials — and I'd want a hands-on POC in my first couple of weeks to make it real."</div>
+  <div class="callout">This turns every gap into evidence of two things Artur is grading: <strong>self-awareness</strong> and <strong>how fast you ramp</strong>. Both are core SC traits.</div>
+</div>
+
+<div class="card star" id="questions">
+  <h2><span class="num">10</span> Questions to ask Artur (pick 3–4)</h2>
+  <p class="qmeta">His profile flags <strong>partner enablement</strong> — leading with a partner question shows you researched him specifically, not just the role. Boomi is partner-heavy (GSIs/SIs, 500+ joint engagements, a Partner Enablement program + new Partner Ambassador Program), so this is real, current ground.</p>
+
+  <h3>★ Partner enablement (lead with one of these)</h3>
+  <ul>
+    <li><strong>(the opener)</strong> "One area that caught my attention was partner enablement. From a Solutions Consultant perspective, how involved are SCs in enabling and supporting partners?"</li>
+    <li><strong>(deeper)</strong> "Boomi clearly leans on GSIs and SIs to deliver at scale. When an SC and a partner are both on a deal, how do you split the technical ownership so you complement each other rather than overlap?"</li>
+    <li><strong>(current/AI angle)</strong> "With the agentic story moving so fast, is enabling partners on Agentstudio becoming a big part of the SC role, or is partner enablement still mostly core integration today?"</li>
+  </ul>
+
+  <div class="amber"><strong>Partner-ecosystem facts (so you can back it up if he probes):</strong> Boomi sells heavily through partners — <strong>GSIs / System Integrators</strong> (trusted advisers + implementers, 500+ joint engagements), plus technology and consulting/implementation partners. Programs: <strong>Partner Enablement</strong> sessions and the new <strong>Partner Ambassador Program</strong> (paths for partner consultants to grow their platform expertise). Recent proof point: the <strong>ServiceNow partnership</strong> (May 2026) for data activation. Find-a-partner + Boomiverse community sit on top.</div>
+
+  <h3>The SC craft</h3>
+  <ul>
+    <li><strong>(POC)</strong> "What does a great POC look like on your team, and how do you scope one so it actually moves a deal?"</li>
+    <li><strong>(current/AI)</strong> "How much are ANZ customers actually buying the agentic / Agentstudio story today versus still being sold on core integration first?"</li>
+  </ul>
+
+  <h3>Rapport &amp; fit</h3>
+  <ul>
+    <li><strong>(rapport/intel)</strong> "You've been here around five years and you're active in Boomiverse. What's kept you here, and what changed for you when the AI story landed?"</li>
+    <li><strong>(team fit)</strong> "When a new SC joins, what separates the ones who ramp fast from the ones who struggle?"</li>
+    <li><strong>(honest)</strong> "What's the part of this role people underestimate before they start?"</li>
+  </ul>
+
+  <div class="callout"><strong>Why the partner question lands:</strong> Artur is an SC who lists partner enablement, so this is his territory — he gets to talk about something he's invested in, and you signal you understand Boomi's go-to-market isn't just direct sales. Have a follow-up ready: if he says SCs are heavily involved, "That's appealing — at UbiPark a lot of my enterprise delivery ran through partners, so co-selling with an SI is familiar ground."</div>
+  <div class="amber">Don't fire all eight. Open with <strong>one partner question</strong>, keep <strong>one craft</strong> and <strong>one rapport</strong> in your pocket, and let the conversation pull the rest. The "what's kept you five years" one doubles as genuine rapport.</div>
+</div>
+
+<div class="card" id="cheat">
+  <h2><span class="num">11</span> One-line cheat answers (if you blank)</h2>
+  <table>
+    <tr><th>If asked…</th><th>One-liner</th></tr>
+    <tr><td>What is iPaaS?</td><td>Cloud platform to build, run and govern integrations without managing the infrastructure yourself.</td></tr>
+    <tr><td>Control plane vs runtime?</td><td>Control plane = design/govern/observe (the tower). Runtime/Atom = where the work actually executes (the planes). Place the runtime where the data lives.</td></tr>
+    <tr><td>How does Boomi reach an on-prem system?</td><td>Drop a local Atom inside the firewall; it calls out to the control plane, so no inbound holes.</td></tr>
+    <tr><td>ETL vs ELT vs CDC?</td><td>ETL transforms then loads; ELT loads then transforms in the warehouse; CDC streams only what changed (Rivery does ELT/CDC).</td></tr>
+    <tr><td>What's MCP and why does Boomi care?</td><td>A standard way for AI agents to call tools. Boomi exposes its 1,000s of connectors as MCP tools, so agents can safely use every integration Boomi has.</td></tr>
+    <tr><td>What is Agentstudio?</td><td>Boomi's platform to build, govern and run AI agents — 75,000+ in production, now embeddable into any app.</td></tr>
+    <tr><td>What is "data activation"?</td><td>Making enterprise data connected, governed and AI-ready so agents can act on it reliably — Boomi's core 2026 message.</td></tr>
+    <tr><td>What did Boomi just launch?</td><td>Boomi Connect (GA), Knowledge Hub, Meta Hub, Orchestrate, Distributed Agent Runtime, Agent Control Tower — all the agentic-enterprise layer.</td></tr>
+  </table>
+</div>
+
+<div class="card" id="dayof">
+  <h2><span class="num">12</span> Day-of checklist</h2>
+  <h3>Tonight</h3>
+  <ul>
+    <li>☐ <strong>Finish Boomi University: Integration Essentials</strong> (highest-leverage move — concrete proof + scored signal).</li>
+    <li>☐ Reread <code>boomi-integration-prep.html</code> §1–9 + §17; reread §4 + §11 of this doc out loud.</li>
+    <li>☐ Skim Boomi World Tour Sydney page + Agentstudio product page (5–10 min each) so the names are fresh.</li>
+    <li>☐ Refresh portfolio context (WOP, pipeline) at niroo-arjuna.vercel.app.</li>
+    <li>☐ Pick your one genuine "outside of work" answer.</li>
+  </ul>
+  <h3>In the room</h3>
+  <ul>
+    <li>☐ Drop the Boomi University line early + unprompted (investment-in-learning signal).</li>
+    <li>☐ On any design Q: <strong>ask discovery questions before answering</strong>.</li>
+    <li>☐ On any gap: <strong>honest gap + adjacent + ramp plan</strong>. Never bluff.</li>
+    <li>☐ Reference the 2026 story (data activation / Agentstudio / MCP) at least once, naturally.</li>
+    <li>☐ Let the rapport half breathe — be a person, not a pitch.</li>
+    <li>☐ Ask 2–3 of your questions; land the "what's kept you 5 years" one.</li>
+  </ul>
+  <h3>After</h3>
+  <ul>
+    <li>☐ Short thank-you to Artur within a few hours — anchor on something specific he said, not generic.</li>
+  </ul>
+  <div class="callout"><strong>Sources (all public, May–June 2026):</strong> Boomi Book of Innovations (boomi.com), Boomi World 2026 coverage (SiliconANGLE, SAPinsider), Agentstudio product page, Boomi World Tour Sydney page, Rivery acquisition blog. Figures: 75,000+ agents, 300,000+ MCP endpoints, 1,000+ MCP tools, 30,000+ customers, 800+ partners.</div>
+</div>
+
+</main>
+</div>
+</body>
+</html>

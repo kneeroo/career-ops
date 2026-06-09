@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Boomi Integration Prep — Technical Probe Answers (Niroo Arjuna)</title>
+<style>
+  :root {
+    --bg: #0f172a;
+    --panel: #ffffff;
+    --ink: #0f172a;
+    --muted: #475569;
+    --soft: #f1f5f9;
+    --line: #e2e8f0;
+    --accent: #0066ff;
+    --accent-soft: #e0ecff;
+    --boomi: #0c4ee0;
+    --good-bg: #ecfdf5;
+    --good-ink: #047857;
+    --amber-bg: #fef3c7;
+    --amber-ink: #92400e;
+    --rose-bg: #fff1f2;
+    --rose-ink: #be123c;
+    --radius: 14px;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    background: #f8fafc;
+    color: var(--ink);
+    line-height: 1.55;
+  }
+  header.hero {
+    background: linear-gradient(135deg, #0c4ee0 0%, #0066ff 60%, #38bdf8 100%);
+    color: #ffffff;
+    padding: 24px 32px;
+  }
+  header.hero h1 { margin: 0 0 6px; font-size: 24px; }
+  header.hero p { margin: 0; opacity: 0.92; font-size: 13px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+  .pill {
+    padding: 4px 10px; border-radius: 999px;
+    background: rgba(255,255,255,0.18); color: #ffffff;
+    font-size: 12px; border: 1px solid rgba(255,255,255,0.25);
+  }
+  .layout {
+    display: grid; grid-template-columns: 240px 1fr;
+    max-width: 1280px; margin: 0 auto; padding: 24px; gap: 24px;
+  }
+  nav.toc {
+    position: sticky; top: 16px; align-self: start;
+    background: var(--panel); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 14px;
+    max-height: calc(100vh - 32px); overflow-y: auto;
+  }
+  nav.toc h3 { margin: 0 0 8px; font-size: 11px; text-transform: uppercase; color: var(--muted); letter-spacing: 0.06em; }
+  nav.toc a {
+    display: block; padding: 5px 8px; border-radius: 6px;
+    color: var(--ink); text-decoration: none; font-size: 12px;
+  }
+  nav.toc a:hover { background: var(--soft); color: var(--boomi); }
+  nav.toc a.section { font-weight: 600; margin-top: 8px; color: var(--muted); font-size: 11px; text-transform: uppercase; }
+  main { min-width: 0; }
+  .card {
+    background: var(--panel); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 20px 22px;
+    margin-bottom: 16px; scroll-margin-top: 16px;
+  }
+  .card h2 {
+    margin: 0 0 4px; font-size: 17px;
+    display: flex; align-items: baseline; gap: 10px;
+  }
+  .card h2 .num {
+    font-family: ui-monospace, Menlo, monospace;
+    color: var(--boomi); font-size: 13px; font-weight: 700;
+    background: var(--accent-soft); padding: 2px 8px; border-radius: 6px;
+  }
+  .card .qmeta { color: var(--muted); font-size: 12px; margin: 4px 0 14px; font-style: italic; }
+  .card h3 { margin: 16px 0 6px; font-size: 13px; color: var(--boomi); text-transform: uppercase; letter-spacing: 0.04em; }
+  .card h4 { margin: 12px 0 4px; font-size: 14px; color: var(--ink); }
+  .card p { margin: 6px 0; font-size: 14px; }
+  .card ul, .card ol { margin: 6px 0; padding-left: 22px; font-size: 14px; }
+  .card li { margin: 3px 0; }
+  .script {
+    background: var(--soft); border-left: 3px solid var(--boomi);
+    padding: 10px 14px; border-radius: 8px; margin: 8px 0;
+    font-size: 13px; line-height: 1.55;
+  }
+  .script strong.tag { color: var(--boomi); }
+  .callout {
+    background: var(--good-bg); color: var(--good-ink);
+    border: 1px solid #a7f3d0; padding: 10px 14px;
+    border-radius: 8px; font-size: 12px; margin: 8px 0;
+  }
+  .amber {
+    background: var(--amber-bg); color: var(--amber-ink);
+    border: 1px solid #fde68a; padding: 10px 14px;
+    border-radius: 8px; font-size: 12px; margin: 8px 0;
+  }
+  .danger {
+    background: var(--rose-bg); color: var(--rose-ink);
+    border: 1px solid #fecaca; padding: 10px 14px;
+    border-radius: 8px; font-size: 12px; margin: 8px 0;
+  }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 8px 0; }
+  th, td { border: 1px solid var(--line); padding: 7px 10px; text-align: left; vertical-align: top; }
+  th { background: var(--soft); font-weight: 600; color: var(--boomi); }
+  code { background: var(--soft); padding: 1px 6px; border-radius: 4px; font-size: 12px; font-family: ui-monospace, Menlo, monospace; }
+  @media print {
+    body { background: white; }
+    nav.toc { display: none; }
+    .layout { display: block; padding: 12px; }
+    .card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
+  }
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: 1fr; }
+    nav.toc { position: static; max-height: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <h1>Boomi Integration Prep — Technical Probe Answers</h1>
+  <p>Deep technical reference. Companion to the Artur technical-round doc — use for integration probes.</p>
+  <div class="hero-meta">
+    <span class="pill">Integration fundamentals</span>
+    <span class="pill">Be honest about gaps</span>
+    <span class="pill">Anchor on what you've built</span>
+  </div>
+</header>
+
+<div class="layout">
+
+<nav class="toc">
+  <h3>Quick Jump</h3>
+  <a class="section">Strategy</a>
+  <a href="#strategy">★ How to answer technical questions</a>
+  <a href="#your-stack">1. Your actual integration stack</a>
+  <a class="section">Fundamentals</a>
+  <a href="#ipaas-vs">2. iPaaS vs ESB vs point-to-point</a>
+  <a href="#patterns">3. Integration patterns</a>
+  <a href="#api-led-vs-event">4. API-led vs event-driven</a>
+  <a href="#sync-vs-async">5. Sync vs async</a>
+  <a class="section">APIs</a>
+  <a href="#rest-vs">6. REST vs SOAP vs GraphQL</a>
+  <a href="#webhooks">7. Webhooks vs polling</a>
+  <a href="#auth">8. Auth (SSO/SAML/OAuth/SCIM)</a>
+  <a href="#apim">9. APIM + Federated APIM</a>
+  <a class="section">Data</a>
+  <a href="#etl-elt-cdc">10. ETL / ELT / CDC</a>
+  <a href="#mdm">11. MDM (DataHub)</a>
+  <a href="#mft">12. MFT (Thru)</a>
+  <a class="section">Reliability</a>
+  <a href="#reliability">13. Errors, retries, idempotency</a>
+  <a href="#observability">14. Logging + observability</a>
+  <a class="section">AI Layer</a>
+  <a href="#mcp-deep">15. MCP — deeper</a>
+  <a href="#agentstudio-tech">16. AgentStudio technical fit</a>
+  <a class="section">Live Design</a>
+  <a href="#design-question">17. "How would you integrate X with Y?"</a>
+  <a href="#your-projects">18. Your project deep-dives</a>
+  <a class="section">Cheat</a>
+  <a href="#cheat">19. One-line cheat answers</a>
+</nav>
+
+<main>
+
+<div class="card" id="strategy">
+  <h2><span class="num">★</span> How to answer technical questions (Artur's peer round)</h2>
+  <p class="qmeta">Artur is a Senior SC — a peer, not the HM. He'll respect honesty over polish and smell a bluff instantly. The frame below applies to every answer in this doc.</p>
+
+  <h3>The 3-part frame for every technical answer</h3>
+  <ol>
+    <li><strong>Definition</strong> — one plain-English sentence. No jargon spam.</li>
+    <li><strong>Your experience</strong> — what you've actually built or integrated, named specifically.</li>
+    <li><strong>Honest gap</strong> — what you haven't done, and how you'd close it.</li>
+  </ol>
+
+  <div class="callout"><strong>The honesty trade:</strong> if a question hits a gap, say "I haven't gone deep there — here's what I do know, here's how I'd ramp." Artur rewards that. Bluffing loses you the round.</div>
+
+  <div class="amber"><strong>Length discipline:</strong> 60–90 seconds max per answer. If Artur wants depth, he'll ask. Long answers signal nervous over-explanation, not expertise.</div>
+</div>
+
+<div class="card" id="your-stack">
+  <h2><span class="num">01</span> Your actual integration stack (memorise this list)</h2>
+  <p class="qmeta">Your honest hands-on inventory. This is what you anchor every answer to.</p>
+
+  <table>
+    <tr><th>Category</th><th>What you've used in production</th><th>Where</th></tr>
+    <tr><td><strong>API consumption + design</strong></td><td>REST APIs, JSON payloads, Postman for design + testing</td><td>Every role since Phocas</td></tr>
+    <tr><td><strong>Identity + access</strong></td><td>SSO / SAML, OAuth, SCIM provisioning</td><td>inforcer (M365 stack), UbiPark enterprise rollouts</td></tr>
+    <tr><td><strong>ERP middleware</strong></td><td>MYOB integration, data modelling, transforms</td><td>Phocas — 50+ BI implementations</td></tr>
+    <tr><td><strong>M365 security stack</strong></td><td>Entra ID, Defender, Sentinel, Purview, Intune</td><td>inforcer</td></tr>
+    <tr><td><strong>3rd-party APIs</strong></td><td>Meta Graph API, Sanity headless CMS, Supabase</td><td>Dhaniro, Lumen Health, personal portfolio</td></tr>
+    <tr><td><strong>Languages</strong></td><td>Python, JavaScript, TypeScript, SQL, HTML/CSS</td><td>Throughout — production code, scripts, BI</td></tr>
+    <tr><td><strong>Frameworks</strong></td><td>React, Next.js (App Router), Tailwind</td><td>All recent projects</td></tr>
+    <tr><td><strong>Compliance + governance</strong></td><td>Essential 8, GDPR alignment</td><td>inforcer</td></tr>
+    <tr><td><strong>AI integration</strong></td><td>Claude API, RAG architecture, MCP-style tooling</td><td>AI-queryable portfolio, Lumen Health AI Setup Assistant</td></tr>
+  </table>
+
+  <h3>What you HAVEN'T done (own it cleanly)</h3>
+  <ul>
+    <li>Production iPaaS canvas — Boomi AtomSphere, MuleSoft, Workato, Informatica, Talend, Tibco</li>
+    <li>Kafka / Pulsar / event streaming at scale</li>
+    <li>Production CDC pipelines (Rivery territory)</li>
+    <li>Production MFT (Thru territory)</li>
+    <li>API gateway products in production (Apigee, Kong, AWS API Gateway as administrator)</li>
+  </ul>
+  <div class="amber">If Artur probes any of these, the answer is the same shape: <em>"I haven't run that in production. What I have done that's adjacent is [X]. The fastest path I'd take to ramp is [Y]."</em></div>
+</div>
+
+<div class="card" id="ipaas-vs">
+  <h2><span class="num">02</span> iPaaS vs ESB vs point-to-point</h2>
+  <p class="qmeta">Foundational. Almost certain to come up.</p>
+
+  <h3>The plain-English version</h3>
+  <table>
+    <tr><th>Pattern</th><th>What it is</th><th>When it wins</th><th>When it fails</th></tr>
+    <tr><td><strong>Point-to-point</strong></td><td>Direct integration between two systems, usually code-level (API → API, file → DB)</td><td>1–2 integrations, simple, low volume</td><td>Grows into spaghetti — N systems means N² connections</td></tr>
+    <tr><td><strong>ESB (Enterprise Service Bus)</strong></td><td>Centralised on-prem middleware that routes messages between systems. SOAP-era, heavyweight.</td><td>Heavy enterprise, regulated, on-prem-first</td><td>Slow to change, hard to scale to cloud, vendor lock</td></tr>
+    <tr><td><strong>iPaaS</strong></td><td>Cloud-native integration platform — low-code canvas, pre-built connectors, runs anywhere (cloud or self-managed atoms)</td><td>Mixed cloud + SaaS + on-prem stacks, fast time-to-value</td><td>Niche batch-heavy or extreme-low-latency cases still need bespoke</td></tr>
+  </table>
+
+  <h3>Your answer if asked "why has iPaaS won?"</h3>
+  <div class="script">
+    <strong class="tag">Say:</strong> "Three reasons. SaaS exploded, so the stack a customer needs to integrate is no longer all in one data centre — ESBs weren't built for that. Low-code canvases mean a leaner team can own integration, not a dedicated middleware squad. And iPaaS vendors invested in pre-built connectors, which collapses time-to-value from months to weeks. The point-to-point alternative breaks down past a handful of systems."
+  </div>
+
+  <h3>Your honest experience</h3>
+  <p>Be direct: you've done point-to-point integration (API to API, system to system) and worked alongside customer ERP middleware. You haven't operated a full iPaaS canvas in production yet — that's what Boomi University is closing.</p>
+</div>
+
+<div class="card" id="patterns">
+  <h2><span class="num">03</span> Integration patterns (know the names)</h2>
+  <p class="qmeta">Artur might list a few and ask which you've used. Have answers ready.</p>
+
+  <table>
+    <tr><th>Pattern</th><th>Plain English</th><th>Have you done it?</th></tr>
+    <tr><td><strong>Request-response (API call)</strong></td><td>System A asks System B for something, gets an answer back.</td><td>Yes — most of your work</td></tr>
+    <tr><td><strong>Publish-subscribe (pub/sub)</strong></td><td>System A publishes an event, any subscriber can react. Decoupled.</td><td>Conceptually yes (webhooks at inforcer/Lumen Health). Not Kafka-level.</td></tr>
+    <tr><td><strong>Message queue</strong></td><td>Sender drops a message in a queue, receiver picks it up when ready. Buffered + async.</td><td>Aware, not deep in production</td></tr>
+    <tr><td><strong>Batch / scheduled</strong></td><td>Run integration on a timer (nightly, hourly). Bulk movement.</td><td>Yes — Phocas BI implementations had scheduled data loads</td></tr>
+    <tr><td><strong>Event-driven (real-time)</strong></td><td>Trigger fires the moment something changes, integration runs immediately.</td><td>Yes — webhook-driven flows in side projects</td></tr>
+    <tr><td><strong>File-based / MFT</strong></td><td>One system drops a file, another picks it up. Common in B2B and finance.</td><td>Limited — adjacent at Phocas via ERP exports</td></tr>
+    <tr><td><strong>ETL / ELT</strong></td><td>Bulk data movement into a warehouse for analytics.</td><td>ETL-style at Phocas (BI implementations); not modern cloud ELT</td></tr>
+    <tr><td><strong>Fan-out / fan-in</strong></td><td>One event triggers many parallel integrations, results combined back.</td><td>Conceptually familiar, not done in production</td></tr>
+    <tr><td><strong>Saga / orchestration</strong></td><td>Multi-step transactions across systems with compensation if one fails.</td><td>Aware, not built end-to-end</td></tr>
+  </table>
+</div>
+
+<div class="card" id="api-led-vs-event">
+  <h2><span class="num">04</span> API-led vs event-driven</h2>
+  <p class="qmeta">MuleSoft uses "API-led" as marketing. Know the contrast.</p>
+
+  <table>
+    <tr><th>API-led</th><th>Event-driven</th></tr>
+    <tr><td>Architecture organised around well-defined APIs that systems call.</td><td>Architecture organised around events that systems react to.</td></tr>
+    <tr><td>Synchronous by default. System A calls System B and waits.</td><td>Asynchronous by default. System A fires an event, doesn't wait.</td></tr>
+    <tr><td>Strong when you need request-response (e.g. "give me this customer's order history").</td><td>Strong when you need real-time fan-out (e.g. "new order placed → notify warehouse, finance, marketing, fraud check").</td></tr>
+    <tr><td>Familiar to most teams. Easier to debug.</td><td>Decoupling wins at scale. Harder to debug — observability matters more.</td></tr>
+  </table>
+
+  <div class="script">
+    <strong class="tag">Say:</strong> "Most Commercial customers I've worked with are API-led in practice — REST endpoints, synchronous calls, request-response. Event-driven is where they go when scale or decoupling forces it. The two aren't either-or; modern iPaaS supports both, and Boomi can expose any API as an event source via webhooks or trigger flows on events from connected systems."
+  </div>
+</div>
+
+<div class="card" id="sync-vs-async">
+  <h2><span class="num">05</span> Synchronous vs asynchronous</h2>
+
+  <table>
+    <tr><th>Sync</th><th>Async</th></tr>
+    <tr><td>Caller waits for the response before continuing.</td><td>Caller fires the call and continues; response (if any) comes later.</td></tr>
+    <tr><td>Simple to reason about. Good for UI flows where the user is waiting.</td><td>Resilient under load. Good for long-running or fan-out work.</td></tr>
+    <tr><td>Fails fast — if the downstream is down, the user sees it.</td><td>Handles downstream outages via queue + retry. User isn't blocked.</td></tr>
+  </table>
+
+  <div class="callout"><strong>The Commercial-customer angle:</strong> sync is easier; async is where you go when reliability and scale demand it. Most mid-market starts sync and migrates flows to async as volume grows.</div>
+</div>
+
+<div class="card" id="rest-vs">
+  <h2><span class="num">06</span> REST vs SOAP vs GraphQL</h2>
+
+  <table>
+    <tr><th>API style</th><th>What it is</th><th>When you see it</th></tr>
+    <tr><td><strong>REST</strong></td><td>HTTP-based, resource-oriented, JSON payloads. The modern default.</td><td>~95% of your work. Modern SaaS APIs.</td></tr>
+    <tr><td><strong>SOAP</strong></td><td>XML-based, contract-first (WSDL), heavyweight. Legacy enterprise.</td><td>Banking, insurance, government, older ERPs. Boomi handles these via connectors.</td></tr>
+    <tr><td><strong>GraphQL</strong></td><td>Query language for APIs — client asks for exactly the fields it needs. Single endpoint.</td><td>Modern frontends pulling from complex data graphs. Sanity uses it.</td></tr>
+  </table>
+
+  <div class="script">
+    <strong class="tag">Say:</strong> "Most of my work is REST — JSON-over-HTTP, designed in Postman, consumed in TypeScript or Python. SOAP I've encountered on the customer-side at Phocas when older ERPs were involved; iPaaS shields you from most of that XML pain via connectors. GraphQL I've used on the headless CMS side with Sanity for the Dhaniro build."
+  </div>
+</div>
+
+<div class="card" id="webhooks">
+  <h2><span class="num">07</span> Webhooks vs polling</h2>
+
+  <table>
+    <tr><th>Polling</th><th>Webhooks</th></tr>
+    <tr><td>Your system asks the other system "anything new?" on a timer.</td><td>The other system pushes you a notification when something changes.</td></tr>
+    <tr><td>Wastes calls when nothing's changed. Latency = polling interval.</td><td>Real-time. No wasted calls. But you must expose a public endpoint.</td></tr>
+    <tr><td>Easier to set up. Works without webhook support on the source side.</td><td>Requires webhook support + an endpoint you control. Needs idempotency.</td></tr>
+  </table>
+
+  <p><strong>Your experience:</strong> built webhook-driven flows in Lumen Health (Pendo events) and via Meta Graph API for the Dhaniro client.</p>
+</div>
+
+<div class="card" id="auth">
+  <h2><span class="num">08</span> Authentication patterns (SSO, SAML, OAuth, SCIM)</h2>
+  <p class="qmeta">This is your strongest area — own it.</p>
+
+  <table>
+    <tr><th>Pattern</th><th>What it does</th><th>Where you've used it</th></tr>
+    <tr><td><strong>SSO (Single Sign-On)</strong></td><td>One login gets the user into many systems. Usually delivered via SAML or OIDC.</td><td>inforcer M365 deployments, UbiPark enterprise rollouts</td></tr>
+    <tr><td><strong>SAML 2.0</strong></td><td>XML-based federation protocol — IdP (e.g. Entra) asserts the user's identity to a SP (your app).</td><td>inforcer M365 / Entra integrations</td></tr>
+    <tr><td><strong>OAuth 2.0</strong></td><td>Delegated authorisation — user grants your app permission to act on their behalf. Token-based.</td><td>Meta Graph API, Microsoft Graph, most modern API integrations</td></tr>
+    <tr><td><strong>OIDC (OpenID Connect)</strong></td><td>Identity layer on top of OAuth — adds an ID token so you know <em>who</em> the user is, not just what they can do.</td><td>Modern SSO flows</td></tr>
+    <tr><td><strong>SCIM</strong></td><td>Automated user provisioning — when HR adds someone to Entra, SCIM pushes them into all connected SaaS apps automatically.</td><td>inforcer MSP onboarding flows</td></tr>
+    <tr><td><strong>API keys</strong></td><td>Simple shared-secret auth for service-to-service calls. Less secure than OAuth for user-context calls.</td><td>Throughout — Sanity, Supabase, Anthropic Claude API, Postman</td></tr>
+  </table>
+
+  <div class="script">
+    <strong class="tag">If asked:</strong> "Auth is honestly one of the strongest parts of my technical footprint. At inforcer I owned SSO/SAML setup as part of enterprise onboarding for MSP customers — Entra as IdP, SCIM for provisioning, OAuth flows for the Defender and Sentinel integrations. I've also done OAuth and OIDC on the side-project stack for Meta Graph, Anthropic Claude, Supabase. The patterns transfer cleanly to any iPaaS connector authentication model, which is most of what Boomi's connectors are doing under the hood."
+  </div>
+</div>
+
+<div class="card" id="apim">
+  <h2><span class="num">09</span> API Management (APIM) + Federated APIM</h2>
+  <p class="qmeta">JD explicitly calls out Federated APIM. Know what it means.</p>
+
+  <h3>APIM — what it does</h3>
+  <ul>
+    <li><strong>Design + publish</strong> — version APIs, expose them to internal and external consumers</li>
+    <li><strong>Secure</strong> — auth, rate limiting, IP allowlists, threat protection</li>
+    <li><strong>Govern</strong> — policies, contracts, SLAs</li>
+    <li><strong>Monetise</strong> — usage tiers, billing</li>
+    <li><strong>Observe</strong> — usage analytics, error tracking, dev portal</li>
+  </ul>
+
+  <h3>Federated APIM — the Boomi differentiator</h3>
+  <p>Traditional APIM = one central gateway everyone routes through. Brittle at scale, latency issues across regions, sovereignty problems for ANZ customers.</p>
+  <p><strong>Federated APIM = distributed gateways, central governance.</strong> Run a gateway in each region or cloud (AU stays in AU, EU stays in EU), but manage policies, security and observability from one plane.</p>
+
+  <div class="script">
+    <strong class="tag">Say:</strong> "Federated APIM is a real win for ANZ Commercial customers — they want data sovereignty without losing central governance. Run a gateway in AU for AU traffic, keep policy management central, get observability across the whole estate. That's a story I've heard from healthcare and finance customers I worked with at inforcer, just framed differently."
+  </div>
+</div>
+
+<div class="card" id="etl-elt-cdc">
+  <h2><span class="num">10</span> ETL vs ELT vs CDC (Rivery territory)</h2>
+
+  <table>
+    <tr><th>Pattern</th><th>What it is</th><th>When you use it</th></tr>
+    <tr><td><strong>ETL</strong></td><td>Extract → <strong>Transform</strong> → Load. Transform happens before data lands in target.</td><td>Older warehouses, when target compute is expensive.</td></tr>
+    <tr><td><strong>ELT</strong></td><td>Extract → Load → <strong>Transform</strong>. Land raw, transform in-warehouse with cheap compute (Snowflake, Databricks, BigQuery).</td><td>Modern cloud warehouse stack. Most new analytics builds.</td></tr>
+    <tr><td><strong>CDC (Change Data Capture)</strong></td><td>Stream only the changes (inserts, updates, deletes) instead of full table refreshes. Near-real-time.</td><td>When the warehouse needs to be close-to-live, not nightly.</td></tr>
+  </table>
+
+  <div class="script">
+    <strong class="tag">Say:</strong> "At Phocas I built ETL-style implementations — extract from MYOB or other ERPs, transform during the load, land in the BI model. I haven't run modern cloud ELT or CDC in production. That's exactly what Rivery brings to Boomi — handles the analytics-pipeline side that classic iPaaS doesn't. The way I'd position it to a Commercial customer is 'Boomi handles operational integration end-to-end, Rivery handles the analytics replication into Snowflake or Databricks so your AI models train on fresh data'."
+  </div>
+</div>
+
+<div class="card" id="mdm">
+  <h2><span class="num">11</span> MDM (Master Data Management) — Boomi DataHub</h2>
+
+  <p><strong>The problem MDM solves:</strong> Same customer has a different record in Salesforce, NetSuite, support tool, marketing tool. Which one is correct? MDM creates a "golden record" by matching, merging and syncing back.</p>
+
+  <h3>Where it matters in AI</h3>
+  <p>Agents are only as good as the data they query. If the agent calls the CRM and gets a stale customer record, the answer is wrong. MDM is the trust layer that makes AI agents safe to deploy against real customer data.</p>
+
+  <div class="script">
+    <strong class="tag">Say:</strong> "DataHub is the layer most Commercial customers don't know they need until they try to deploy AI. The moment an agent gives a customer the wrong order status because there are three contradicting records across systems, the project loses sponsorship. MDM is how you make AI safe in production. I haven't run DataHub specifically — I've worked alongside the problem at Phocas (BI implementations expose data quality issues fast) but that's a learning gap I'd close early."
+  </div>
+</div>
+
+<div class="card" id="mft">
+  <h2><span class="num">12</span> MFT (Managed File Transfer) — Thru territory</h2>
+
+  <p><strong>What MFT does:</strong> secure, governed file transfer between organisations. Replaces legacy FTP, SFTP, MOVEit, Aspera. Big in B2B, supply chain, healthcare, finance.</p>
+
+  <p><strong>Why it matters:</strong> regulated industries still run massive file-based integrations. iPaaS historically deferred to specialist MFT vendors. Thru brings that capability inside Boomi.</p>
+
+  <div class="amber"><strong>Honest gap:</strong> you haven't run MFT in production. The adjacent experience is file-based data flows at Phocas (ERP exports/imports) and understanding the security posture from inforcer (Essential 8, GDPR alignment). Frame it that way if asked.</div>
+</div>
+
+<div class="card" id="reliability">
+  <h2><span class="num">13</span> Errors, retries, idempotency, dead-letter queues</h2>
+  <p class="qmeta">If Artur probes reliability, these are the four words.</p>
+
+  <h3>The concepts</h3>
+  <ul>
+    <li><strong>Retries</strong> — when a call fails (network, downstream outage), try again. Usually with exponential backoff so you don't hammer a failing system.</li>
+    <li><strong>Idempotency</strong> — the same call run twice produces the same result. Critical for safe retries (you don't want to charge a card twice). Implemented via idempotency keys or natural keys.</li>
+    <li><strong>Dead-letter queue (DLQ)</strong> — when a message fails repeatedly, it gets parked in a DLQ instead of blocking the queue. Humans investigate later.</li>
+    <li><strong>Circuit breaker</strong> — if a downstream system is failing, stop hammering it for a window so it can recover.</li>
+  </ul>
+
+  <div class="script">
+    <strong class="tag">Say:</strong> "The reliability story is what separates a demo from production. I've built retry logic and idempotency into the side-project work — the Lumen Health AI Setup Assistant has to re-run safely if a Claude API call fails mid-flow. At enterprise scale, iPaaS like Boomi gives you these as platform primitives — retry policies, DLQs, observability dashboards — instead of every team rebuilding them. That's part of the 'why iPaaS won' argument."
+  </div>
+</div>
+
+<div class="card" id="observability">
+  <h2><span class="num">14</span> Logging, monitoring, observability</h2>
+
+  <ul>
+    <li><strong>Logs</strong> — events that happened. "Request X failed at step Y."</li>
+    <li><strong>Metrics</strong> — numbers over time. Latency, throughput, error rate.</li>
+    <li><strong>Traces</strong> — the path of a single request across multiple systems. Critical for debugging distributed flows.</li>
+  </ul>
+
+  <p><strong>Your angle:</strong> at inforcer, observability across the M365 stack (Sentinel for security, Defender for endpoint) was core to the demos. Same principle for iPaaS — Boomi gives you process-level observability so you can debug a failed integration without grepping logs across five systems.</p>
+</div>
+
+<div class="card" id="mcp-deep">
+  <h2><span class="num">15</span> MCP (Model Context Protocol) — deeper technical</h2>
+
+  <h3>One-line definition</h3>
+  <p>Open standard (originated by Anthropic) for how AI agents discover and call tools, data sources and prompts. JSON-RPC over stdio or HTTP. Think of it as USB-C for agents.</p>
+
+  <h3>The architecture</h3>
+  <ul>
+    <li><strong>MCP host</strong> — the AI app (Claude Desktop, an agent in AgentStudio)</li>
+    <li><strong>MCP client</strong> — embedded in the host, connects to servers</li>
+    <li><strong>MCP server</strong> — exposes tools, resources and prompts. Can wrap any API, database, file system.</li>
+  </ul>
+
+  <h3>Why Boomi cares (and what shipped at World 2026)</h3>
+  <p>Every existing Boomi integration, APIM endpoint or DataHub entity can be exposed as an MCP server. Instantly, 30,000+ customers' existing data and APIs become callable by any agent — governed. This is the through-line: integration becomes the thing that makes enterprise AI safe.</p>
+  <ul>
+    <li><strong>AgentStudio exposes 300,000+ endpoints as MCP interfaces</strong> — agents reach enterprise systems with no custom integration code per connection.</li>
+    <li><strong>Boomi Connect (now GA)</strong> — governed, MCP-based layer connecting AI tools (<strong>Claude, Copilot, Gemini</strong>) to enterprise apps via <strong>1,000+ managed MCP-enabled tools</strong>, plus an <strong>MCP Registry</strong> to discover/govern MCP servers.</li>
+  </ul>
+
+  <div class="script">
+    <strong class="tag">If Artur goes deep:</strong> "I've worked with MCP-style patterns on the AI side — the Lumen Health Setup Assistant runs inside Claude Code and uses tool-calling to drive a Next.js build, which is conceptually the same shape. Production MCP servers in an enterprise context I haven't operated — but the pattern is well within the API design and integration work I do. What clicked for me is that by exposing Boomi's 1,000s of connectors as MCP tools, every integration Boomi ever built becomes something an agent can safely call. That's why the message is data activation, not 'we built a chatbot'."
+  </div>
+</div>
+
+<div class="card" id="agentstudio-tech">
+  <h2><span class="num">16</span> AgentStudio — the technical fit</h2>
+
+  <p>Plain definition: low-code environment to design, deploy, observe and govern AI agents. Sits on top of Boomi's integration, APIM and DataHub layer. <strong>75,000+ agents now run in production</strong> across Boomi's customer base, governed by the <strong>Agent Control Tower</strong>.</p>
+
+  <h3>What it gives an SC technically</h3>
+  <ul>
+    <li>Visual agent design canvas — connect tools, model, prompts, guardrails</li>
+    <li>Multi-model support — swap GPT, Claude, Gemini without rebuilding the agent</li>
+    <li>MCP-native — pull in any MCP server as a tool</li>
+    <li>Governance layer — identity, data scope, audit log, kill switch (Agent Control Tower)</li>
+    <li>Observability — every agent call traced and replayable</li>
+    <li><strong>Embeddable</strong> — new APIs let you invoke Boomi agents from any app, portal or pipeline</li>
+  </ul>
+
+  <h3>The rest of the May 2026 agentic stack (know the names)</h3>
+  <table>
+    <tr><th>Product</th><th>One line</th></tr>
+    <tr><td><strong>Boomi Companion</strong></td><td>Agentic <em>engineering</em>: design, build, test and deploy integrations through natural language with your preferred AI tools. (The "AI builds the integration for you" piece.)</td></tr>
+    <tr><td><strong>Boomi Orchestrate</strong></td><td>Combine agents, APIs, integrations, event streams and data models in natural language.</td></tr>
+    <tr><td><strong>Boomi Connect</strong> (GA)</td><td>Governed MCP layer connecting Claude/Copilot/Gemini to enterprise systems (1,000+ MCP tools).</td></tr>
+    <tr><td><strong>Knowledge Hub</strong></td><td>Governed search/retrieval across enterprise knowledge — grounds agents in trusted info.</td></tr>
+    <tr><td><strong>Meta Hub</strong></td><td>Grounds agents in consistent, expert-endorsed business definitions.</td></tr>
+    <tr><td><strong>Distributed Agent Runtime</strong></td><td>Run agents on-prem / keep sensitive data behind the firewall (the runtime story, applied to agents).</td></tr>
+  </table>
+
+  <div class="script">
+    <strong class="tag">Say:</strong> "The technical bet I find interesting is that AgentStudio doesn't try to be a model — it's the control plane that sits above any model and any MCP. That's the right architectural call. The customers I'd be selling to don't want to bet on one model; they want to bet on the platform that lets them swap models as the landscape changes."
+  </div>
+  <div class="callout"><strong>Boomi Companion is the one to name if Artur asks about the developer/SC experience</strong> — it's natural-language integration building, which is exactly the workflow I already live in with Claude Code and Cursor. Easy, authentic bridge from my own building to Boomi's 2026 direction.</div>
+</div>
+
+<div class="card" id="design-question">
+  <h2><span class="num">17</span> Live design question — "How would you integrate X with Y?"</h2>
+  <p class="qmeta">If Artur tests live problem-solving, this is the shape. Use the 5-step frame below.</p>
+
+  <h3>The 5-step frame (always use this)</h3>
+  <ol>
+    <li><strong>Clarify the goal</strong> — "What's the business outcome? Is this analytics, operational, real-time, batch?"</li>
+    <li><strong>Map the data flow</strong> — source → transform → target. What's the trigger?</li>
+    <li><strong>Pick the pattern</strong> — sync/async, push/pull, batch/event-driven. Justify in one line.</li>
+    <li><strong>Auth + governance</strong> — how do the systems trust each other? Where does sensitive data sit?</li>
+    <li><strong>Failure mode</strong> — what happens when the downstream is down? Retries? DLQ? Customer-visible degradation?</li>
+  </ol>
+
+  <h3>Worked example: "Integrate Shopify with NetSuite for a mid-market ANZ retailer"</h3>
+  <div class="script">
+    <strong class="tag">Walk-through:</strong> "First I'd clarify — are we syncing orders, inventory, or both, and is it real-time or end-of-day? Assume orders, near-real-time. Pattern: Shopify webhook on order-placed → Boomi process picks it up → transforms to NetSuite sales order schema → POSTs to NetSuite via REST. Auth: OAuth on both sides via the Boomi connectors. Governance: PII (customer email, address) stays in transit only, no persistent storage in the iPaaS layer. Failure: if NetSuite is down, message lands in DLQ, alert fires, replay-safe via idempotency key on the Shopify order ID. Where AgentStudio attaches in 6 months: a customer-service agent that can query order status across both systems via MCP, with the integration as the runway."
+  </div>
+
+  <div class="callout"><strong>Why this answer wins:</strong> shows you think like an integration designer, not a feature-pitcher. Lands on Boomi capabilities organically. Closes with the AI expansion story without forcing it.</div>
+</div>
+
+<div class="card" id="your-projects">
+  <h2><span class="num">18</span> Your project deep-dives (be ready for "walk me through one")</h2>
+
+  <h3>1. AI-Queryable Portfolio — <code>niroo-arjuna.vercel.app</code></h3>
+  <ul>
+    <li><strong>Stack:</strong> React 18, TypeScript, Supabase, Anthropic Claude, Vercel</li>
+    <li><strong>Integration angle:</strong> visitors ask natural-language questions about your experience → query goes to Claude with RAG context pulled from Supabase → grounded answer returned</li>
+    <li><strong>Why it matters for Boomi:</strong> end-to-end AI integration — auth, API calls, vector retrieval, prompt orchestration. Same primitives AgentStudio composes at platform level.</li>
+  </ul>
+
+  <h3>2. Lumen Health Demo — <code>lumen-health-niroo.vercel.app</code></h3>
+  <ul>
+    <li><strong>Stack:</strong> Next.js 16 App Router, TypeScript, shadcn/ui, Tailwind v4, Pendo, Claude Code, Vercel</li>
+    <li><strong>Integration angle:</strong> AI Setup Assistant agent runs inside Claude Code, drives the Next.js build end-to-end via tool-calling (the same shape as MCP). Pendo for product analytics instrumentation.</li>
+    <li><strong>Why it matters for Boomi:</strong> live example of agent + tool-calling architecture in a production-style build. Direct line to AgentStudio's value prop.</li>
+  </ul>
+
+  <h3>3. Dhaniro Mortgage Solutions — <code>dhaniromortgages.com.au</code></h3>
+  <ul>
+    <li><strong>Stack:</strong> Next.js 15, TypeScript, Tailwind, Sanity (headless CMS), Meta Graph API, Vercel</li>
+    <li><strong>Integration angle:</strong> headless CMS via GraphQL, Meta Graph API integration for social feeds, OAuth across multiple providers, SEO instrumentation</li>
+    <li><strong>Why it matters for Boomi:</strong> real third-party API integration with auth flows, content modelling, and production deploy. Touches GraphQL and REST.</li>
+  </ul>
+</div>
+
+<div class="card" id="cheat">
+  <h2><span class="num">19</span> One-line cheat answers (for live recall)</h2>
+  <table>
+    <tr><th>Term</th><th>One-line answer</th></tr>
+    <tr><td>iPaaS</td><td>Cloud-native integration platform with low-code canvas and pre-built connectors.</td></tr>
+    <tr><td>ESB</td><td>Legacy on-prem middleware bus, SOAP-era, hard to scale to cloud.</td></tr>
+    <tr><td>API-led</td><td>Architecture organised around well-defined APIs systems call.</td></tr>
+    <tr><td>Event-driven</td><td>Architecture organised around events systems react to, async by default.</td></tr>
+    <tr><td>REST</td><td>HTTP-based, resource-oriented, JSON. The modern default.</td></tr>
+    <tr><td>SOAP</td><td>XML-based, contract-first (WSDL), legacy enterprise.</td></tr>
+    <tr><td>GraphQL</td><td>Query language for APIs — client picks exactly the fields it needs.</td></tr>
+    <tr><td>OAuth 2.0</td><td>Delegated authorisation via tokens. User grants your app permission.</td></tr>
+    <tr><td>SAML</td><td>XML federation protocol — IdP asserts identity to a service provider.</td></tr>
+    <tr><td>OIDC</td><td>Identity layer on top of OAuth — adds the ID token.</td></tr>
+    <tr><td>SCIM</td><td>Automated user provisioning standard.</td></tr>
+    <tr><td>Webhook</td><td>Push-based event notification, opposite of polling.</td></tr>
+    <tr><td>Idempotency</td><td>Same call run twice produces the same result. Critical for safe retries.</td></tr>
+    <tr><td>DLQ</td><td>Dead-letter queue — failed messages parked for human review.</td></tr>
+    <tr><td>ETL</td><td>Extract → Transform → Load. Transform before landing.</td></tr>
+    <tr><td>ELT</td><td>Extract → Load → Transform. Land raw, transform in-warehouse.</td></tr>
+    <tr><td>CDC</td><td>Change Data Capture — stream only deltas in near-real-time.</td></tr>
+    <tr><td>MDM</td><td>Master Data Management — golden record across systems.</td></tr>
+    <tr><td>MFT</td><td>Managed File Transfer — secure governed file exchange.</td></tr>
+    <tr><td>APIM</td><td>API Management — design, secure, govern, observe APIs.</td></tr>
+    <tr><td>Federated APIM</td><td>Distributed gateways, central governance.</td></tr>
+    <tr><td>MCP</td><td>Open standard for agents to discover and call tools. USB-C for agents.</td></tr>
+    <tr><td>AgentStudio</td><td>Single control plane to design, deploy, observe and govern agents. 75,000+ in production.</td></tr>
+    <tr><td>Boomi Companion</td><td>Build/test/deploy integrations in natural language with your AI tool of choice.</td></tr>
+    <tr><td>Boomi Connect</td><td>Governed MCP layer linking Claude/Copilot/Gemini to enterprise systems (1,000+ tools).</td></tr>
+    <tr><td>Boomi Orchestrate</td><td>Combine agents, APIs, integrations and data models in natural language.</td></tr>
+    <tr><td>Knowledge Hub / Meta Hub</td><td>Grounding layers — trusted search/retrieval (Knowledge) + consistent business definitions (Meta).</td></tr>
+    <tr><td>Data activation</td><td>Making enterprise data connected, governed and AI-ready so agents can act on it. Boomi's core 2026 message.</td></tr>
+    <tr><td>Control plane</td><td>The layer where you design, deploy, govern, observe — above the work itself.</td></tr>
+  </table>
+
+  <p style="margin-top:14px;font-size:12px;color:var(--muted);font-style:italic;">Companion to <code>boomi-artur-technical-round.html</code>. Open both in side-by-side tabs.</p>
+</div>
+
+</main>
+</div>
+
+</body>
+</html>

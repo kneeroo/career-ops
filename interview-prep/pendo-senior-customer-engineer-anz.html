@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Pendo Interview Prep — Niroo Arjuna</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --primary: 222 47% 23%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 240 4.8% 95.9%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 217 91% 60%;
+    --border: 240 5.9% 90%;
+    --radius: 0.5rem;
+  }
+  body {
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: hsl(var(--background));
+    color: hsl(var(--foreground));
+  }
+  .card {
+    background: hsl(var(--card));
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--radius);
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.03);
+  }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 9999px;
+    padding: 0.125rem 0.625rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    border: 1px solid hsl(var(--border));
+  }
+  .badge-primary { background: hsl(var(--primary)); color: hsl(var(--primary-foreground)); border-color: transparent; }
+  .badge-muted { background: hsl(var(--muted)); color: hsl(var(--muted-foreground)); }
+  .badge-accent { background: hsl(217 91% 95%); color: hsl(217 91% 35%); border-color: hsl(217 91% 85%); }
+  .badge-warn { background: hsl(38 92% 95%); color: hsl(38 92% 35%); border-color: hsl(38 92% 85%); }
+  .badge-success { background: hsl(142 71% 95%); color: hsl(142 71% 30%); border-color: hsl(142 71% 80%); }
+  .badge-purple { background: hsl(270 60% 95%); color: hsl(270 60% 35%); border-color: hsl(270 60% 85%); }
+  .badge-rose { background: hsl(345 80% 95%); color: hsl(345 80% 35%); border-color: hsl(345 80% 85%); }
+  .tab-btn {
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: hsl(var(--muted-foreground));
+    transition: all 0.15s;
+  }
+  .tab-btn:hover { color: hsl(var(--foreground)); }
+  .tab-btn.active {
+    background: hsl(var(--card));
+    color: hsl(var(--foreground));
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  }
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    transition: background 0.15s;
+    cursor: pointer;
+  }
+  .check-item:hover { background: hsl(var(--muted)); }
+  .check-item input[type="checkbox"] {
+    margin-top: 0.25rem;
+    width: 1.125rem;
+    height: 1.125rem;
+    border-radius: 0.25rem;
+    accent-color: hsl(var(--primary));
+    flex-shrink: 0;
+  }
+  .check-item.checked .check-text { text-decoration: line-through; color: hsl(var(--muted-foreground)); }
+  .progress-bar {
+    height: 0.5rem;
+    background: hsl(var(--muted));
+    border-radius: 9999px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, hsl(217 91% 60%), hsl(222 47% 35%));
+    transition: width 0.3s ease;
+  }
+  details > summary { cursor: pointer; list-style: none; }
+  details > summary::-webkit-details-marker { display: none; }
+  details[open] .chevron { transform: rotate(90deg); }
+  .chevron { transition: transform 0.2s; }
+  .kbd {
+    font-family: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, monospace;
+    font-size: 0.8125rem;
+    background: hsl(var(--muted));
+    padding: 0.125rem 0.375rem;
+    border-radius: 0.25rem;
+    border: 1px solid hsl(var(--border));
+  }
+  table.compare th, table.compare td { padding: 0.625rem 0.875rem; text-align: left; font-size: 0.875rem; vertical-align: top; }
+  table.compare thead { background: hsl(var(--muted)); }
+  table.compare tr { border-bottom: 1px solid hsl(var(--border)); }
+  table.compare tr:last-child { border-bottom: none; }
+  .q-card { border-left: 3px solid hsl(var(--accent)); padding: 0.5rem 0 0.5rem 1rem; margin-bottom: 1rem; }
+  .q-card.behavioural { border-left-color: hsl(270 60% 55%); }
+  .q-card.role { border-left-color: hsl(142 71% 45%); }
+  .q-card.redflag { border-left-color: hsl(38 92% 50%); }
+  .q-question { font-size: 0.9375rem; font-weight: 600; color: hsl(var(--foreground)); margin-bottom: 0.25rem; }
+  .q-answer { font-size: 0.875rem; line-height: 1.55; color: hsl(var(--muted-foreground)); }
+  .q-answer strong { color: hsl(var(--foreground)); }
+  .round-card { border-left: 4px solid hsl(var(--primary)); }
+</style>
+</head>
+<body>
+
+<div class="max-w-5xl mx-auto px-6 py-8">
+
+  <!-- HEADER -->
+  <header class="mb-8">
+    <div class="flex items-center justify-between mb-3 flex-wrap gap-2">
+      <div class="flex items-center gap-2 flex-wrap">
+        <span class="badge badge-accent">
+          <i data-lucide="briefcase" class="w-3 h-3 mr-1"></i>
+          Interview Prep
+        </span>
+        <span class="badge badge-primary">4.2 / 5 match</span>
+        <span class="badge badge-muted">Pendo Senior CE — ANZ</span>
+        <span class="badge badge-success">Warm intro live</span>
+      </div>
+      <span class="text-xs text-slate-500">Niroo Arjuna · last updated 2026-05-18</span>
+    </div>
+    <h1 class="text-3xl font-bold tracking-tight mb-2">Pendo — Sr Customer Engineer, ANZ (Presales &amp; Post Sales)</h1>
+    <p class="text-slate-600">Hiring manager: <strong>Hiltsje Smilde</strong> (Manager, Customer Engineering, APAC). Warm intro from Richa Sharma. Virtual chat scheduled 2026-05-18 2:15 PM.</p>
+  </header>
+
+  <!-- PROGRESS -->
+  <div class="card p-5 mb-6">
+    <div class="flex items-center justify-between mb-3">
+      <div>
+        <h3 class="font-semibold text-sm">Prep progress</h3>
+        <p class="text-xs text-slate-500">Tick items as you complete them. Saved automatically in this browser.</p>
+      </div>
+      <div class="text-right">
+        <div class="text-2xl font-bold tabular-nums" id="progress-count">0 / 0</div>
+        <div class="text-xs text-slate-500">items complete</div>
+      </div>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+    </div>
+    <div class="flex justify-end mt-3">
+      <button onclick="resetProgress()" class="text-xs text-slate-500 hover:text-slate-900 underline">Reset progress</button>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="bg-slate-100 p-1 rounded-lg inline-flex gap-1 mb-6 flex-wrap">
+    <button class="tab-btn active" data-tab="todays-chat"><i data-lucide="zap" class="w-4 h-4 inline mr-1.5"></i>Today's Chat</button>
+    <button class="tab-btn" data-tab="pendo-setup"><i data-lucide="settings-2" class="w-4 h-4 inline mr-1.5"></i>Pendo Setup</button>
+    <button class="tab-btn" data-tab="overview"><i data-lucide="layout-dashboard" class="w-4 h-4 inline mr-1.5"></i>Overview</button>
+    <button class="tab-btn" data-tab="rounds"><i data-lucide="git-branch" class="w-4 h-4 inline mr-1.5"></i>Rounds</button>
+    <button class="tab-btn" data-tab="questions"><i data-lucide="message-circle-question" class="w-4 h-4 inline mr-1.5"></i>Questions</button>
+    <button class="tab-btn" data-tab="stories"><i data-lucide="book-open" class="w-4 h-4 inline mr-1.5"></i>Stories</button>
+    <button class="tab-btn" data-tab="techprep"><i data-lucide="wrench" class="w-4 h-4 inline mr-1.5"></i>Tech Prep</button>
+    <button class="tab-btn" data-tab="signals"><i data-lucide="compass" class="w-4 h-4 inline mr-1.5"></i>Signals</button>
+    <button class="tab-btn" data-tab="checklist"><i data-lucide="clock" class="w-4 h-4 inline mr-1.5"></i>24h Checklist</button>
+  </div>
+
+  <!-- TAB: TODAY'S CHAT -->
+  <section id="tab-todays-chat" class="tab-content">
+
+    <div class="card p-6 mb-4" style="background: linear-gradient(135deg, hsl(217 91% 97%), hsl(270 60% 97%)); border-color: hsl(217 91% 85%);">
+      <div class="flex items-start gap-3">
+        <i data-lucide="clock" class="w-6 h-6 text-blue-600 mt-0.5 shrink-0"></i>
+        <div>
+          <h2 class="text-xl font-semibold mb-1">Today's chat with Hiltsje &mdash; 2:15 PM</h2>
+          <p class="text-sm text-slate-700">First virtual chat, ~20 minutes. Posture is mutual fit, not tech grilling. She leads. Don't over-prepare; let the conversation breathe.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card p-6 mb-4">
+      <h2 class="text-xl font-semibold mb-3 flex items-center gap-2"><i data-lucide="message-circle" class="w-5 h-5 text-blue-600"></i>What Hiltsje will likely ask you</h2>
+      <table class="compare w-full">
+        <thead><tr><th class="w-1/3">Likely question</th><th>Response framework</th></tr></thead>
+        <tbody>
+          <tr><td><strong>1. "Tell me about yourself / walk me through your background"</strong></td><td><strong>30-second hook.</strong> "5+ years across BI consulting at Phocas, enterprise IoT at UbiPark &mdash; owned Monash Health, Melbourne Airport, CBRE end-to-end &mdash; and currently pre-sales at inforcer running 100+ POCs in Microsoft 365 security. The CE role consolidates the motions I'm already running across all three." Land under 90 seconds.</td></tr>
+          <tr><td><strong>2. "Why Pendo? Why this CE role specifically?"</strong></td><td>"Pendo's CE definition matches my profile &mdash; I've never seen the boundary between pre-sales and post-sales as a hard line. Also AI-curious is a real filter; I've shipped projects with Claude API and used your own AI Setup Assistant to install Pendo on a demo I built."</td></tr>
+          <tr><td><strong>3. "What's your understanding of the CE role?"</strong></td><td>Reference the four pillars verbatim (Richa primed this): <em>"Acquisition, complex implementations + value realisation, adoption expansion, technical escalation. The four together is one job; I've been doing it in pieces across roles."</em></td></tr>
+          <tr><td><strong>4. "What's your experience with Pendo as a product?"</strong></td><td><strong>The door to Lumen Health.</strong> "None until two weeks ago. Then I built a Next.js healthcare demo and installed Pendo end-to-end using your AI Setup Assistant. Happy to walk through it or share the Loom &mdash; I think it shows ramp speed more than a CV bullet would."</td></tr>
+          <tr><td><strong>5. "Sydney relocation &mdash; talk me through that"</strong></td><td>"Open to relocating for this role. The hybrid cadence I run in Melbourne is the same in Sydney. Logistics are a logistics conversation; happy to work through them when there's an offer to align around."</td></tr>
+          <tr><td><strong>6. "What kind of role are you looking for next?"</strong></td><td>Forward-looking, not a complaint. "An Enterprise SaaS environment with deeper post-sales motion and a product-analytics domain where the AI-curious operator profile actually matters. Pendo CE is the most direct fit I've found."</td></tr>
+          <tr><td><strong>7. "What questions do you have for me?"</strong></td><td>See next card &darr;</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card p-6 mb-4">
+      <h2 class="text-xl font-semibold mb-1 flex items-center gap-2"><i data-lucide="bookmark" class="w-5 h-5 text-purple-600"></i>Your prepped answers &mdash; Pendo-adapted</h2>
+      <p class="text-sm text-slate-600 mb-4">Three answers polished from your personal question bank, Contentful refs swapped for Pendo. Click each to expand.</p>
+
+      <details class="border border-purple-200 rounded-md mb-3 bg-purple-50/40">
+        <summary class="flex items-center justify-between p-4">
+          <div class="flex items-center gap-2">
+            <i data-lucide="chevron-right" class="w-4 h-4 chevron"></i>
+            <span class="badge badge-purple">Must use</span>
+            <span class="font-semibold text-sm">Tell me about yourself</span>
+          </div>
+          <span class="text-xs text-slate-500">Land in 90 sec</span>
+        </summary>
+        <div class="px-5 pb-5 pt-1 space-y-3 text-sm text-slate-800 leading-relaxed">
+          <p><strong>Five-plus years across enterprise SaaS in three motions</strong> &mdash; implementation consulting, enterprise account ownership, and pre-sales. The journey has been deliberate; each role added a layer.</p>
+          <p>I started at <strong>Phocas Software</strong>, a BI company, where I delivered <strong>50+ end-to-end implementations</strong> across mid-market and enterprise. That's where I learned how to scope with C-level, design data models, and run ERP integrations. I built reusable templates the team adopted, <strong>cutting implementation lead time 25%</strong>.</p>
+          <p>From there I moved to <strong>UbiPark</strong>, scaling smart-parking IoT across APAC. I owned end-to-end enterprise onboarding for <strong>Monash Health, Melbourne Airport, Monash University, CBRE, and Charter Hall</strong>. I <strong>cut deployment time 30%</strong> by templating what others were doing manually, and <strong>lifted customer retention 20%</strong> through usage-driven engagement. UbiPark is also where I sat in on enterprise tender meetings and got my first taste of pre-sales.</p>
+          <p>Most recently I've been a <strong>Pre-Sales Engineer at inforcer</strong>, an M365 security platform, running <strong>100+ technical deep dives, demos, and POCs</strong> across ANZ, partnering with Account Executives from discovery through commercial close.</p>
+          <p>The Pendo CE role consolidates the motions I'm already running across those three &mdash; pre-sales, implementation, and adoption. I've also been hands-on with AI tooling: built an AI-queryable portfolio with the Claude API, and <strong>shipped a working Pendo install on a Next.js healthcare demo using your AI Setup Assistant</strong>. That's the kind of pattern I want to bring into customer onboardings here.</p>
+          <p class="text-xs text-slate-500 italic">Delivery note: ~250 words, ~85-90 sec. Eight quantified beats embedded (5+ yrs, 3 motions, 50+ implementations, 25% lead-time cut, 5 named accounts, 30% deployment cut, 20% retention lift, 100+ POCs). Closer line "the kind of pattern I want to bring into customer onboardings here" converts the autobiography into a sales pitch &mdash; don't drop it.</p>
+        </div>
+      </details>
+
+      <details class="border border-purple-200 rounded-md mb-3 bg-purple-50/40">
+        <summary class="flex items-center justify-between p-4">
+          <div class="flex items-center gap-2">
+            <i data-lucide="chevron-right" class="w-4 h-4 chevron"></i>
+            <span class="badge badge-purple">Must use</span>
+            <span class="font-semibold text-sm">Why do you want to leave your current role?</span>
+          </div>
+          <span class="text-xs text-slate-500">~45 sec</span>
+        </summary>
+        <div class="px-5 pb-5 pt-1 space-y-3 text-sm text-slate-800 leading-relaxed">
+          <p>My role at inforcer was impacted by a redundancy. It was a small company and they made the decision to restructure the team. I had a great experience there, particularly getting hands-on with the full pre-sales motion across ANZ &mdash; running discovery, demos, POCs and commercial close. But I'm taking it as an opportunity to be deliberate about my next step rather than rushing into something.</p>
+          <p>What I'm looking for now is an established pre-sales function with a strong leader I can learn from. That's what makes <strong>Pendo</strong> stand out. Joining a team where the CE function has real structure, under someone who was the first APAC presales hire and has now grown into the CE leadership, is exactly the kind of opportunity I've been waiting for.</p>
+          <p class="text-xs text-slate-500 italic">Delivery note: no negativity about inforcer, brief on the redundancy, pivot fast to forward-looking framing. The "first APAC presales hire who's now growing the CE team" line lands directly on Hiltsje &mdash; she'll recognise her own story.</p>
+        </div>
+      </details>
+
+      <details class="border border-purple-200 rounded-md bg-purple-50/40">
+        <summary class="flex items-center justify-between p-4">
+          <div class="flex items-center gap-2">
+            <i data-lucide="chevron-right" class="w-4 h-4 chevron"></i>
+            <span class="badge badge-purple">Must use</span>
+            <span class="font-semibold text-sm">Why Pendo?</span>
+          </div>
+          <span class="text-xs text-slate-500">3-part structure, ~75 sec</span>
+        </summary>
+        <div class="px-5 pb-5 pt-1 space-y-3 text-sm text-slate-800 leading-relaxed">
+          <p><strong>First, the product and category fit.</strong> Pendo sits at the intersection of three things I care about: product analytics, customer onboarding, and now AI-agent telemetry. The shift to agent-driven product experiences is real, and Pendo is leading the conversation through Agent Analytics (GA December 2025) and recent acquisitions like Zelta (now Pendo Listen) and Forwrd predictive analytics. I want to be selling a product I can stand behind technically, and I've already done the work to ramp &mdash; installed Pendo end-to-end on a Next.js demo I built using your own AI Setup Assistant.</p>
+          <p><strong>Second, the CE role itself.</strong> The way the role consolidates what used to live across CS, TAM, and SE matches how I already operate. I've never seen the boundary between pre-sales and post-sales as a hard line, and Pendo's CE definition validates that. Joining a team where the function is being built right, under someone who was the first APAC presales hire and has now grown into the CE leadership, is exactly the structure I've been waiting for.</p>
+          <p><strong>Third, the timing.</strong> Pendo is post-IPO, expanding APAC, and the CE function is still being shaped. Being part of that early enough to contribute to the playbook rather than just executing it is the kind of opportunity where I do my best work.</p>
+          <p class="text-xs text-slate-500 italic">Delivery note: rule-of-three structure mirrors your prepped Contentful answer. The three pillars (product, role, timing) are easy to recall under pressure. Lumen Health install drops naturally in pillar #1 without needing a separate setup.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="card p-6 mb-4">
+      <h2 class="text-xl font-semibold mb-1 flex items-center gap-2"><i data-lucide="hand" class="w-5 h-5 text-emerald-600"></i>Questions to ask Hiltsje</h2>
+      <p class="text-sm text-slate-600 mb-4"><strong>Pick 2&ndash;3 max.</strong> Leave room for natural conversation. Order from softer to sharper.</p>
+
+      <div class="space-y-3">
+        <div class="p-4 rounded-md border border-slate-200 bg-slate-50">
+          <div class="flex items-center gap-2 mb-1">
+            <span class="badge badge-muted">Tier 1</span>
+            <span class="text-xs text-slate-500">Rapport + signal &mdash; always safe</span>
+          </div>
+          <p class="text-sm italic text-slate-800 mb-1">"You were the first APAC presales hire at Pendo &mdash; what's changed in the way the team operates since you've taken over the CE org?"</p>
+          <p class="text-xs text-slate-500">Why: shows you read her LinkedIn, opens her to talk about her own work, low-risk warm-up.</p>
+        </div>
+
+        <div class="p-4 rounded-md border border-emerald-200 bg-emerald-50">
+          <div class="flex items-center gap-2 mb-1">
+            <span class="badge badge-success">Tier 2</span>
+            <span class="text-xs text-slate-500">Operational &mdash; smart-question signal</span>
+          </div>
+          <p class="text-sm italic text-slate-800 mb-1">"Across the CE motions &mdash; acquisition, implementation, expansion, escalation &mdash; which is the team currently most stretched on, and where is the next CE hire expected to plug in?"</p>
+          <p class="text-xs text-slate-500">Why: directly references the role's four pillars Richa described. Signals you're already thinking like a CE leader.</p>
+        </div>
+
+        <div class="p-4 rounded-md border border-purple-200 bg-purple-50">
+          <div class="flex items-center gap-2 mb-1">
+            <span class="badge badge-purple">Tier 3</span>
+            <span class="text-xs text-slate-500">Forward-looking &mdash; positions you as serious</span>
+          </div>
+          <p class="text-sm italic text-slate-800 mb-1">"How is Agent Analytics changing the CE motion in 2026 &mdash; what new conversations is it opening with existing customers since it went GA in December?"</p>
+          <p class="text-xs text-slate-500">Why: shows you've tracked Pendo's strategic direction beyond marketing fluff. AI-curious operator signal in action.</p>
+        </div>
+
+        <div class="p-4 rounded-md border border-blue-200 bg-blue-50">
+          <div class="flex items-center gap-2 mb-1">
+            <span class="badge badge-accent">Tier 4</span>
+            <span class="text-xs text-slate-500">Practical close &mdash; ask LAST</span>
+          </div>
+          <p class="text-sm italic text-slate-800 mb-1">"What does the rest of the hiring process look like from here?"</p>
+          <p class="text-xs text-slate-500">Why: closes the chat with a logistics confirmation. Walk out knowing what happens next.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card p-6 mb-4">
+      <h2 class="text-xl font-semibold mb-3 flex items-center gap-2"><i data-lucide="x-octagon" class="w-5 h-5 text-rose-600"></i>Don't ask in this first chat</h2>
+      <ul class="space-y-2 text-sm text-slate-700">
+        <li class="flex gap-2"><span class="text-rose-600">&times;</span><div>Anything about <strong>compensation</strong> unless Hiltsje opens it (recruiter screen is the place for that)</div></li>
+        <li class="flex gap-2"><span class="text-rose-600">&times;</span><div><strong>"What is Pendo?"</strong>-type questions you could Google</div></li>
+        <li class="flex gap-2"><span class="text-rose-600">&times;</span><div>Anything <strong>negative</strong> about Pendo ("what are the company's biggest challenges?")</div></li>
+        <li class="flex gap-2"><span class="text-rose-600">&times;</span><div>Multi-part questions that take her 5+ min to answer in a 20-min slot</div></li>
+      </ul>
+    </div>
+
+    <div class="card p-6 mb-4">
+      <h2 class="text-xl font-semibold mb-1 flex items-center gap-2"><i data-lucide="dollar-sign" class="w-5 h-5 text-emerald-600"></i>If compensation comes up</h2>
+      <p class="text-sm text-slate-600 mb-4">Comp in a hiring-manager first chat is non-standard. If Hiltsje opens the door, treat it as a positive signal (she's pre-qualifying you for the team). Play it in three layers:</p>
+
+      <div class="space-y-3 mb-5">
+        <div class="p-4 rounded-md border border-emerald-200 bg-emerald-50">
+          <div class="flex items-center gap-2 mb-2"><span class="badge badge-success">Default</span><span class="text-xs text-slate-600">Soft deflect to recruiter</span></div>
+          <p class="text-sm italic text-slate-800 mb-2">"Happy to dig into specifics with the recruiter once we've confirmed fit on the role. At a high level I'm targeting the senior end of the ANZ CE band &mdash; open to discussing how you structure base, variable, and equity given Pendo just went public."</p>
+          <p class="text-xs text-slate-600">Doesn't refuse. Signals total-package thinking + IPO-awareness. Anchors "senior end" without committing.</p>
+        </div>
+
+        <div class="p-4 rounded-md border border-blue-200 bg-blue-50">
+          <div class="flex items-center gap-2 mb-2"><span class="badge badge-accent">If pushed for a number</span><span class="text-xs text-slate-600">Anchor: AUD 220K OTE</span></div>
+          <p class="text-sm italic text-slate-800 mb-2">"Anchoring at around AUD 220 OTE for a senior CE role, with the split and equity open to discussion. The specific structure matters more to me than the headline number &mdash; for example, a higher equity weight at a post-IPO company like Pendo is meaningfully different to the same number at a pre-revenue startup."</p>
+          <p class="text-xs text-slate-600">Mid of $200&ndash;240K target. Defensible, lands in market band, gives negotiation room both directions.</p>
+        </div>
+
+        <div class="p-4 rounded-md border border-purple-200 bg-purple-50">
+          <div class="flex items-center gap-2 mb-2"><span class="badge badge-purple">If she shares Pendo's range first</span><span class="text-xs text-slate-600">Ideal scenario</span></div>
+          <p class="text-sm italic text-slate-800 mb-2">"Thanks for sharing that. The structure sounds aligned with what I had in mind. I'd want to talk through the variable trigger structure, ramp period, and equity refresh policy as we get further along, but at the headline level we're in the same neighbourhood."</p>
+          <p class="text-xs text-slate-600">Maximum information, zero commitment. Lets her anchor first.</p>
+        </div>
+
+        <div class="p-4 rounded-md border border-amber-200 bg-amber-50">
+          <div class="flex items-center gap-2 mb-2"><span class="badge badge-warn">If she asks current comp</span><span class="text-xs text-slate-600">Don't answer the question asked</span></div>
+          <p class="text-sm italic text-slate-800 mb-2">"Current comp doesn't really reflect what I'm targeting for the next role &mdash; I'm focused on what the market pays for this specific CE motion at a post-IPO product analytics company. Around 220 OTE feels like the right ballpark for the seniority and location."</p>
+          <p class="text-xs text-slate-600">Pivot to forward-looking framing. Pendo doesn't need to know what inforcer pays you.</p>
+        </div>
+      </div>
+
+      <h3 class="text-sm font-semibold text-slate-700 mb-2 flex items-center gap-2"><i data-lucide="x-octagon" class="w-4 h-4 text-rose-600"></i>What NOT to do</h3>
+      <table class="compare w-full">
+        <thead><tr><th class="w-1/3">Don't</th><th>Why</th></tr></thead>
+        <tbody>
+          <tr><td>Give a <strong>range</strong> ("180-240K")</td><td>They anchor to the bottom. Always give a single number.</td></tr>
+          <tr><td>Quote <strong>base only</strong> ("180K base")</td><td>Pendo is post-IPO; equity + variable matter. Quoting base alone undervalues you AND signals you don't think commercially.</td></tr>
+          <tr><td>Lead with <strong>"I'm flexible"</strong></td><td>Reads as weak. Signal you have a number in mind, even if you're open to structure.</td></tr>
+          <tr><td><strong>Apologise or hedge</strong> ("I hope that's not too high")</td><td>Confidence is the comp signal that matters most. State the number flat.</td></tr>
+          <tr><td><strong>Ask what THEY pay</strong> before you've anchored</td><td>Once you ask first, your anchor is gone.</td></tr>
+          <tr><td>Mention <strong>current comp</strong></td><td>Irrelevant. Market price is what matters. Pivot away.</td></tr>
+        </tbody>
+      </table>
+
+      <div class="mt-4 p-3 rounded-md bg-slate-50 border border-slate-200 text-xs text-slate-700">
+        <strong>TL;DR:</strong> Default = deflect to recruiter, signal "senior end + total package". If pushed = AUD 220 OTE, structure open. If she shares first = thank her, confirm alignment without committing. Never = range, base-only, apology, current comp.
+      </div>
+    </div>
+
+    <div class="card p-6 mb-4">
+      <h2 class="text-xl font-semibold mb-3 flex items-center gap-2"><i data-lucide="quote" class="w-5 h-5 text-amber-600"></i>One-line soundbites to drop naturally (if relevant)</h2>
+      <table class="compare w-full">
+        <thead><tr><th>Soundbite</th><th>When to deploy</th></tr></thead>
+        <tbody>
+          <tr><td><em>"I've never seen the boundary between SE and CSM as a hard line."</em></td><td>When discussing the CE role definition</td></tr>
+          <tr><td><em>"Adoption metrics are the leading indicator of churn. I lived this at UbiPark &mdash; low usage in week 4 predicted churn at month 6."</em></td><td>When discussing post-sales / retention</td></tr>
+          <tr><td><em>"I installed Pendo using your own AI Setup Assistant via Claude Code &mdash; took under 20 minutes."</em></td><td>When asked about Pendo product fluency</td></tr>
+          <tr><td><em>"Executives buy the outcome, not the dashboard."</em></td><td>When discussing C-level / business-value framing</td></tr>
+          <tr><td><em>"Building the thing taught me more than reading about it."</em></td><td>When asked about how you learn / AI-curious framing</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card p-6">
+      <h2 class="text-xl font-semibold mb-3 flex items-center gap-2"><i data-lucide="send" class="w-5 h-5 text-blue-600"></i>After the call (within 2 hours)</h2>
+      <p class="text-sm text-slate-600 mb-3">Send a short thank-you DM regardless of outcome:</p>
+      <div class="bg-slate-50 border-l-4 border-blue-400 p-4 rounded-r-md text-sm text-slate-800 italic leading-relaxed">
+        Hi Hiltsje, thank you for the chat today. The CE role and the team direction you described sound like a strong fit for the next chapter for me. Let me know what makes sense as a next step. I'll have the Lumen Health Loom over to you by [day] in any case.<br><br>
+        Thanks,<br>
+        Niroo
+      </div>
+      <p class="text-xs text-slate-500 mt-3"><strong>Then actually send the Loom by the day you committed to.</strong></p>
+    </div>
+
+  </section>
+
+  <!-- TAB: PENDO SETUP -->
+  <section id="tab-pendo-setup" class="tab-content hidden">
+
+    <div class="card p-6 mb-4" style="background: linear-gradient(135deg, hsl(217 91% 97%), hsl(142 71% 97%)); border-color: hsl(217 91% 85%);">
+      <div class="flex items-start gap-3">
+        <i data-lucide="settings-2" class="w-6 h-6 text-blue-600 mt-0.5 shrink-0"></i>
+        <div>
+          <h2 class="text-xl font-semibold mb-1">How Pendo is configured on Lumen Health</h2>
+          <p class="text-sm text-slate-700">The business-speak version. Use this when an interviewer asks "what did you actually do?" Walks through six setup decisions and what each one means for the business.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card p-6 mb-4">
+      <h3 class="text-lg font-semibold mb-2 flex items-center gap-2"><i data-lucide="megaphone" class="w-5 h-5 text-amber-600"></i>The headline</h3>
+      <blockquote class="border-l-4 border-amber-400 bg-amber-50 p-4 rounded-r-md text-sm text-slate-800 italic leading-relaxed">
+        "Lumen Health is fully instrumented with Pendo from day one. Every patient session is identified, every page view is captured, and every key button is tagged, so the product team can answer <em>'are patients actually using this?'</em> without writing a line of SQL."
+      </blockquote>
+    </div>
+
+    <div class="card p-6 mb-4">
+      <h3 class="text-lg font-semibold mb-4 flex items-center gap-2"><i data-lucide="list-ordered" class="w-5 h-5 text-blue-600"></i>What's been set up</h3>
+
+      <div class="space-y-4">
+
+        <div class="flex gap-4">
+          <div class="shrink-0 w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-semibold text-sm">1</div>
+          <div class="flex-1">
+            <h4 class="font-semibold text-sm mb-1">Pendo is live on every page</h4>
+            <p class="text-sm text-slate-700 leading-relaxed">The Pendo agent loads automatically across the whole app, switched on by a single environment variable. If we turn the key off, the app keeps working; analytics just go dark. Safe by default.</p>
+          </div>
+        </div>
+
+        <div class="flex gap-4">
+          <div class="shrink-0 w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-semibold text-sm">2</div>
+          <div class="flex-1">
+            <h4 class="font-semibold text-sm mb-1">Every visitor has a rich identity</h4>
+            <p class="text-sm text-slate-700 leading-relaxed">Instead of anonymous "user 1234s," each patient comes with structured attributes: name, email, age, state, postcode, role, and how long they've been on the platform. That means in Pendo we can answer questions like <em>"are patients over 50 in regional states using the medications page?"</em> on day one.</p>
+          </div>
+        </div>
+
+        <div class="flex gap-4">
+          <div class="shrink-0 w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-semibold text-sm">3</div>
+          <div class="flex-1">
+            <h4 class="font-semibold text-sm mb-1">The demo is populated with realistic people</h4>
+            <p class="text-sm text-slate-700 leading-relaxed">I built an eight-person fictional patient roster: mixed ages, every Australian state, sign-up dates staggered across two years. Every new browser session is assigned a different patient, so when a hiring manager opens the demo, Pendo's dashboards look <strong>alive</strong> (multiple users, segments, paths) instead of one lonely visitor clicking around.</p>
+          </div>
+        </div>
+
+        <div class="flex gap-4">
+          <div class="shrink-0 w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center font-semibold text-sm">4</div>
+          <div class="flex-1">
+            <h4 class="font-semibold text-sm mb-1 flex items-center gap-2">Page tracking actually works on a modern Next.js app <span class="badge badge-success text-[10px]">Kill shot</span></h4>
+            <p class="text-sm text-slate-700 leading-relaxed">This is the bit most teams get wrong. Next.js 16's App Router doesn't tell Pendo when the page changes, so without a fix you only ever see the landing page in your funnels. I wrote a tiny listener that tells Pendo every time the user navigates, so Paths, Funnels, and Retention reports are accurate end-to-end.</p>
+          </div>
+        </div>
+
+        <div class="flex gap-4">
+          <div class="shrink-0 w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-semibold text-sm">5</div>
+          <div class="flex-1">
+            <h4 class="font-semibold text-sm mb-1">Key buttons are pre-tagged for the analyst</h4>
+            <p class="text-sm text-slate-700 leading-relaxed">The sidebar nav links, the "Open your most recent visit" button, and the "Ask a question" CTA all carry stable Pendo identifiers. That means a PM or analyst can build a funnel in Pendo's UI in minutes, no engineering ticket required, and the tags don't break when designers change the styling.</p>
+          </div>
+        </div>
+
+        <div class="flex gap-4">
+          <div class="shrink-0 w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-semibold text-sm">6</div>
+          <div class="flex-1">
+            <h4 class="font-semibold text-sm mb-1">Production hygiene is built in</h4>
+            <p class="text-sm text-slate-700 leading-relaxed">Every demo patient and the demo account are flagged <span class="kbd">is_demo_user: true</span>. When this goes to a real customer, filtering the synthetic traffic out is one checkbox, no data clean-up project required.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="card p-6 mb-4">
+      <h3 class="text-lg font-semibold mb-3 flex items-center gap-2"><i data-lucide="trending-up" class="w-5 h-5 text-emerald-600"></i>What this means for the business</h3>
+      <table class="compare w-full">
+        <thead>
+          <tr><th class="w-2/5">Capability</th><th>Why it matters</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Patient segmentation on day one</td><td>Product decisions based on <em>who</em> is using <em>what</em>, not gut feel</td></tr>
+          <tr><td>Working funnels in the App Router</td><td>Reliable conversion data, no "we'll fix tracking next sprint"</td></tr>
+          <tr><td>Self-service tagging for analysts</td><td>Faster insight cycles, less engineering bottleneck</td></tr>
+          <tr><td>Realistic demo data</td><td>Stakeholders see what good looks like instead of empty dashboards</td></tr>
+          <tr><td>Demo-flagged users</td><td>Clean handover from prototype to production analytics</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card p-6">
+      <h3 class="text-lg font-semibold mb-3 flex items-center gap-2"><i data-lucide="quote" class="w-5 h-5 text-purple-600"></i>The one-liner if asked in an interview</h3>
+      <blockquote class="border-l-4 border-purple-400 bg-purple-50 p-4 rounded-r-md text-sm text-slate-800 italic leading-relaxed">
+        "I treated Pendo as a first-class part of the product, not a tag I sprinkled on at the end. The visitor schema is designed for segmentation, the App Router quirk is solved, and the demo is seeded with realistic users so the analytics actually tell a story."
+      </blockquote>
+      <p class="text-xs text-slate-500 mt-3"><strong>Delivery note:</strong> three clauses, easy to remember under pressure. Works as a wrap-up after walking through the six setup items, or as a standalone answer if the interviewer doesn't want the full tour.</p>
+    </div>
+
+  </section>
+
+  <!-- TAB: OVERVIEW -->
+  <section id="tab-overview" class="tab-content hidden">
+    <div class="card p-6 mb-4">
+      <h2 class="text-xl font-semibold mb-3 flex items-center gap-2">
+        <i data-lucide="info" class="w-5 h-5 text-blue-600"></i>
+        Process overview
+      </h2>
+      <table class="compare w-full">
+        <tbody>
+          <tr><td class="w-1/3 font-semibold">Rounds (inferred)</td><td>5 rounds typical for SaaS CE: recruiter screen → hiring manager → technical demo → panel/cross-functional → leadership</td></tr>
+          <tr><td class="font-semibold">Format</td><td>Technical demo round will likely anchor the process. Your Lumen Health + Pendo install Loom is the artefact for it.</td></tr>
+          <tr><td class="font-semibold">Difficulty</td><td><span class="badge badge-muted">Unknown</span> — no live Glassdoor / Blind data pulled. Inferred from JD + general SaaS-CE patterns.</td></tr>
+          <tr><td class="font-semibold">Known quirk</td><td>Pendo is a product-analytics company hiring a CE — they will test whether you can use their own product on the spot.</td></tr>
+          <tr><td class="font-semibold">Eval report</td><td><a class="text-blue-600 hover:underline" href="../reports/008-pendo-2026-05-15.md">reports/008-pendo-2026-05-15.md</a> (4.2 / 5)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card p-6 mb-4">
+      <h2 class="text-xl font-semibold mb-3 flex items-center gap-2">
+        <i data-lucide="users" class="w-5 h-5 text-emerald-600"></i>
+        Warm-intro context
+      </h2>
+      <div class="space-y-3 text-sm text-slate-700">
+        <div class="flex gap-2"><span class="badge badge-accent shrink-0">Hiltsje Smilde</span><div><strong>Manager, Customer Engineering, APAC.</strong> First APAC presales hire at Pendo (Apr 2026). Now leads the CE team that consolidates CS, TAM, and SE responsibilities.</div></div>
+        <div class="flex gap-2"><span class="badge badge-purple shrink-0">Richa Sharma</span><div><strong>Career coach / industry contact</strong> who made the warm intro to Hiltsje on LinkedIn. Coached the application sequence: LinkedIn reply first, then formal application.</div></div>
+        <div class="flex gap-2"><span class="badge badge-success shrink-0">Status</span><div>Application submitted 2026-05-18 via Greenhouse with refreshed CV + cover letter. Virtual chat with Hiltsje scheduled 2026-05-18 2:15 PM.</div></div>
+      </div>
+    </div>
+
+    <div class="card p-6">
+      <h2 class="text-xl font-semibold mb-3 flex items-center gap-2">
+        <i data-lucide="zap" class="w-5 h-5 text-amber-600"></i>
+        Your edge in three lines
+      </h2>
+      <ol class="space-y-2 text-sm text-slate-700 list-decimal pl-5">
+        <li><strong>Hybrid pre + post profile</strong> already. inforcer pre-sales (100+ POCs) + UbiPark Enterprise account ownership (Monash Health, Melbourne Airport, CBRE, Charter Hall). Not a "transitioning" candidate.</li>
+        <li><strong>Working Pendo install</strong> on a Next.js healthtech demo built this month (Lumen Health). Caught the App Router page-load gotcha most candidates miss. This is the technical-depth kill shot.</li>
+        <li><strong>AI-curious operator</strong> with proof: Claude API portfolio, Anthropic AI Fluency cert, used Pendo's own AI Setup Assistant in Claude Code to ship the install in under 20 minutes.</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- TAB: ROUNDS -->
+  <section id="tab-rounds" class="tab-content hidden">
+
+    <details class="card p-5 mb-3 round-card" open>
+      <summary class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <i data-lucide="chevron-right" class="w-4 h-4 chevron"></i>
+          <span class="badge badge-primary">Round 1</span>
+          <h3 class="text-lg font-semibold">Recruiter screen — ~30 min</h3>
+        </div>
+        <span class="text-xs text-slate-500">ANZ recruiter or US-based TA</span>
+      </summary>
+      <div class="mt-4 pl-7 space-y-3 text-sm">
+        <p><strong>Evaluates:</strong> location flexibility, OTE expectations, basic stack alignment, motivation for Pendo specifically.</p>
+        <p><strong>Likely questions <span class="badge badge-warn text-[10px]">inferred</span>:</strong></p>
+        <ul class="list-disc pl-5 space-y-1 text-slate-700">
+          <li>"Walk me through your background in 3 minutes"</li>
+          <li>"Why Pendo? Why now?"</li>
+          <li>"You're in Melbourne — talk to me about Sydney"</li>
+          <li>"What's your OTE expectation?"</li>
+          <li>"What does your typical week look like in your current role?"</li>
+        </ul>
+        <p><strong>How to prepare:</strong></p>
+        <ul class="list-disc pl-5 space-y-1 text-slate-700">
+          <li><strong>Hook (30s)</strong>: "5+ years in customer engineering across pre-sales (inforcer), implementation (UbiPark Enterprise), and BI consulting (Phocas). Built an AI-queryable portfolio with Claude API. Already shipped a working Pendo install on a healthcare demo I built (Lumen Health). Happy to share the Loom."</li>
+          <li><strong>Sydney</strong>: "Open to relocation. Hybrid cadence in Melbourne is the same as Sydney. One-hour flight."</li>
+          <li><strong>OTE</strong>: anchor AUD 220–260K OTE (60/40 split typical for Senior CE). Top-of-band justified by Enterprise ownership + AI-built artefacts.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="card p-5 mb-3 round-card">
+      <summary class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <i data-lucide="chevron-right" class="w-4 h-4 chevron"></i>
+          <span class="badge badge-primary">Round 2</span>
+          <h3 class="text-lg font-semibold">Hiring manager — ~45 min (Hiltsje Smilde)</h3>
+        </div>
+        <span class="text-xs text-slate-500">Scheduled today 2:15 PM</span>
+      </summary>
+      <div class="mt-4 pl-7 space-y-3 text-sm">
+        <p><strong>Evaluates:</strong> archetype fit, communication style, depth of pre-sales + implementation experience, ability to own end-to-end Enterprise lifecycle.</p>
+        <p><strong>Likely questions <span class="badge badge-warn text-[10px]">inferred</span>:</strong></p>
+        <ul class="list-disc pl-5 space-y-1 text-slate-700">
+          <li>"Tell me about an Enterprise account you owned end-to-end"</li>
+          <li>"Walk me through a technical evaluation you ran. How did you qualify in or out?"</li>
+          <li>"What does a great onboarding look like?"</li>
+          <li>"How do you partner with an AE in a contested deal?"</li>
+          <li>"What's the difference between a Customer Engineer and a Solutions Engineer in your mind?"</li>
+        </ul>
+        <p><strong>Best stories to lead with:</strong></p>
+        <ul class="list-disc pl-5 space-y-1 text-slate-700">
+          <li><strong>Enterprise ownership</strong> → UbiPark — Melbourne Airport</li>
+          <li><strong>Technical evaluation</strong> → inforcer — Personalised M365 Security Demo</li>
+          <li><strong>Partnering with AE</strong> → inforcer 100+ POCs / commercial close</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="card p-5 mb-3 round-card">
+      <summary class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <i data-lucide="chevron-right" class="w-4 h-4 chevron"></i>
+          <span class="badge badge-primary">Round 3</span>
+          <h3 class="text-lg font-semibold">Technical demo / live working session — ~60-90 min</h3>
+        </div>
+        <span class="text-xs text-slate-500">Senior CE peer + sometimes Product</span>
+      </summary>
+      <div class="mt-4 pl-7 space-y-3 text-sm">
+        <div class="bg-emerald-50 border border-emerald-200 rounded-md p-3 mb-2">
+          <p class="text-emerald-900 font-semibold">This is where you win.</p>
+          <p class="text-emerald-800 text-xs mt-1">You already built the Lumen Health demo, installed Pendo via the AI Setup Assistant, and have a 90-second Loom. Bring the Loom, then offer to do a live deep-dive.</p>
+        </div>
+        <p><strong>Evaluates:</strong> can you actually run a Pendo demo? Can you tag a feature, build a guide, explain analytics in business terms?</p>
+        <p><strong>How to prepare:</strong></p>
+        <ul class="list-disc pl-5 space-y-1 text-slate-700">
+          <li>Have <a href="https://lumen-health-niroo.vercel.app" target="_blank" class="text-blue-600 hover:underline">lumen-health-niroo.vercel.app</a> open in a browser tab + Pendo workspace logged in</li>
+          <li>Pre-build the Paths report showing real visitor data from your roster of 8 mock patients</li>
+          <li>Be ready to walk live through: Tag a Feature → Build a Guide → Schedule NPS → explain segments</li>
+          <li><strong>Honest gotcha to deliver on camera:</strong> "In a real onboarding I'd walk the dev team through the <span class="kbd">data-pendo-id</span> attribute pattern instead of CSS selectors. Notice the button text is 'View Summary' but I named the Feature 'Open Patient Portal' — Feature names should describe user intent, not button copy."</li>
+          <li><strong>The kill shot:</strong> "I installed this snippet using your own AI Setup Assistant via Claude Code. Took under twenty minutes including the App Router page-load fix that I bet most candidates won't know about."</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="card p-5 mb-3 round-card">
+      <summary class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <i data-lucide="chevron-right" class="w-4 h-4 chevron"></i>
+          <span class="badge badge-primary">Round 4</span>
+          <h3 class="text-lg font-semibold">Panel / cross-functional — ~60 min</h3>
+        </div>
+        <span class="text-xs text-slate-500">CSM, AE, Product, sometimes Engineering</span>
+      </summary>
+      <div class="mt-4 pl-7 space-y-3 text-sm">
+        <p><strong>Evaluates:</strong> how you work across functions, business acumen, conflict handling.</p>
+        <p><strong>Best stories:</strong></p>
+        <ul class="list-disc pl-5 space-y-1 text-slate-700">
+          <li><strong>Disagreement</strong> → Phocas ERP integration with MYOB (political vs technical answer)</li>
+          <li><strong>Business translation</strong> → UbiPark Melbourne Airport ROI narrative for C-level</li>
+          <li><strong>Missing product capability</strong> → UbiPark Influencing Roadmap via Customer Patterns</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="card p-5 mb-3 round-card">
+      <summary class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <i data-lucide="chevron-right" class="w-4 h-4 chevron"></i>
+          <span class="badge badge-primary">Round 5</span>
+          <h3 class="text-lg font-semibold">Leadership / skip-level — ~30-45 min</h3>
+        </div>
+        <span class="text-xs text-slate-500">ANZ regional leader, possibly VP CE</span>
+      </summary>
+      <div class="mt-4 pl-7 space-y-3 text-sm">
+        <p><strong>Evaluates:</strong> strategic thinking, fit with company values, longer-term ambition.</p>
+        <p><strong>Likely questions <span class="badge badge-warn text-[10px]">inferred</span>:</strong></p>
+        <ul class="list-disc pl-5 space-y-1 text-slate-700">
+          <li>"Where do you want to be in 3 years?"</li>
+          <li>"What questions do you have for me?"</li>
+          <li>"What would your first 30 / 60 / 90 days look like?"</li>
+        </ul>
+      </div>
+    </details>
+
+  </section>
+
+  <!-- TAB: QUESTIONS -->
+  <section id="tab-questions" class="tab-content hidden">
+
+    <div class="card p-6 mb-4">
+      <h2 class="text-xl font-semibold mb-3 flex items-center gap-2"><i data-lucide="cpu" class="w-5 h-5 text-blue-600"></i>Technical</h2>
+      <p class="text-xs text-slate-500 mb-4">All <span class="badge badge-warn text-[10px]">inferred</span> from JD + Pendo product knowledge.</p>
+
+      <div class="q-card">
+        <div class="q-question">T1. "Tag a feature in our app live. What selector strategy?"</div>
+        <div class="q-answer">Demo on Lumen Health using <span class="kbd">data-pendo-id="open-patient-portal"</span>. Explain CSS-class fragility.</div>
+      </div>
+      <div class="q-card">
+        <div class="q-question">T2. "How would you instrument a Next.js App Router app?"</div>
+        <div class="q-answer"><strong>The kill answer.</strong> Walk through the page-load gotcha you fixed in <span class="kbd">pendo-page-tracker.tsx</span> — <span class="kbd">usePathname</span> → <span class="kbd">pendo.pageLoad()</span>. Most candidates miss this. Show the actual code.</div>
+      </div>
+      <div class="q-card">
+        <div class="q-question">T3. "When would you use the Track API instead of the snippet?"</div>
+        <div class="q-answer">Server-side events (signed Track API with HMAC), backend-fired events that don't have a UI surface, batch backfills. Snippet is for everything UI-driven.</div>
+      </div>
+      <div class="q-card">
+        <div class="q-question">T4. "How do Pendo segments evaluate? Why doesn't a published guide always fire immediately?"</div>
+        <div class="q-answer">Segments evaluate periodically (every few minutes). Explain that this is why the workflow says "Save Draft" not "Publish" for a 90s demo.</div>
+      </div>
+      <div class="q-card">
+        <div class="q-question">T5. "Walk me through the difference between a Page and a Feature in Pendo"</div>
+        <div class="q-answer">Page = URL / route rule. Feature = element click matched via selector. Pages tag where users go; Features tag what they do.</div>
+      </div>
+      <div class="q-card">
+        <div class="q-question">T6. "How would you debug 'no events firing'?"</div>
+        <div class="q-answer">The exact playbook you ran during the Lumen Health install: <span class="kbd">typeof window.pendo</span>, <span class="kbd">validateEnvironment()</span>, Network tab for <span class="kbd">data.pendo.io/data/ptm.gif</span>, env-var redeploy check.</div>
+      </div>
+    </div>
+
+    <div class="card p-6 mb-4">
+      <h2 class="text-xl font-semibold mb-3 flex items-center gap-2"><i data-lucide="message-square" class="w-5 h-5 text-purple-600"></i>Behavioural</h2>
+
+      <div class="q-card behavioural">
+        <div class="q-question">B1. "Tell me about a time you owned an Enterprise account end-to-end"</div>
+        <div class="q-answer">UbiPark — Melbourne Airport (story-bank.md)</div>
+      </div>
+      <div class="q-card behavioural">
+        <div class="q-question">B2. "Tell me about a difficult technical implementation"</div>
+        <div class="q-answer">UbiPark — Reducing Enterprise Onboarding Time by 30% (story-bank.md)</div>
+      </div>
+      <div class="q-card behavioural">
+        <div class="q-question">B3. "Tell me about a time you influenced product roadmap"</div>
+        <div class="q-answer">UbiPark — Influencing Roadmap via Customer Patterns (story-bank.md)</div>
+      </div>
+      <div class="q-card behavioural">
+        <div class="q-question">B4. "Tell me about a time you disagreed with a stakeholder"</div>
+        <div class="q-answer">Phocas — MYOB ERP Integration Under Contested Data Model (story-bank.md)</div>
+      </div>
+      <div class="q-card behavioural">
+        <div class="q-question">B5. "Tell me about a discovery call that uncovered something unexpected"</div>
+        <div class="q-answer">Phocas — BI Discovery Workshop with C-Level (story-bank.md)</div>
+      </div>
+      <div class="q-card behavioural">
+        <div class="q-question">B6. "Tell me about something you built / shipped on your own"</div>
+        <div class="q-answer">AI-queryable portfolio with Claude API + the <strong>Lumen Health + Pendo install</strong> itself (story-bank.md)</div>
+      </div>
+    </div>
+
+    <div class="card p-6 mb-4">
+      <h2 class="text-xl font-semibold mb-3 flex items-center gap-2"><i data-lucide="target" class="w-5 h-5 text-emerald-600"></i>Role-specific (Pendo-flavoured)</h2>
+
+      <div class="q-card role">
+        <div class="q-question">R1. "Why a CE role at Pendo specifically vs a generic SE role?"</div>
+        <div class="q-answer">"Pendo's CE owns the full lifecycle — pre-sales evaluation through post-sales expansion. That hybrid is exactly my profile across inforcer + UbiPark. I've never seen the boundary between SE and CSM as a hard line."</div>
+      </div>
+      <div class="q-card role">
+        <div class="q-question">R2. "What's your take on product-led growth and how analytics enables it?"</div>
+        <div class="q-answer">"Adoption metrics are the leading indicator of churn. I lived this at UbiPark — low usage in week 4 predicted churn at month 6. Pendo gives you that signal in real time, not in the QBR."</div>
+      </div>
+      <div class="q-card role">
+        <div class="q-question">R3. "What would you change about Pendo's install docs?"</div>
+        <div class="q-answer"><strong>The kill answer:</strong> "App Router page-load tracking. Next.js App Router does client-side navigation without firing the URL events the auto-tracker depends on, so without an explicit <span class="kbd">pendo.pageLoad()</span> on <span class="kbd">usePathname</span> change, Paths reports only see the entry page per session. I hit this installing into Lumen Health. Worth a callout in the Next.js install guide."</div>
+      </div>
+      <div class="q-card role">
+        <div class="q-question">R4. "How do you ramp on a product you've never used?"</div>
+        <div class="q-answer">"I built a working install of Pendo on a healthcare demo app over a weekend, using your own AI Setup Assistant. Show me an event firing and I can usually reverse-engineer the SDK from there."</div>
+      </div>
+      <div class="q-card role">
+        <div class="q-question">R5. "How would you onboard a new Pendo customer in their first 30 days?"</div>
+        <div class="q-answer"><strong>Walk through the demo workflow.</strong> Goal → Segment → Guide → Measure (Pendo's own CS recipe). Day 1: tag Pages + Features. Day 7: Path report → diagnose discoverability vs adoption. Day 14: ship a Guide. Day 30: NPS to actual users + first QBR-ready insight.</div>
+      </div>
+    </div>
+
+    <div class="card p-6">
+      <h2 class="text-xl font-semibold mb-3 flex items-center gap-2"><i data-lucide="alert-triangle" class="w-5 h-5 text-amber-600"></i>Background red flags</h2>
+
+      <div class="q-card redflag">
+        <div class="q-question">RF1. "You're in Melbourne — Sydney is the role"</div>
+        <div class="q-answer">"Open to relocation. The role is the right one. The hybrid cadence I run in Melbourne is the same in Sydney. One-hour flight if interim travel is needed before relocation completes."</div>
+      </div>
+      <div class="q-card redflag">
+        <div class="q-question">RF2. "No prior Pendo platform experience"</div>
+        <div class="q-answer">"True until two weeks ago — I've now installed it end-to-end on a working app, including the App Router page-load gotcha. Happy to walk through the install or the Loom right now." <strong>Turn the gap into a proof point.</strong></div>
+      </div>
+      <div class="q-card redflag">
+        <div class="q-question">RF3. "Your most recent role at inforcer was pre-sales heavy — this role is post-sales heavy"</div>
+        <div class="q-answer">"My UbiPark and Phocas years were 70% post-sales — Enterprise account ownership, implementation, expansion. inforcer was pre-sales weighted because the deal cycle was shorter. The full arc across all three is the hybrid CE motion this JD describes."</div>
+      </div>
+      <div class="q-card redflag">
+        <div class="q-question">RF4. "Why are you leaving inforcer / what are you looking for next?"</div>
+        <div class="q-answer">Honest, forward-looking. Don't trash the current role. "Looking for an Enterprise SaaS environment with deeper post-sales motion and a product-analytics domain where the AI-curious operator profile actually matters."</div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- TAB: STORIES -->
+  <section id="tab-stories" class="tab-content hidden">
+
+    <div class="card p-6 mb-4">
+      <h2 class="text-xl font-semibold mb-3 flex items-center gap-2"><i data-lucide="book-open" class="w-5 h-5 text-purple-600"></i>Story bank mapping</h2>
+      <p class="text-sm text-slate-600 mb-4">8 STAR+R stories in <a href="story-bank.md" class="text-blue-600 hover:underline">story-bank.md</a>. Coverage against likely questions:</p>
+      <table class="compare w-full">
+        <thead>
+          <tr><th>#</th><th>Likely topic</th><th>Best story</th><th>Fit</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td>Enterprise account ownership end-to-end</td><td>UbiPark — Melbourne Airport</td><td><span class="badge badge-success">Strong</span></td></tr>
+          <tr><td>2</td><td>Technical implementation under complexity</td><td>UbiPark — Reducing Onboarding Time 30%</td><td><span class="badge badge-success">Strong</span></td></tr>
+          <tr><td>3</td><td>Influencing product roadmap</td><td>UbiPark — Influencing Roadmap via Customer Patterns</td><td><span class="badge badge-success">Strong</span></td></tr>
+          <tr><td>4</td><td>Pre-sales technical evaluation</td><td>inforcer — Personalised M365 Security Demo</td><td><span class="badge badge-success">Strong</span></td></tr>
+          <tr><td>5</td><td>Discovery / commercial close</td><td>Phocas — BI Discovery Workshop with C-Level</td><td><span class="badge badge-success">Strong</span></td></tr>
+          <tr><td>6</td><td>Disagreement / political navigation</td><td>Phocas — MYOB ERP Integration</td><td><span class="badge badge-success">Strong</span></td></tr>
+          <tr><td>7</td><td>Translating technical work to business outcomes (C-level)</td><td>UbiPark — Melbourne Airport ROI Narrative</td><td><span class="badge badge-success">Strong</span></td></tr>
+          <tr><td>8</td><td>Building / shipping on your own as AI-curious proof</td><td>Lumen Health + Pendo install via Claude Code</td><td><span class="badge badge-success">Strong</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card p-6">
+      <h2 class="text-xl font-semibold mb-3 flex items-center gap-2"><i data-lucide="star" class="w-5 h-5 text-amber-600"></i>The Lumen Health story (your differentiator)</h2>
+      <p class="text-sm text-slate-700 mb-3">
+        This is the only story in the bank that <strong>no other candidate will have</strong>. Memorise the structure cold:
+      </p>
+      <ul class="space-y-2 text-sm text-slate-700">
+        <li class="flex gap-2"><span class="badge badge-accent shrink-0">S</span><div>Pendo CE interview prep, role explicitly asks for "AI-curious operator." Wanted to close the no-Pendo-experience gap as a proof point, not a caveat.</div></li>
+        <li class="flex gap-2"><span class="badge badge-accent shrink-0">T</span><div>Build a working Pendo install on a realistic demo, in under one week, using Pendo's own AI-assisted install tooling.</div></li>
+        <li class="flex gap-2"><span class="badge badge-accent shrink-0">A</span><div>Built Lumen Health (Next.js 16 App Router, shadcn/ui). Ran <span class="kbd">@pendo-install</span> via Claude Code. Caught the App Router page-load gotcha (<span class="kbd">usePathname</span> doesn't fire Pendo's auto-tracker → Paths reports only see entry page). Added <span class="kbd">data-pendo-id</span> selectors throughout. Per-session visitor roster of 8 Australian mock patients so Pendo dashboard fills with distinct visitors. Deployed to Vercel, validated with <span class="kbd">pendo.validateEnvironment()</span>.</div></li>
+        <li class="flex gap-2"><span class="badge badge-accent shrink-0">R</span><div>Working install live at <a href="https://lumen-health-niroo.vercel.app" target="_blank" class="text-blue-600 hover:underline">lumen-health-niroo.vercel.app</a>. Full install in under 20 minutes including Vercel deploy. Pattern (Claude Code + Pendo AI Setup Assistant) is reusable for customer onboardings.</div></li>
+        <li class="flex gap-2"><span class="badge badge-accent shrink-0">R+</span><div><strong>Building the thing taught me more than reading about it.</strong> The Anthropic AI Fluency cert was the easy part — the App Router gotcha is the kind of thing you only find by actually shipping the install.</div></li>
+      </ul>
+    </div>
+
+  </section>
+
+  <!-- TAB: TECH PREP -->
+  <section id="tab-techprep" class="tab-content hidden">
+    <div class="card p-6">
+      <h2 class="text-xl font-semibold mb-1 flex items-center gap-2"><i data-lucide="wrench" class="w-5 h-5 text-emerald-600"></i>Technical prep checklist</h2>
+      <p class="text-sm text-slate-600 mb-4">8 items, all Pendo-specific. Tick as you've internalised each.</p>
+
+      <label class="check-item" data-key="tech-1"><input type="checkbox"><div class="check-text text-sm"><strong>Pendo product fluency</strong> — live-tag Pages + Features, build a Guide, schedule NPS, configure a segment without fumbling. Pre-tagged per <a href="pendo-micro-demo-workflow.md" class="text-blue-600 hover:underline">demo workflow</a> §1.4.</div></label>
+      <label class="check-item" data-key="tech-2"><input type="checkbox"><div class="check-text text-sm"><strong><span class="kbd">pendo.initialize()</span> shape</strong> — visitor + account objects, why ID must be defined synchronously (or hardcoded), why we split the snippet across loader + initialize in React.</div></label>
+      <label class="check-item" data-key="tech-3"><input type="checkbox"><div class="check-text text-sm"><strong>App Router <span class="kbd">pendo.pageLoad()</span> gotcha</strong> — point at <span class="kbd">pendo-page-tracker.tsx</span>, explain why <span class="kbd">usePathname</span> is the trigger, why Paths reports are broken without it.</div></label>
+      <label class="check-item" data-key="tech-4"><input type="checkbox"><div class="check-text text-sm"><strong><span class="kbd">data-pendo-id</span> selector pattern</strong> — why CSS-class selectors break, what production teams should do, where you've added them in Lumen Health.</div></label>
+      <label class="check-item" data-key="tech-5"><input type="checkbox"><div class="check-text text-sm"><strong>Paths vs Funnels vs Feature engagement-time</strong> — when each is the right report. "10-second bounce" is NOT a native Paths metric.</div></label>
+      <label class="check-item" data-key="tech-6"><input type="checkbox"><div class="check-text text-sm"><strong>Pendo for CS recipe</strong> — Goal → Segment → Guide → Measure. From the <em>Onboard New Users</em> article. Reference verbatim if asked about onboarding methodology.</div></label>
+      <label class="check-item" data-key="tech-7"><input type="checkbox"><div class="check-text text-sm"><strong>Free vs Trial vs Paid</strong> — don't accidentally pitch a feature behind paywall on a Free workspace.</div></label>
+      <label class="check-item" data-key="tech-8"><input type="checkbox"><div class="check-text text-sm"><strong>Glossary:</strong> Subscription = workspace, Application = tracked product, Visitor = end-user, Account = customer org, Guide = in-app message, Feature = tagged element, Page = tagged route. Use Pendo's vocabulary.</div></label>
+    </div>
+  </section>
+
+  <!-- TAB: SIGNALS -->
+  <section id="tab-signals" class="tab-content hidden">
+
+    <div class="card p-6 mb-4">
+      <h2 class="text-xl font-semibold mb-3 flex items-center gap-2"><i data-lucide="heart" class="w-5 h-5 text-rose-600"></i>Values they screen for</h2>
+      <p class="text-xs text-slate-500 mb-3"><span class="badge badge-warn text-[10px]">inferred</span> from public Pendo materials + JD</p>
+      <ul class="space-y-2 text-sm text-slate-700">
+        <li class="flex gap-2"><span class="text-rose-600">•</span><div><strong>Customer obsession</strong> — Pendo's own product is sold to customer-obsessed PMs</div></li>
+        <li class="flex gap-2"><span class="text-rose-600">•</span><div><strong>Build in public / show your work</strong> — they ship engineering blogs, conference talks</div></li>
+        <li class="flex gap-2"><span class="text-rose-600">•</span><div><strong>AI-curious operators</strong> — explicitly named in the JD; not optional</div></li>
+        <li class="flex gap-2"><span class="text-rose-600">•</span><div><strong>Bias to action</strong> — typical of late-stage US-HQ SaaS</div></li>
+      </ul>
+    </div>
+
+    <div class="card p-6 mb-4">
+      <h2 class="text-xl font-semibold mb-3 flex items-center gap-2"><i data-lucide="languages" class="w-5 h-5 text-blue-600"></i>Vocabulary to use</h2>
+      <table class="compare w-full">
+        <thead><tr><th>Say</th><th>Not</th><th>Why</th></tr></thead>
+        <tbody>
+          <tr><td><span class="kbd">Subscription</span></td><td>tenant / workspace</td><td>Pendo's term</td></tr>
+          <tr><td><span class="kbd">Tagged Pages and Features</span></td><td>tracked events</td><td>Mixpanel framing</td></tr>
+          <tr><td><span class="kbd">Guides</span></td><td>tooltips / in-app messages (generic)</td><td>Guides is the product noun</td></tr>
+          <tr><td><span class="kbd">Customer Engineer</span></td><td>Sales Engineer</td><td>The role at Pendo specifically</td></tr>
+          <tr><td><span class="kbd">Goal → Segment → Guide → Measure</span></td><td>generic methodology talk</td><td>Cited from Pendo's <em>Onboard New Users</em> Help Center article</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card p-6 mb-4">
+      <h2 class="text-xl font-semibold mb-3 flex items-center gap-2"><i data-lucide="x-octagon" class="w-5 h-5 text-rose-600"></i>Things to avoid</h2>
+      <ul class="space-y-2 text-sm text-slate-700">
+        <li class="flex gap-2"><span class="text-rose-600">•</span><div>Don't fabricate stats off the Paths report — read real numbers off the chart</div></li>
+        <li class="flex gap-2"><span class="text-rose-600">•</span><div>Don't oversell "no code required" — true for content, not for the snippet install</div></li>
+        <li class="flex gap-2"><span class="text-rose-600">•</span><div>Don't pitch features behind paywall on a Free workspace</div></li>
+        <li class="flex gap-2"><span class="text-rose-600">•</span><div>Don't use Heap / Mixpanel / Amplitude vocabulary when the Pendo word exists for the same concept</div></li>
+      </ul>
+    </div>
+
+    <div class="card p-6">
+      <h2 class="text-xl font-semibold mb-3 flex items-center gap-2"><i data-lucide="message-circle-question" class="w-5 h-5 text-emerald-600"></i>3 sharp questions to ask them</h2>
+      <div class="space-y-3">
+        <div class="p-3 rounded-md bg-slate-50 border border-slate-200">
+          <p class="text-sm font-semibold mb-1">Q1 — Strategic / AI angle</p>
+          <p class="text-sm italic text-slate-700">"How is Pendo Listen / agent-experience changing the CE motion in 2026? What new conversations is it opening with existing customers?"</p>
+          <p class="text-xs text-slate-500 mt-1">Signals you've tracked their AI strategy beyond marketing fluff.</p>
+        </div>
+        <div class="p-3 rounded-md bg-slate-50 border border-slate-200">
+          <p class="text-sm font-semibold mb-1">Q2 — Operational depth</p>
+          <p class="text-sm italic text-slate-700">"For ANZ Enterprise customers, what's the biggest install gotcha your CE team sees in the first 30 days? Anything you wish your install docs covered better?"</p>
+          <p class="text-xs text-slate-500 mt-1">Sets up the App Router page-load gotcha as a follow-up if they bite.</p>
+        </div>
+        <div class="p-3 rounded-md bg-slate-50 border border-slate-200">
+          <p class="text-sm font-semibold mb-1">Q3 — Commercial structure</p>
+          <p class="text-sm italic text-slate-700">"How is the CE function structured against AE quotas in ANZ? What's the install-base ratio per CE today, and where do you want it to land?"</p>
+          <p class="text-xs text-slate-500 mt-1">Signals you understand variable-comp + capacity dimensions of the role.</p>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- TAB: 24h CHECKLIST -->
+  <section id="tab-checklist" class="tab-content hidden">
+    <div class="card p-6">
+      <h2 class="text-xl font-semibold mb-1 flex items-center gap-2"><i data-lucide="clock" class="w-5 h-5 text-blue-600"></i>Pre-interview 24h checklist</h2>
+      <p class="text-sm text-slate-600 mb-4">Run through this the day before each interview round.</p>
+
+      <h3 class="text-sm font-semibold text-slate-700 mt-4 mb-2 flex items-center gap-2"><i data-lucide="package" class="w-4 h-4"></i>Tools &amp; artefacts</h3>
+      <label class="check-item" data-key="prep-1"><input type="checkbox"><div class="check-text text-sm">Pendo workspace logged in, 30-day trial active</div></label>
+      <label class="check-item" data-key="prep-2"><input type="checkbox"><div class="check-text text-sm">Lumen Health open at <a href="https://lumen-health-niroo.vercel.app" target="_blank" class="text-blue-600 hover:underline">lumen-health-niroo.vercel.app</a></div></label>
+      <label class="check-item" data-key="prep-3"><input type="checkbox"><div class="check-text text-sm">Loom link copied to clipboard</div></label>
+      <label class="check-item" data-key="prep-4"><input type="checkbox"><div class="check-text text-sm">All Pages + Features pre-tagged in Pendo</div></label>
+      <label class="check-item" data-key="prep-5"><input type="checkbox"><div class="check-text text-sm">Paths report pre-built and showing real numbers (8 mock patients seeded across browsers)</div></label>
+      <label class="check-item" data-key="prep-6"><input type="checkbox"><div class="check-text text-sm">Guide draft + NPS draft + Segment built and saved</div></label>
+      <label class="check-item" data-key="prep-7"><input type="checkbox"><div class="check-text text-sm">CV PDF latest version saved to Desktop (<span class="kbd">cv-niroo-arjuna-pendo-2026-05-18.pdf</span>)</div></label>
+
+      <h3 class="text-sm font-semibold text-slate-700 mt-4 mb-2 flex items-center gap-2"><i data-lucide="brain" class="w-4 h-4"></i>Content &amp; stories</h3>
+      <label class="check-item" data-key="prep-8"><input type="checkbox"><div class="check-text text-sm">Eval report (008) re-read for archetype framing</div></label>
+      <label class="check-item" data-key="prep-9"><input type="checkbox"><div class="check-text text-sm">Story bank re-read; 8 stories memorised cold</div></label>
+      <label class="check-item" data-key="prep-10"><input type="checkbox"><div class="check-text text-sm">Lumen Health STAR+R locked in (the differentiator story)</div></label>
+      <label class="check-item" data-key="prep-11"><input type="checkbox"><div class="check-text text-sm">3 sharp questions to ask them (see <strong>Signals</strong> tab) memorised</div></label>
+      <label class="check-item" data-key="prep-12"><input type="checkbox"><div class="check-text text-sm">Sydney relocation framing rehearsed once out loud</div></label>
+
+      <h3 class="text-sm font-semibold text-slate-700 mt-4 mb-2 flex items-center gap-2"><i data-lucide="users" class="w-4 h-4"></i>People &amp; research</h3>
+      <label class="check-item" data-key="prep-13"><input type="checkbox"><div class="check-text text-sm">LinkedIn search done on every interviewer; one personal observation per person</div></label>
+      <label class="check-item" data-key="prep-14"><input type="checkbox"><div class="check-text text-sm">Hiltsje Smilde's profile re-read: first APAC presales hire, leads CE team since Apr 2026</div></label>
+      <label class="check-item" data-key="prep-15"><input type="checkbox"><div class="check-text text-sm">Richa's intro message thread re-read for context</div></label>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  // Lucide icons
+  lucide.createIcons();
+
+  // Tab switching
+  const tabs = document.querySelectorAll('.tab-btn');
+  const contents = document.querySelectorAll('.tab-content');
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      contents.forEach(c => c.classList.add('hidden'));
+      tab.classList.add('active');
+      document.getElementById('tab-' + tab.dataset.tab).classList.remove('hidden');
+    });
+  });
+
+  // Checkbox persistence + progress
+  const STORAGE_KEY = 'pendo-interview-prep-progress';
+  function getProgress() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); }
+    catch (e) { return {}; }
+  }
+  function saveProgress(state) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  }
+  function updateProgressBar() {
+    const all = document.querySelectorAll('.check-item');
+    const checked = document.querySelectorAll('.check-item.checked');
+    const pct = all.length ? Math.round((checked.length / all.length) * 100) : 0;
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('progress-count').textContent = checked.length + ' / ' + all.length;
+  }
+  function initChecks() {
+    const state = getProgress();
+    document.querySelectorAll('.check-item').forEach(item => {
+      const key = item.dataset.key;
+      const cb = item.querySelector('input');
+      if (state[key]) {
+        cb.checked = true;
+        item.classList.add('checked');
+      }
+      cb.addEventListener('change', () => {
+        const s = getProgress();
+        if (cb.checked) {
+          item.classList.add('checked');
+          s[key] = true;
+        } else {
+          item.classList.remove('checked');
+          delete s[key];
+        }
+        saveProgress(s);
+        updateProgressBar();
+      });
+    });
+    updateProgressBar();
+  }
+  function resetProgress() {
+    if (!confirm('Reset all checklist progress?')) return;
+    localStorage.removeItem(STORAGE_KEY);
+    document.querySelectorAll('.check-item').forEach(item => {
+      item.classList.remove('checked');
+      const cb = item.querySelector('input');
+      if (cb) cb.checked = false;
+    });
+    updateProgressBar();
+  }
+  initChecks();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Pendo HM Interview — Hiltsje Smilde (Niroo Arjuna)</title>
+<style>
+  :root {
+    --panel: #ffffff;
+    --ink: #1a1033;
+    --muted: #5b5470;
+    --soft: #f6f3fb;
+    --line: #e7e1f0;
+    --pendo: #d83b94;
+    --pendo-soft: #fde7f2;
+    --accent: #7b2ff7;
+    --warn-bg: #fff7ed;
+    --warn-ink: #9a3412;
+    --good-bg: #ecfdf5;
+    --good-ink: #047857;
+    --rose-bg: #fff1f2;
+    --rose-ink: #be123c;
+    --amber-bg: #fef3c7;
+    --amber-ink: #92400e;
+    --radius: 14px;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: #faf8fd;
+    color: var(--ink);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  header.hero {
+    background: linear-gradient(135deg, #7b2ff7 0%, #d83b94 60%, #ff8fc7 100%);
+    color: #ffffff;
+    padding: 28px 32px 24px;
+    border-bottom: 1px solid #e7e1f0;
+  }
+  header.hero h1 { margin: 0 0 6px; font-size: 26px; letter-spacing: -0.01em; }
+  header.hero p { margin: 0; opacity: 0.95; font-size: 14px; }
+  .hero-meta { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 10px; border-radius: 999px;
+    background: rgba(255,255,255,0.20); color: #ffffff;
+    font-size: 12px; font-weight: 500;
+    border: 1px solid rgba(255,255,255,0.30);
+  }
+  .layout {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 24px;
+    gap: 24px;
+  }
+  nav.toc {
+    position: sticky; top: 16px; align-self: start;
+    background: var(--panel); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 16px;
+    max-height: calc(100vh - 32px); overflow-y: auto;
+  }
+  nav.toc h3 {
+    margin: 0 0 10px; font-size: 12px; text-transform: uppercase;
+    letter-spacing: 0.06em; color: var(--muted);
+  }
+  nav.toc a {
+    display: block; padding: 6px 8px; border-radius: 6px;
+    color: var(--ink); text-decoration: none;
+    font-size: 13px; line-height: 1.4;
+  }
+  nav.toc a:hover { background: var(--soft); color: var(--pendo); }
+  nav.toc a.section { font-weight: 600; margin-top: 10px; color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; padding: 4px 8px; }
+  main { min-width: 0; }
+  .card {
+    background: var(--panel); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 22px 24px;
+    margin-bottom: 16px;
+    scroll-margin-top: 16px;
+  }
+  .card h2 {
+    margin: 0 0 4px; font-size: 18px; letter-spacing: -0.01em;
+    display: flex; align-items: baseline; gap: 10px;
+  }
+  .card h2 .num {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    color: var(--pendo); font-size: 14px; font-weight: 700;
+    background: var(--pendo-soft); padding: 2px 8px; border-radius: 6px;
+  }
+  .card .qmeta {
+    color: var(--muted); font-size: 12px; margin: 4px 0 14px;
+    font-style: italic;
+  }
+  .card h3 {
+    margin: 18px 0 8px; font-size: 14px; color: var(--pendo);
+    text-transform: uppercase; letter-spacing: 0.04em;
+  }
+  .card p { margin: 8px 0; font-size: 14px; }
+  .card ul, .card ol { margin: 8px 0; padding-left: 22px; font-size: 14px; }
+  .card li { margin: 4px 0; }
+  .script {
+    background: var(--soft); border-left: 3px solid var(--pendo);
+    padding: 12px 16px; border-radius: 8px; margin: 10px 0;
+    font-size: 14px; line-height: 1.6;
+  }
+  .script strong.tag { color: var(--pendo); }
+  .callout {
+    background: var(--good-bg); color: var(--good-ink);
+    border: 1px solid #a7f3d0; padding: 10px 14px;
+    border-radius: 8px; font-size: 13px; margin: 10px 0;
+  }
+  .warn {
+    background: var(--warn-bg); color: var(--warn-ink);
+    border: 1px solid #fed7aa; padding: 10px 14px;
+    border-radius: 8px; font-size: 13px; margin: 10px 0;
+  }
+  .danger {
+    background: var(--rose-bg); color: var(--rose-ink);
+    border: 1px solid #fecaca; padding: 10px 14px;
+    border-radius: 8px; font-size: 13px; margin: 10px 0;
+  }
+  .amber {
+    background: var(--amber-bg); color: var(--amber-ink);
+    border: 1px solid #fde68a; padding: 10px 14px;
+    border-radius: 8px; font-size: 13px; margin: 10px 0;
+  }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+  .mini {
+    background: var(--soft); padding: 12px 14px;
+    border-radius: 8px; font-size: 13px;
+  }
+  .mini h4 { margin: 0 0 6px; font-size: 13px; color: var(--pendo); }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 10px 0; }
+  th, td { border: 1px solid var(--line); padding: 8px 10px; text-align: left; vertical-align: top; }
+  th { background: var(--soft); font-weight: 600; color: var(--pendo); }
+  .star { color: var(--pendo); font-weight: 700; }
+  .footnote { color: var(--muted); font-size: 12px; margin-top: 10px; font-style: italic; }
+  @media print {
+    body { background: white; }
+    nav.toc { display: none; }
+    .layout { display: block; padding: 12px; }
+    .card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
+    header.hero { background: white; color: black; border-bottom: 2px solid #d83b94; }
+    header.hero .pill { background: white; color: black; border-color: #ccc; }
+  }
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: 1fr; }
+    nav.toc { position: static; max-height: none; }
+    .grid2, .grid3 { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <h1>Pendo HM Interview — Hiltsje Smilde</h1>
+  <p>Sr Customer Engineer — ANZ (Pre + Post Sales) · Niroo Arjuna</p>
+  <div class="hero-meta">
+    <span class="pill">HM round</span>
+    <span class="pill">Hiring manager: Hiltsje Smilde (Mgr, Customer Engineering, APAC)</span>
+    <span class="pill">Her steer: value-based selling + value during onboarding</span>
+    <span class="pill">Weave both throughout</span>
+  </div>
+</header>
+
+<div class="layout">
+
+<nav class="toc">
+  <h3>Quick Jump</h3>
+  <a class="section">Strategy</a>
+  <a href="#brief">★ Hiltsje's brief (read first)</a>
+  <a href="#thread">1. The one thread</a>
+  <a href="#headline">2. Headline / TMAY</a>
+  <a class="section">The 2 Themes</a>
+  <a href="#theme-value">3. Value-based selling</a>
+  <a href="#theme-onboarding">4. Value during onboarding</a>
+  <a href="#bridge">5. The bridge between them</a>
+  <a class="section">Stories</a>
+  <a href="#stories">6. Value &amp; onboarding stories</a>
+  <a href="#stories-presales">6b. Pre-sales &amp; implementation</a>
+  <a href="#pendo-lens">7. The Pendo lens</a>
+  <a class="section">Likely Questions</a>
+  <a href="#q-likely">8. Likely questions + scripts</a>
+  <a href="#q-curveballs">9. Curveballs</a>
+  <a class="section">Your Turn</a>
+  <a href="#ask">10. Questions to ask Hiltsje</a>
+  <a href="#cheat">11. Cheat card</a>
+  <a href="#donts">12. Things to avoid</a>
+</nav>
+
+<main>
+
+<div class="card" id="brief">
+  <h2><span class="num">★</span> Hiltsje's brief — read this first</h2>
+  <p class="qmeta">She told you the exam topics. Don't waste them.</p>
+  <div class="script">
+    "I think you're very well prepared for the interview already. <strong class="tag">Value-based selling</strong> as well as <strong class="tag">delivering value during onboarding</strong> is something we want to see <strong class="tag">throughout the interview process</strong>."
+  </div>
+  <p>Two things to decode:</p>
+  <ul>
+    <li><strong>"Throughout"</strong> is the key word. These aren't two questions to answer once — they're the <em>spine of every story you tell</em>. Whatever she asks, your answer should land on either "I sold the outcome, not the feature" or "I proved value after go-live", ideally both.</li>
+    <li>She named <strong>onboarding</strong> deliberately. This is the hybrid pre+post-sales role. Most pre-sales candidates go quiet after the contract signs. The differentiator she's screening for is: do you stay until the customer is getting <em>measurable</em> value?</li>
+  </ul>
+  <div class="callout"><strong>Win condition:</strong> Hiltsje leaves the call able to say "Niroo thinks in value and outcomes, in the deal AND after it." If she can say that, you pass.</div>
+</div>
+
+<div class="card" id="thread">
+  <h2><span class="num">1</span> The one thread to repeat</h2>
+  <p class="qmeta">Say this in your opener. Circle back to it in your close. Let it be the line she remembers.</p>
+  <div class="script">
+    "Whether I'm in a deal or in an onboarding, the job is the same — <strong class="tag">find the business outcome that matters, prove it's achievable, then prove it actually happened.</strong>"
+  </div>
+  <p>That single sentence <em>is</em> value-based selling + onboarding value in one breath. It does three things:</p>
+  <ul>
+    <li>"Find the outcome that matters" = discovery / value selling</li>
+    <li>"Prove it's achievable" = the demo / POC as evidence, not theatre</li>
+    <li>"Prove it actually happened" = onboarding, adoption, the measurable value loop (which is literally what Pendo instruments)</li>
+  </ul>
+</div>
+
+<div class="card" id="headline">
+  <h2><span class="num">2</span> Headline / "Tell me about yourself"</h2>
+  <p class="qmeta">90 seconds. End on the thread.</p>
+  <div class="script">
+    "I've spent 5+ years in enterprise SaaS, moving through BI implementations at Phocas, enterprise account ownership at UbiPark, and most recently Pre-Sales at inforcer running the full motion across the M365 security stack with AEs in ANZ.
+    <br><br>
+    The through-line in all of it is value. At Phocas I learned to start every implementation with the business problem, not the build. At UbiPark I owned enterprise customers end-to-end — Monash Health, Melbourne Airport, Charter Hall — and the thing I'm proudest of is cutting onboarding time 30% while lifting retention 20%, because I treated onboarding as where value gets <em>proven</em>, not just where setup happens. At inforcer I ran 100+ POCs and learned to sell the outcome and qualify hard.
+    <br><br>
+    What pulls me to this Pendo role is that it's the first one I've seen that owns <em>both</em> halves — the value sell in pre-sales and the value proof in onboarding. That's exactly how I already work. And Pendo is the product that instruments the thing I've been doing by hand: proving the customer actually got value."
+  </div>
+  <div class="callout">Note how this hits BOTH her themes in the TMAY before she even asks a question. That's "throughout".</div>
+</div>
+
+<div class="card" id="theme-value">
+  <h2><span class="num">3</span> Theme 1 — Value-based selling</h2>
+  <p class="qmeta">The pre-sales half. Core move: lead with the customer's business outcome and quantify it. Never lead with features.</p>
+
+  <h3>Your philosophy (say it plainly if asked)</h3>
+  <div class="script">
+    "I don't sell the product, I sell the outcome the product makes possible — and I quantify it. The demo is just proof that the outcome is real."
+  </div>
+
+  <h3>Your strongest value-selling proof points</h3>
+  <table>
+    <tr><th>Story</th><th>The value move</th></tr>
+    <tr>
+      <td><strong>Melbourne Airport ROI narrative</strong> (UbiPark) <span class="star">★ lead with this</span></td>
+      <td>Translated platform analytics into a dollars-and-outcomes case for C-level — not a feature demo. Executives bought the outcome, not the dashboard.</td>
+    </tr>
+    <tr>
+      <td><strong>inforcer 100+ POCs</strong></td>
+      <td>Ran value-based technical evaluations at volume; tied each POC to a security/business outcome (Essential 8 posture, GDPR), qualified hard, walked away from poor-fit deals early.</td>
+    </tr>
+    <tr>
+      <td><strong>Phocas C-level discovery workshops</strong></td>
+      <td>Started with the business problem and data requirements <em>before</em> scoping the build. Discovery-first = value-first.</td>
+    </tr>
+  </table>
+  <div class="amber"><strong>Watch-out:</strong> if you feel yourself listing features ("the platform does X, Y, Z"), stop and reframe to "which means the customer can [outcome]". Hiltsje is listening for the outcome reflex.</div>
+</div>
+
+<div class="card" id="theme-onboarding">
+  <h2><span class="num">4</span> Theme 2 — Delivering value during onboarding</h2>
+  <p class="qmeta">The post-sales half — the Pendo CE differentiator. This is the one most pre-sales candidates fumble. Don't.</p>
+
+  <h3>The reframe</h3>
+  <p>Onboarding is not a go-live checklist. It's where the value you <em>sold</em> gets <em>proven</em>. The job isn't done at go-live — it's done when the customer is getting measurable value and you can show it.</p>
+
+  <h3>Your strongest onboarding proof points</h3>
+  <table>
+    <tr><th>Story</th><th>The onboarding-value move</th></tr>
+    <tr>
+      <td><strong>UbiPark 30% onboarding-time reduction</strong> <span class="star">★ lead with this</span></td>
+      <td>Built reusable deployment templates that compressed time-to-value across Monash Health, Melbourne Airport, Charter Hall, CBRE. Faster time-to-value = value delivered sooner.</td>
+    </tr>
+    <tr>
+      <td><strong>UbiPark 20% retention lift</strong></td>
+      <td>The bridge story. Proves you connect onboarding to a <em>business</em> outcome (retention), not just a checklist. Usage-driven engagement + proactive escalation resolution.</td>
+    </tr>
+    <tr>
+      <td><strong>Phocas 50+ implementations → renewals & expansion</strong></td>
+      <td>Onboarded at scale, turned post-go-live relationships into renewals and account expansion. Value delivered well = the account grows.</td>
+    </tr>
+  </table>
+
+  <h3>The adoption-as-leading-indicator insight (signals seniority)</h3>
+  <div class="script">
+    "Adoption is the leading indicator. Low usage in week 4 predicts churn at month 6. So in onboarding I watch the usage signal, not just the go-live date — if a customer isn't <em>using</em> the thing they bought, they haven't gotten the value yet, no matter what the project plan says."
+  </div>
+</div>
+
+<div class="card" id="bridge">
+  <h2><span class="num">5</span> The bridge — tie the two themes together</h2>
+  <p class="qmeta">This is what makes you sound senior instead of like two separate people.</p>
+  <p>Value-based selling and onboarding value aren't two skills — they're the same skill applied at two points in time. The promise you make in the deal is the promise you keep in onboarding.</p>
+  <div class="script">
+    "The risk in value-based selling is you over-promise an outcome to win the deal, then it falls apart in onboarding. The reason I care about owning both halves is that it keeps me honest in the sell — I only promise the value I know I can prove later. And then onboarding becomes the place I prove I was right."
+  </div>
+  <div class="callout">This is the kind of answer that wins a hybrid pre+post role. It shows you understand <em>why</em> the role is hybrid in the first place.</div>
+</div>
+
+<div class="card" id="stories">
+  <h2><span class="num">6</span> CARL story bank — full spoken versions</h2>
+  <p class="qmeta">Context · Actions · Results · Learnings. Each runs ~60-90 sec. Lead with the ★ stories; reach for whichever matches her theme. Drop a hard number early in every one.</p>
+
+  <h3><span class="star">★</span> Value-Based Selling — Melbourne Airport ROI</h3>
+  <p class="qmeta">Use when: "Tell me about selling on business value rather than features."</p>
+  <p><strong>Context:</strong> At UbiPark I owned the Melbourne Airport account, one of our largest enterprise deployments. The relationship had grown up at an operational level. The day-to-day parking and operations team used the platform heavily and liked it, but the executive layer above them had no real attachment to it. They saw it as a tool that worked, not a strategic investment. That's a quietly dangerous position for an account to be in, because when budgets get reviewed, anything that lives purely at the operational level and can't articulate executive value is the first thing exposed at renewal.</p>
+  <p><strong>Actions:</strong> Rather than going back in with more features or a product update, I shifted the conversation to value. I pulled the platform's own analytics, the data we were already capturing on throughput, utilisation and operational efficiency, and reframed it into an ROI narrative in the executive's language. Not "here's what the platform does", but "here's what your operation is now able to do, and here's what that's worth". I translated usage data into dollars and operational outcomes a CFO or head of operations actually cares about, and I brought that story to the executive stakeholders directly instead of leaving it in the ops team. I was deliberate about leading with the outcome and using the platform only as the proof that the outcome was real.</p>
+  <p><strong>Results:</strong> I got executive buy-in, and the relationship moved from "a tool we use" to "a platform we rely on". That repositioning was a direct contributor to the broader <strong>20% retention lift</strong> I drove across the enterprise portfolio, because accounts with executive-level value attachment don't churn the way operational-only accounts do.</p>
+  <p><strong>Learnings:</strong> Executives buy the outcome, not the dashboard. If you lead with the feature, you stay stuck in the ops team forever. If you lead with the dollar figure, you get the room. I now treat every demo and every account review as a chance to ask "what's the business outcome this proves" before I open the product, because the product is only ever the evidence, never the pitch.</p>
+
+  <h3><span class="star">★</span> Value During Onboarding — UbiPark Templates, 30% Faster Time-to-Value</h3>
+  <p class="qmeta">Use when: "How do you make sure a customer realises value after they've signed?"</p>
+  <p><strong>Context:</strong> When I joined UbiPark I owned enterprise onboarding end-to-end for customers like Monash Health, Charter Hall, Melbourne Airport and CBRE. The problem was that every onboarding was bespoke. We effectively rebuilt the wheel for each customer, which meant slow time-to-value and a lot of variance in quality depending on who happened to run the implementation. For an enterprise customer, a slow, inconsistent onboarding is the moment the value you promised in the sale starts to feel like it might not show up.</p>
+  <p><strong>Actions:</strong> I made a deliberate decision to treat onboarding not as a setup checklist but as the phase where the value we sold actually gets proven. I mapped out what was common across our enterprise deployments versus what was genuinely customer-specific, then built reusable deployment templates for the common 80% and automated the repetitive workflow steps. I productised the playbook so it didn't live in my head, which meant the quality held even when I wasn't the one running it. Critically, I didn't just optimise for speed. I built in checkpoints around actual usage, because getting a customer "live" isn't the same as getting them value. I watched whether they were genuinely adopting the workflows, and if a deployment went quiet, I went in proactively rather than waiting for a problem to surface.</p>
+  <p><strong>Results:</strong> The templated approach cut onboarding time by around <strong>30%</strong> across the enterprise portfolio. But the number I care about more is the <strong>20% retention lift</strong>, because that's the business outcome. Faster onboarding only matters if it translates into customers who stay and grow, and tying the two together is what made the retention gain stick.</p>
+  <p><strong>Learnings:</strong> The first three implementations are research, everything after that should be templatised. And faster time-to-value isn't an efficiency metric, it's the value itself, the customer is getting what they paid for sooner. The deeper lesson is that onboarding is where the promise made in the sale either gets kept or quietly broken, so I treat it with the same rigour I'd treat a deal.</p>
+
+  <h3>Adoption as the Leading Indicator — UbiPark Retention (the bridge story)</h3>
+  <p class="qmeta">Use when: "How do you spot churn risk before the renewal conversation?" / when she probes the hybrid pre+post nature of the role.</p>
+  <p><strong>Context:</strong> Across the UbiPark enterprise portfolio I was responsible for retention, and the trap with retention is that you only find out an account is unhealthy when you're already in the renewal conversation, which is far too late to do anything about it. I needed a way to see churn risk months before it became a renewal risk.</p>
+  <p><strong>Actions:</strong> I built usage-driven engagement into how I ran every account, and I treated adoption as the leading indicator rather than relying on how happy a customer seemed in a quarterly check-in. A customer can tell you everything is fine in a QBR and still be quietly not using the thing they bought, and that gap is completely invisible if you only look at go-live dates and support tickets. So I watched the usage signal. If adoption dropped, I went in proactively to find out whether it was a training gap, a workflow mismatch, or a stakeholder change on their side, and I resolved it before it compounded. I was effectively doing customer success instrumentation by hand, stitching together incomplete usage data to build an early-warning system.</p>
+  <p><strong>Results:</strong> That proactive, adoption-led approach was the engine behind the <strong>20% retention lift</strong>. I was catching and resolving risk at <strong>week 4</strong> instead of discovering it at <strong>month 6</strong>.</p>
+  <p><strong>Learnings:</strong> Low usage in week four predicts churn at month six. Adoption is the single most honest signal you have about whether value is landing. The reason this matters for the Pendo role specifically is that I was doing all of this manually, chasing the signal across spreadsheets and partial data. Pendo is the product that instruments exactly what I was building by hand. So delivering value in onboarding isn't a new skill I'd have to learn here, it's the thing I've already been doing, finally with the right tooling underneath it.</p>
+
+  <h3>The Pendo Flex — Lumen Health Instrumentation</h3>
+  <p class="qmeta">Use when: "How are you using AI / hands-on technical work?" / "How would you ramp on Pendo?" — hold this for the technical/ramp question.</p>
+  <p><strong>Context:</strong> I built a healthtech demo called Lumen Health, a patient-facing companion that translates clinical notes into readable summaries. The thing I actually wanted to prove with it wasn't the interface, it was the value loop. I wanted to know whether users were genuinely getting value, not just assume it because the app looked finished.</p>
+  <p><strong>Actions:</strong> So I instrumented the whole product with Pendo, end to end. I installed it using the official AI Setup Assistant inside Claude Code, and in the process I hit and fixed the Next.js App Router page-load gotcha that breaks most naive Pendo installs, where the page-load events don't fire correctly because of how the App Router handles client-side navigation. I worked through it, got clean instrumentation firing, and ended up understanding not just how to install Pendo but the specific failure mode that trips up most first-time installers.</p>
+  <p><strong>Results:</strong> I had working Pendo instrumentation proving the engagement loop on a production-deployed app, and a concrete, hands-on understanding of the product rather than a theoretical one.</p>
+  <p><strong>Learnings:</strong> You can't claim you delivered value if you can't measure it, and that's exactly the worldview I'd been applying by hand at UbiPark. This is honestly the tool I'd have wanted back then. So when you ask how I'd ramp on Pendo, the real answer is I've already started. Show me an event firing and I can reverse-engineer the SDK from there, and I'd have a working sandbox before our next conversation.</p>
+
+  <div class="callout"><strong>Number anchors to keep front of mind:</strong> 50+ implementations · 100+ POCs · 30% faster onboarding · 20% retention lift · week 4 vs month 6. Drop at least one in the first two sentences of every story.</div>
+</div>
+
+<div class="card" id="stories-presales">
+  <h2><span class="num">6b</span> Pre-Sales &amp; Implementation bank</h2>
+  <p class="qmeta">Covers the pre-sales half of the hybrid role. Pre-sales stories from inforcer, implementation stories from Phocas. Same CARL format, numbers early.</p>
+
+  <h3 style="color:var(--accent)">PRE-SALES (inforcer)</h3>
+
+  <h3><span class="star">★</span> Complex Deal / Big Win — MSP Rollout, AU-Region Bug Escalation</h3>
+  <p class="qmeta">Use when: "Walk me through a high-stakes deal you supported." Your strongest pure pre-sales story.</p>
+  <p><strong>Context:</strong> At inforcer I supported a deal worth around <strong>$25K ARR</strong> with an MSP planning to roll our M365 security platform out across their entire base of <strong>500 managed organisations</strong>. For a company our size that was a significant deal. The complexity wasn't the discovery or the demo, it was the trial. During the POC the customer hit a bug specific to how certain security policies behaved in the Australian region. It wasn't a problem for UK or US customers, but it directly broke the workflow this MSP needed for their Australian clients, and the deal was about to fall off because they couldn't validate the solution with confidence.</p>
+  <p><strong>Actions:</strong> I replicated the bug myself to confirm it was a genuine product issue, not a config problem on their side, then documented it cleanly with steps to reproduce, expected versus actual behaviour, and an assessment of the fix. I raised it through the standard product channel, but because Australia is a small market next to the UK and US, it didn't get prioritised. With the deal stalling, I escalated directly to our Regional VP, walked him through the commercial impact, and made the case that the fix was simple relative to the revenue at stake. Because I'd built real credibility with leadership, the escalation landed. Throughout, I kept the customer in the loop and was honest about the timeline so they knew we were advocating for them internally.</p>
+  <p><strong>Results:</strong> The fix shipped within the sprint, the customer completed the trial, and the deal closed at the full <strong>$25K ARR</strong>. Beyond the revenue, it became the internal proof point that the ANZ region needed a stronger voice in product prioritisation, and that MSP became one of our most engaged partners in the region.</p>
+  <p><strong>Learnings:</strong> Relationship building, internal and external, matters as much as being technically strong. The internal trust gave me the credibility to escalate; the external transparency gave us the runway to fix it without losing the deal. My playbook now when I hit a product blocker mid-deal: replicate it, document it, quantify the commercial impact, and escalate with a solution, not just a problem.</p>
+
+  <h3><span class="star">★</span> AE Partnership — Holding the Line on an Over-Promise</h3>
+  <p class="qmeta">Use when: "How do you partner with AEs?" / "Tell me about a difficult AE." Essential for a role that works deals alongside Account Directors.</p>
+  <p><strong>Context:</strong> At inforcer I was working an MSP deal worth around <strong>$10K ARR</strong> with an AE under pressure to close by month-end. He'd already promised the customer a specific security policy integration that wasn't on our roadmap. I only found out when the customer asked me about it directly on a technical deep-dive call.</p>
+  <p><strong>Actions:</strong> My instinct was to correct it in the moment, but I held the line and parked it with the customer as "let me come back to you with specifics by end of week." Straight after the call I went to the AE privately and walked him through what had been promised versus what we could honestly deliver. I led with a customer-first framing, that my goal wasn't to kill his deal but to protect the customer's outcome and our credibility, and I acknowledged the commercial pressure he was under. Then I gave him two real options: a scoped-down version we could ship that quarter, or a phased approach committing to the full integration in a later release. I offered to co-write the customer-facing response so the commitment was clear in writing and we showed up as one team.</p>
+  <p><strong>Results:</strong> He pushed back at first but took the scoped-down path once he saw it kept the deal alive without over-promising. The customer accepted the revised scope the next day and the deal closed that quarter at full value. More importantly, that same AE started looping me in earlier on his deals, and it became one of my strongest internal partnerships.</p>
+  <p><strong>Learnings:</strong> Pushing back on an AE is easy when you bring a solution instead of just a problem, and the real work happens in the private conversation after the customer call, not in front of the customer. A customer-first attitude doesn't mean siding against your AE, it means giving them a way to keep the deal safe without compromising delivery. Framed that way, they take it every time.</p>
+
+  <h3 style="color:var(--accent)">IMPLEMENTATION (Phocas)</h3>
+
+  <h3>Implementation Under Pressure — Contested MYOB Data Model</h3>
+  <p class="qmeta">Use when: "Tell me about a difficult implementation" / "an onboarding that went sideways."</p>
+  <p><strong>Context:</strong> At Phocas I led a BI implementation that included an ERP integration with MYOB, and the data model was contested. The client's IT team and our product had genuinely different views on how the data should be structured, and the whole implementation stalled on it. This was one of <strong>50+ implementations</strong> I ran there, but it was the one where the blocker wasn't technical at all.</p>
+  <p><strong>Actions:</strong> The technical answer was actually the easy part, I could see what the right data model looked like. The hard part was that this was a political problem, two groups defending their own positions, and you can't resolve that in a shared meeting where everyone's performing for their side. So I ran separate conversations with each stakeholder group, got alignment on the outcome we were all actually trying to reach, and only brought the technical solution back once that alignment existed, rather than leading with it and forcing a fight.</p>
+  <p><strong>Results:</strong> We got the integration live and the implementation completed. It also reset the working relationship between the client's IT team and us, because they felt heard rather than overruled.</p>
+  <p><strong>Learnings:</strong> In an implementation the blocker is rarely technical, it's alignment. If you treat a people problem like an engineering problem, you produce a technically correct solution that nobody adopts. I now read the room for who needs to be aligned before I bring the answer, not after.</p>
+
+  <h3>Discovery-First Implementation — Reusable Templates, 25% Faster Lead Time</h3>
+  <p class="qmeta">Use when: "Tell me about improving how something was done." Doubles as a value-selling AND reusable-playbook proof.</p>
+  <p><strong>Context:</strong> At Phocas I delivered <strong>50+ end-to-end BI implementations</strong> across mid-market and enterprise clients. Early on I noticed we were treating every implementation as fully bespoke and scoping loosely up front, which meant rework, scope creep, and inconsistent timelines across the consulting team.</p>
+  <p><strong>Actions:</strong> I changed two things. First, I made discovery non-negotiable, running structured workshops with C-level and IT stakeholders to define the data requirements and lock scope before any build started, so we were solving the right problem rather than discovering it halfway through configuration. Second, I built reusable scoping processes and configuration templates from the patterns that repeated across implementations, and I shared them across the consulting team rather than keeping them to myself.</p>
+  <p><strong>Results:</strong> The templates were adopted team-wide and cut implementation lead time by around <strong>25%</strong>. Just as importantly, the quality became more consistent because the team was working from a shared, proven starting point instead of reinventing each engagement.</p>
+  <p><strong>Learnings:</strong> Discovery-first is what protects the customer outcome, getting scope right before build is the cheapest time to get it right. And reusable artefacts compound where one-off heroics don't; the highest-leverage thing I did at Phocas wasn't any single implementation, it was making the next 40 faster for everyone.</p>
+
+  <div class="callout"><strong>Mapping to the hybrid role:</strong> the MSP big-win = pure pre-sales (POC + escalation + commercial close). AE partnership = works deals alongside sales. Phocas discovery/templates = value-selling + reusable playbooks. MYOB = "blocker is alignment, not tech" senior signal.</div>
+</div>
+
+<div class="card" id="pendo-lens">
+  <h2><span class="num">7</span> The Pendo lens — make her feel you already think in Pendo</h2>
+  <p>Pendo's entire product is about <strong>proving and driving adoption</strong>. Every onboarding story you tell, connect it to that worldview:</p>
+  <div class="script">
+    "At UbiPark I was doing this by hand — chasing usage signals, building engagement narratives, guessing at adoption from incomplete data. Pendo is the product that instruments exactly that. So delivering value in onboarding isn't a new skill I'd have to learn here, it's the thing I've been doing manually, finally with the right tooling."
+  </div>
+  <ul>
+    <li>You've <strong>installed Pendo</strong> (Lumen Health) — you're past "AI-curious operator", you're a hands-on user.</li>
+    <li>You already believe <strong>adoption is the leading indicator</strong> — that's the Pendo thesis in one sentence.</li>
+    <li>You can talk <strong>HTML/CSS/JS + REST</strong> — the technical floor for a CE who instruments customer products.</li>
+  </ul>
+</div>
+
+<div class="card" id="q-likely">
+  <h2><span class="num">8</span> Likely questions + scripts</h2>
+
+  <h3>"Walk me through a deal where you sold on value."</h3>
+  <div class="script">Melbourne Airport ROI. Lead with the outcome (exec buy-in, strategic relationship), not the platform features.</div>
+
+  <h3>"How do you make sure a customer actually succeeds after they sign?"</h3>
+  <div class="script">UbiPark 30% onboarding + 20% retention. "I treat onboarding as where the value gets proven. I watch usage as the leading indicator — low adoption in week 4 is the real churn signal, not a missed go-live date."</div>
+
+  <h3>"What does value-based selling mean to you?"</h3>
+  <div class="script">"Selling the outcome, not the product, and quantifying it. The demo is proof the outcome is real, not the pitch itself. And I only promise value I know I can prove in onboarding — that keeps me honest in the sell."</div>
+
+  <h3>"This role is pre AND post sales. How do you think about that split?"</h3>
+  <div class="script">The bridge answer (section 5). "It's the same skill at two points in time. The promise I make in the deal is the promise I keep in onboarding."</div>
+
+  <h3>"How would you ramp on Pendo the product?"</h3>
+  <div class="script">"I've already installed it — Lumen Health, via the AI Setup Assistant in Claude Code. Show me an event firing and I can reverse-engineer the SDK from there. I'd have a working sandbox before our next conversation."</div>
+
+  <h3>"Tell me about a time an onboarding went sideways."</h3>
+  <div class="script">Phocas MYOB ERP integration — contested data model, mediated between client IT and product. "The technical answer was easy; the political answer required separate exec conversations. Lesson: in onboarding, the blocker is rarely technical, it's alignment."</div>
+</div>
+
+<div class="card" id="q-curveballs">
+  <h2><span class="num">9</span> Curveballs</h2>
+  <ul>
+    <li><strong>"Why are you open to relocating to Sydney?"</strong> → "The role is the right one. Sydney's a one-hour flight; the hybrid cadence is the same one I'm already running in Melbourne."</li>
+    <li><strong>"You've not used Pendo in a customer setting."</strong> → "Not in a paid seat, no — but I've installed it and instrumented a product with it. I know the worldview because I've been doing it by hand for years at UbiPark."</li>
+    <li><strong>"Your background is more pre-sales than post."</strong> → "On title, maybe. But the UbiPark work was end-to-end ownership — I owned enterprise customers from discovery through onboarding to expansion. The 30% onboarding and 20% retention numbers are post-sales outcomes."</li>
+    <li><strong>"Why leave inforcer?"</strong> → Honest, brief: redundancy; used it to lean hard into the SE/CE direction and ship real work (Lumen Health, WOP, the AI portfolio). Don't over-explain.</li>
+  </ul>
+</div>
+
+<div class="card" id="ask">
+  <h2><span class="num">10</span> Questions to ask Hiltsje</h2>
+  <p class="qmeta">Every one signals you think in value. Ask 2-3.</p>
+  <ul>
+    <li>"How does the CE team measure whether an onboarding actually delivered value — time-to-value, an adoption threshold, something else?"</li>
+    <li>"When a deal is value-sold well in pre-sales, what does a clean handoff into onboarding look like on your team?"</li>
+    <li>"Where do customers most often stall between signing and seeing value, and how does CE step in?"</li>
+    <li>"What separates a good Customer Engineer from a great one on your team?"</li>
+    <li>"You said value-based selling and onboarding value matter throughout — is there a recent example where a CE did that exceptionally well that I could learn from?"</li>
+  </ul>
+</div>
+
+<div class="card" id="cheat">
+  <h2><span class="num">11</span> Cheat card — glance during the call</h2>
+  <div class="grid2">
+    <div class="mini">
+      <h4>The thread (open + close with it)</h4>
+      <p>"Find the outcome that matters, prove it's achievable, prove it actually happened."</p>
+    </div>
+    <div class="mini">
+      <h4>Value-selling story</h4>
+      <p>★ Melbourne Airport ROI → exec buy-in. Outcome, not dashboard.</p>
+    </div>
+    <div class="mini">
+      <h4>Onboarding story</h4>
+      <p>★ UbiPark templates → 30% faster onboarding, 20% retention.</p>
+    </div>
+    <div class="mini">
+      <h4>The bridge</h4>
+      <p>"Same skill, two points in time. The promise I sell is the promise I keep."</p>
+    </div>
+    <div class="mini">
+      <h4>Pendo flex</h4>
+      <p>Already installed Pendo on Lumen Health. Adoption = leading indicator.</p>
+    </div>
+    <div class="mini">
+      <h4>Seniority line</h4>
+      <p>"Low usage in week 4 predicts churn at month 6."</p>
+    </div>
+  </div>
+</div>
+
+<div class="card" id="donts">
+  <h2><span class="num">12</span> Things to avoid</h2>
+  <ul>
+    <li><strong>Don't list features.</strong> The second you describe what a product <em>does</em> without saying what the customer <em>gets</em>, you've missed her brief.</li>
+    <li><strong>Don't treat onboarding as setup.</strong> Never describe onboarding as "getting them live". It's "getting them value".</li>
+    <li><strong>Don't answer the two themes as two separate boxes.</strong> Weave them. Use the bridge.</li>
+    <li><strong>Don't under-sell the post-sales work.</strong> Your title says pre-sales; your UbiPark outcomes are post-sales. Claim them.</li>
+    <li><strong>Don't over-explain the redundancy.</strong> One honest sentence, then pivot forward.</li>
+    <li><strong>Don't forget to land the thread in your close.</strong> Last thing she hears should be the value reflex.</li>
+  </ul>
+</div>
+
+</main>
+</div>
+
+</body>
+</html>

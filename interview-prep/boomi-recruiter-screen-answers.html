@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Boomi Recruiter Screen — Live Answers (Niroo Arjuna)</title>
+<style>
+  :root {
+    --bg: #0f172a;
+    --panel: #ffffff;
+    --ink: #0f172a;
+    --muted: #475569;
+    --soft: #f1f5f9;
+    --line: #e2e8f0;
+    --accent: #0066ff;
+    --accent-soft: #e0ecff;
+    --boomi: #0c4ee0;
+    --warn-bg: #fff7ed;
+    --warn-ink: #9a3412;
+    --good-bg: #ecfdf5;
+    --good-ink: #047857;
+    --rose-bg: #fff1f2;
+    --rose-ink: #be123c;
+    --radius: 14px;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: #f8fafc;
+    color: var(--ink);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  header.hero {
+    background: linear-gradient(135deg, #0c4ee0 0%, #0066ff 60%, #38bdf8 100%);
+    color: #ffffff;
+    padding: 28px 32px 24px;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  header.hero h1 {
+    margin: 0 0 6px;
+    font-size: 26px;
+    letter-spacing: -0.01em;
+  }
+  header.hero p { margin: 0; opacity: 0.92; font-size: 14px; }
+  .hero-meta {
+    display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px;
+  }
+  .pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 10px; border-radius: 999px;
+    background: rgba(255,255,255,0.18); color: #ffffff;
+    font-size: 12px; font-weight: 500;
+    border: 1px solid rgba(255,255,255,0.25);
+  }
+  .layout {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 24px;
+    gap: 24px;
+  }
+  nav.toc {
+    position: sticky; top: 16px; align-self: start;
+    background: var(--panel); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 16px;
+    max-height: calc(100vh - 32px); overflow-y: auto;
+  }
+  nav.toc h3 {
+    margin: 0 0 10px; font-size: 12px; text-transform: uppercase;
+    letter-spacing: 0.06em; color: var(--muted);
+  }
+  nav.toc a {
+    display: block; padding: 6px 8px; border-radius: 6px;
+    color: var(--ink); text-decoration: none;
+    font-size: 13px; line-height: 1.4;
+  }
+  nav.toc a:hover { background: var(--soft); color: var(--boomi); }
+  nav.toc a.section { font-weight: 600; margin-top: 10px; color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; padding: 4px 8px; }
+  main { min-width: 0; }
+  .card {
+    background: var(--panel); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 22px 24px;
+    margin-bottom: 16px;
+    scroll-margin-top: 16px;
+  }
+  .card h2 {
+    margin: 0 0 4px; font-size: 18px; letter-spacing: -0.01em;
+    display: flex; align-items: baseline; gap: 10px;
+  }
+  .card h2 .num {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    color: var(--boomi); font-size: 14px; font-weight: 700;
+    background: var(--accent-soft); padding: 2px 8px; border-radius: 6px;
+  }
+  .card .qmeta {
+    color: var(--muted); font-size: 12px; margin: 4px 0 14px;
+    font-style: italic;
+  }
+  .answer {
+    background: var(--soft); border-left: 3px solid var(--accent);
+    padding: 14px 16px; border-radius: 0 8px 8px 0;
+    font-size: 15px; color: var(--ink);
+  }
+  .answer.script {
+    background: #f0f9ff; border-left-color: var(--boomi);
+    font-family: ui-serif, Georgia, "Times New Roman", serif;
+    font-size: 15.5px; line-height: 1.65;
+  }
+  .answer strong { color: var(--boomi); }
+  .micro {
+    margin-top: 12px; font-size: 13px; color: var(--muted);
+  }
+  .micro b { color: var(--ink); }
+  .row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+  .tag {
+    display: inline-flex; padding: 2px 8px; border-radius: 999px;
+    font-size: 11px; font-weight: 500;
+    background: var(--soft); color: var(--muted); border: 1px solid var(--line);
+  }
+  .tag.warn { background: var(--warn-bg); color: var(--warn-ink); border-color: #fed7aa; }
+  .tag.good { background: var(--good-bg); color: var(--good-ink); border-color: #a7f3d0; }
+  .tag.rose { background: var(--rose-bg); color: var(--rose-ink); border-color: #fecdd3; }
+  .section-header {
+    margin: 32px 0 12px; font-size: 12px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted);
+  }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .mini {
+    background: #fafafa; border: 1px solid var(--line);
+    border-radius: 10px; padding: 14px;
+  }
+  .mini h4 { margin: 0 0 6px; font-size: 13px; color: var(--boomi); }
+  .mini p { margin: 0; font-size: 13.5px; color: var(--ink); }
+  ul.clean { margin: 8px 0 0; padding-left: 20px; }
+  ul.clean li { margin: 4px 0; font-size: 14px; }
+  .danger {
+    background: var(--rose-bg); border: 1px solid #fecdd3;
+    border-radius: 10px; padding: 14px; color: var(--rose-ink);
+    font-size: 13.5px;
+  }
+  .good-callout {
+    background: var(--good-bg); border: 1px solid #a7f3d0;
+    border-radius: 10px; padding: 14px; color: var(--good-ink);
+    font-size: 13.5px;
+  }
+  .quote {
+    font-family: ui-serif, Georgia, "Times New Roman", serif;
+    font-style: italic; color: var(--ink);
+    background: #fffbeb; border-left: 3px solid #f59e0b;
+    padding: 10px 14px; border-radius: 0 6px 6px 0;
+    margin: 10px 0; font-size: 14.5px;
+  }
+  table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 13.5px; }
+  th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); }
+  th { color: var(--muted); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
+  .footer-note {
+    text-align: center; color: var(--muted); font-size: 12px;
+    margin: 32px 0 16px;
+  }
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: 1fr; padding: 16px; }
+    nav.toc { position: static; max-height: none; }
+    .grid2 { grid-template-columns: 1fr; }
+  }
+  @media print {
+    nav.toc { display: none; }
+    .layout { grid-template-columns: 1fr; max-width: 100%; padding: 0; }
+    .card { page-break-inside: avoid; box-shadow: none; }
+    header.hero { background: var(--boomi) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <h1>Boomi — Recruiter Screen Answers</h1>
+  <p>Presales Solutions Engineer, ANZ · Niroo Arjuna · Melbourne</p>
+  <div class="hero-meta">
+    <span class="pill">30 min phone / Teams</span>
+    <span class="pill">ANZ APJ TA team</span>
+    <span class="pill">Citizen · no sponsorship</span>
+    <span class="pill">Target OTE AUD 220K</span>
+    <span class="pill">Fit score 4.4 / 5</span>
+  </div>
+</header>
+
+<div class="layout">
+
+  <nav class="toc">
+    <h3>Live Nav</h3>
+    <a href="#opening">Opening posture</a>
+    <a class="section">The 10 Questions</a>
+    <a href="#q1">Q1 — Walk me through</a>
+    <a href="#q2">Q2 — Why Boomi</a>
+    <a href="#q3">Q3 — What you're looking for</a>
+    <a href="#q4">Q4 — Boomi / iPaaS gap</a>
+    <a href="#q5">Q5 — Comp expectations</a>
+    <a href="#q6">Q6 — Work rights</a>
+    <a href="#q7">Q7 — Location</a>
+    <a href="#q8">Q8 — Other processes</a>
+    <a href="#q9">Q9 — Notice / start date</a>
+    <a href="#q10">Q10 — Your questions</a>
+    <a class="section">ANZ Context</a>
+    <a href="#anz">ANZ-specific notes</a>
+    <a href="#anchors">Anchor facts</a>
+    <a href="#avoid">Don't say this</a>
+    <a href="#close">Closing line</a>
+  </nav>
+
+  <main>
+
+    <section class="card" id="opening">
+      <h2>Opening posture — first 30 seconds</h2>
+      <p class="qmeta">How you sound when they say hello sets the tone for the whole call.</p>
+      <div class="answer script">
+        <em>"Thanks for making the time — really appreciate it. I've been following Boomi closely since the IPO and especially the AgentStudio launch, so I'm genuinely looking forward to this conversation. Keen to hear what you're looking for and where this seat sits in the ANZ team."</em>
+      </div>
+      <p class="micro"><b>Why it works:</b> confident, specific, signals homework in 15 seconds, hands the mic back. Don't apologise for anything, don't over-thank.</p>
+    </section>
+
+    <div class="section-header">The 10 Questions — Full Answers</div>
+
+    <!-- Q1 -->
+    <section class="card" id="q1">
+      <h2><span class="num">Q1</span> "Walk me through your background."</h2>
+      <p class="qmeta">90 seconds, chronological, land on the headline number. This is a disguised SE skill test.</p>
+      <div class="answer script">
+        "I'm a Solutions and Pre-Sales Engineer based in Melbourne, with six years across BI consulting, enterprise IoT and parking platforms, and cloud security pre-sales.<br><br>
+        Started at <strong>Phocas Software</strong> doing 50+ BI implementations across mid-market and enterprise clients — that's where I learned ERP integration patterns, including MYOB middleware work, and where I picked up the C-level discovery muscle.<br><br>
+        Moved into the product specialist seat at <strong>UbiPark</strong> managing the enterprise portfolio — Melbourne Airport, Monash Health, Monash Uni, CBRE, Charter Hall. Owned the API integrations end-to-end and translated platform analytics into commercial value for executives. The Melbourne Airport ROI narrative is the one I lean on most.<br><br>
+        Then into <strong>inforcer</strong> as a Pre-Sales Engineer, where I ran <strong>100+ technical deep dives, demos, POCs and commercial close engagements</strong> across SSO, SAML, SCIM, OAuth and M365 security — partnering with Account Executives on the technical win.<br><br>
+        Went through a redundancy earlier this year and used it to deepen the AI-engineering side — built an AI-queryable portfolio on the Claude API, finished Anthropic's AI Fluency cert, and shipped two production SaaS instrumentations end-to-end using AI setup tooling.<br><br>
+        Boomi sits right at the intersection of where I've been — integration, pre-sales, enterprise ANZ — and where the market is going with AgentStudio. That's why I'm here."
+      </div>
+      <p class="micro"><b>Time check:</b> 75-90 seconds out loud. <b>Land on:</b> "100+ technical deep dives, demos, POCs and commercial close engagements" — verbatim. <b>Avoid:</b> the word "redundancy" without immediately following with what you built.</p>
+    </section>
+
+    <!-- Q2 -->
+    <section class="card" id="q2">
+      <h2><span class="num">Q2</span> "Why Boomi? Why now?"</h2>
+      <p class="qmeta">Three beats: category leader → product/strategy → personal fit. Filters real interest from job-board blast.</p>
+      <div class="answer script">
+        "Three reasons.<br><br>
+        <strong>First — category leadership.</strong> Boomi is the independent iPaaS leader, 11 years in the Gartner MQ Leader quadrant, just crossed 30,000 customers, and post-IPO so the public-company discipline is there. That's the kind of platform I want to be selling.<br><br>
+        <strong>Second — the agentic data activation play.</strong> AgentStudio plus the Rivery acquisition is exactly where the market is going. Steve Lucas's framing that <em>'2026 is the year organisations stop experimenting with AI and start activating it at scale'</em> — that's the conversation I want to be having with CIOs in ANZ. The connection layer becoming the control layer is a real shift and Boomi is positioned for it.<br><br>
+        <strong>Third — personal fit.</strong> I'm Melbourne-based, citizen, primary archetype is Pre-Sales SE at a category-leading platform with an AI-forward roadmap. The ANZ team is in growth mode. Ramp profile lines up. Honestly this is the cleanest fit in my pipeline right now."
+      </div>
+      <p class="micro"><b>Why it works:</b> three structured beats = SE-quality answer. The Steve Lucas quote and "connection layer to control layer" framing prove you've read recent material, not just the careers page.</p>
+    </section>
+
+    <!-- Q3 -->
+    <section class="card" id="q3">
+      <h2><span class="num">Q3</span> "What are you looking for in your next role?"</h2>
+      <p class="qmeta">Tie it back to the JD without parroting it. Recruiter is calibrating whether you'll stay 18+ months.</p>
+      <div class="answer script">
+        "Three things.<br><br>
+        A <strong>pre-sales seat at a category-leading platform</strong> — I want the AE partnership, the technical-win ownership, and the deal cycles where business value translation matters. Boomi has that.<br><br>
+        An <strong>AI-forward product roadmap</strong> where I'm not just talking about AI but actively demoing it — AgentStudio is the perfect surface for that.<br><br>
+        And an <strong>ANZ team I can grow with long-term</strong>. I'm not interested in a 12-month stop. Melbourne is home, the visa story is sorted, and I'm looking for the seat where I can ramp, hit attainment, and then take on more — territory, team lead, whatever the platform needs."
+      </div>
+      <p class="micro"><b>Signal:</b> "not interested in a 12-month stop" addresses the unspoken retention question recruiters always have.</p>
+    </section>
+
+    <!-- Q4 -->
+    <section class="card" id="q4">
+      <h2><span class="num">Q4</span> "Tell me about your iPaaS / Boomi experience."</h2>
+      <p class="qmeta">The known gap from the JD. Don't bluff. Lead honest, close with action.</p>
+      <div class="answer script">
+        "Straight up — no Boomi production experience. I want to be upfront on that.<br><br>
+        What I do have is enterprise integration delivery across three companies: <strong>REST API integrations at UbiPark</strong> for Melbourne Airport and the enterprise portfolio, <strong>ERP middleware at Phocas</strong> including MYOB connector work, and deep <strong>SSO, SAML, OAuth and SCIM</strong> across the inforcer pre-sales engagements. The patterns transfer — error handling, retries, auth, batch vs event, data transformation, observability — that's all the same conversation whether the platform is Boomi or anything else.<br><br>
+        On ramp speed: I've installed two SaaS products end-to-end in the last month using their own AI setup tooling. The pattern is well-rehearsed. I'm <strong>spinning up a free Boomi trial this week</strong> so by the time I'm talking to the hiring manager I can walk through a working process I built myself. That's the standard I want to hold myself to."
+      </div>
+      <div class="good-callout" style="margin-top: 12px;">
+        <b>The closer:</b> "spinning up a Boomi trial this week" is the line that gets you to round 2. Recruiters relay this to HMs and it stands out.
+      </div>
+    </section>
+
+    <!-- Q5 -->
+    <section class="card" id="q5">
+      <h2><span class="num">Q5</span> "What's your salary expectation?"</h2>
+      <p class="qmeta">Single most important moment of the call. Flip it back first — never anchor before they do. If you go first, you cap yourself.</p>
+
+      <div class="good-callout" style="margin-bottom: 14px;">
+        <b>The strategy:</b> Boomi has a budgeted band for this seat. Your job is to get them to share it first. If their band is higher than your number, you've left money on the table; if it's lower, you've disqualified yourself. <b>Make them go first.</b>
+      </div>
+
+      <h4 style="margin: 6px 0 6px; color: var(--boomi); font-size: 14px;">Step 1 — Flip it back (use this verbatim, pick one)</h4>
+
+      <div class="answer script">
+        <b>Option A — soft and warm:</b><br>
+        "I'm open. My first priority is making sure this is a great fit on both sides. But if you've got a range you're able to share, I'd be happy to discuss against that."
+      </div>
+
+      <div class="answer script" style="margin-top: 10px;">
+        <b>Option B — more deliberate, signals package literacy:</b><br>
+        "I know every organisation structures comp differently across base, variable, equity and super. With that in mind, can you help me understand what the package looks like for this seat and the range the team has budgeted? That'll let me give you a much sharper answer."
+      </div>
+
+      <p class="micro" style="margin-top: 10px;"><b>ANZ note:</b> mentioning <b>super</b> (superannuation — 12% guaranteed) signals you're a local who understands the package isn't just base + variable. Recruiters react well to that.</p>
+
+      <h4 style="margin: 22px 0 6px; color: var(--boomi); font-size: 14px;">Step 2a — If they share the band</h4>
+
+      <div class="answer script">
+        <b>If their band is at or above your target:</b><br>
+        "Great — that aligns with what I was expecting for a Mid-Senior pre-sales seat in ANZ."
+      </div>
+
+      <div class="answer script" style="margin-top: 10px;">
+        <b>If their band is slightly low (or you want headroom):</b><br>
+        "Thanks for sharing — that's really helpful. My expectations were initially slightly above the high end of that range, but I'm flexible for the right seat. Worth flagging now so we're aligned later, rather than at offer stage."
+      </div>
+
+      <p class="micro" style="margin-top: 10px;"><b>Why this works:</b> you've banked their number, signalled you're worth the top of band, and kept the conversation moving without breaking rapport.</p>
+
+      <h4 style="margin: 22px 0 6px; color: var(--boomi); font-size: 14px;">Step 2b — If they insist you go first</h4>
+
+      <div class="answer script">
+        <b>Recommended (market-anchored, in demand, ANZ-framed):</b><br>
+        "My priority is making sure this is a strong two-way fit, and comp is one piece of that — base, variable split, equity, super all matter. From the conversations I'm in for similar Mid-Senior pre-sales seats in ANZ, the market is sitting around <strong>AUD 200 to 240K OTE</strong>, typically on a <strong>75/25 base/variable</strong> split. How does that align with what Boomi has budgeted for this role?"
+      </div>
+
+      <div class="answer script" style="margin-top: 10px;">
+        <b>Shorter fallback if they really push for a single number:</b><br>
+        "I'm currently in process for roles in the <strong>AUD 200 to 240K OTE</strong> range. Where does that sit relative to your band?"
+      </div>
+
+      <p class="micro" style="margin-top: 10px;"><b>Why this works:</b> framing it as "the market is paying me X" instead of "I want X" makes it a fact, not a hope. The "how does that align" close immediately flips the question back so they still tell you their band before you commit.</p>
+
+      <div class="grid2" style="margin-top: 18px;">
+        <div class="mini">
+          <h4>Anchor data (for your reference, not to quote)</h4>
+          <p>RepVue AU Sales Engineer OTE band: A$170K – A$288K. Boomi US PSE listed base: US$140–175K. A Mid-Senior ANZ SC at a post-IPO category leader should land A$200–240K OTE all-in, plus super and equity.</p>
+        </div>
+        <div class="mini">
+          <h4>What "in demand" signals</h4>
+          <p>Mentioning that you're "in process for similar roles" without naming the band as <em>your</em> ask = you're not hoping, you're priced. Recruiters move you up the queue when this is convincing.</p>
+        </div>
+      </div>
+
+      <div class="danger" style="margin-top: 14px;">
+        <b>Do NOT:</b> volunteer a single number first ("I want 220K"). Do NOT say "I'm flexible" with no follow-up — that's permission to lowball. Do NOT quote USD numbers. Do NOT mention current/last salary if asked — in Victoria it's lawful to ask but you don't have to answer; deflect with "I'd rather anchor on the market rate for this role than on what I happened to be paid previously."
+      </div>
+
+      <div class="good-callout" style="margin-top: 10px;">
+        <b>Mental model:</b> the recruiter is not your adversary — they want to advance you. But every $10K higher you can credibly hold is $10K they'll need to justify to the HM. <b>Make them work for the number, don't hand it to them.</b>
+      </div>
+    </section>
+
+    <!-- Q6 -->
+    <section class="card" id="q6">
+      <h2><span class="num">Q6</span> "Are you authorised to work in Australia?"</h2>
+      <p class="qmeta">Compliance gate. One sentence. Move on.</p>
+      <div class="answer script">
+        "Australian citizen, no sponsorship required, ever."
+      </div>
+      <p class="micro"><b>Why "ever":</b> kills the follow-up about future sponsorship needs. Done in 4 seconds.</p>
+    </section>
+
+    <!-- Q7 -->
+    <section class="card" id="q7">
+      <h2><span class="num">Q7</span> "Are you based in Sydney or Melbourne?"</h2>
+      <p class="qmeta">Location gate from the JD. Melbourne is fine for this role. Signal travel willingness.</p>
+      <div class="answer script">
+        "Melbourne-based, long-term. Happy to travel to Sydney for customer work, team offsites, or kickoffs — done that pattern before with UbiPark across the ANZ enterprise accounts. No friction there."
+      </div>
+      <p class="micro"><b>If they ask about a Sydney preference:</b> "If the team strongly prefers Sydney for this seat I'm open to discussing it, but Melbourne is home and the airport corridor makes Sydney easy."</p>
+    </section>
+
+    <!-- Q8 -->
+    <section class="card" id="q8">
+      <h2><span class="num">Q8</span> "Are you actively interviewing elsewhere?"</h2>
+      <p class="qmeta">Urgency and leverage signal. Honest + light leverage is the play.</p>
+      <div class="answer script">
+        "Yes — I'm in active conversations with <strong>Pendo</strong> for the Senior Customer Engineer ANZ role, and <strong>Heidi Health</strong> for a Forward Deployed Engineer seat. Both are similar archetype to this one.<br><br>
+        Boomi is at the top of the list because the AgentStudio plus iPaaS combination is a sharper fit for where I want to go in the next 3 years than pure product analytics or healthtech."
+      </div>
+      <p class="micro"><b>Only say names you're actually in process with.</b> "Top of the list" is the leverage line — be ready to back it up if they push.</p>
+    </section>
+
+    <!-- Q9 -->
+    <section class="card" id="q9">
+      <h2><span class="num">Q9</span> "When could you start?"</h2>
+      <p class="qmeta">Pipeline planning. Don't oversell urgency — sounds desperate.</p>
+      <div class="answer script">
+        "Available within <strong>2 to 4 weeks</strong> of an offer. No notice period to work out — I can move as fast as the paperwork allows."
+      </div>
+    </section>
+
+    <!-- Q10 -->
+    <section class="card" id="q10">
+      <h2><span class="num">Q10</span> "Any questions for me?"</h2>
+      <p class="qmeta">Pick 2 to 3 max. Show research, get useful data, demonstrate SE thinking. Don't ask all four.</p>
+
+      <div class="mini" style="margin-bottom: 10px;">
+        <h4>Q for them — #1 (lead with this)</h4>
+        <p>"Steve Lucas said 2026 is the year organisations stop experimenting with AI and start activating it at scale. How is the ANZ Solutions Consulting team being asked to lead that conversation with customers right now — is it AgentStudio-led, Rivery-led, or core iPaaS-led depending on the account?"</p>
+        <p class="micro" style="margin-top:6px;"><b>Why:</b> proves you read recent comms, opens a strategy convo, lets the recruiter shine.</p>
+      </div>
+
+      <div class="mini" style="margin-bottom: 10px;">
+        <h4>Q for them — #2</h4>
+        <p>"How is the SC team structured in ANZ — are SCs aligned 1:1 with AEs, by industry vertical, or pooled across the region? And what's the ramp expectation in months 1 to 3?"</p>
+        <p class="micro" style="margin-top:6px;"><b>Why:</b> operational, signals you've done SE before and care about scorecard mechanics.</p>
+      </div>
+
+      <div class="mini" style="margin-bottom: 10px;">
+        <h4>Q for them — #3</h4>
+        <p>"What does success look like at the 6-month mark for this seat? Is it technical-win count, quota attainment contribution, POC conversion rate, or something else?"</p>
+        <p class="micro" style="margin-top:6px;"><b>Why:</b> reverse-engineers the scorecard before you negotiate.</p>
+      </div>
+
+      <div class="mini">
+        <h4>Q for them — #4 (use only if rapport is high)</h4>
+        <p>"What's the most common reason candidates don't make it through this loop? I'd rather know upfront so I can prep against it."</p>
+        <p class="micro" style="margin-top:6px;"><b>Why:</b> rare ask, recruiters appreciate it, gives you the failure modes to avoid in later rounds.</p>
+      </div>
+    </section>
+
+    <!-- ANZ context -->
+    <div class="section-header">ANZ-Specific Notes</div>
+
+    <section class="card" id="anz">
+      <h2>What's different about an ANZ recruiter call</h2>
+      <ul class="clean">
+        <li><b>Vocabulary:</b> use "uni" not "college", "CBD" not "downtown", "AE" or "account manager" not "salesperson", "Telstra / NAB / BHP / Qantas / Coles" as the canonical enterprise reference accounts.</li>
+        <li><b>Comp in AUD only.</b> Never quote USD numbers. The AU market sits below US Boomi bands and recruiters know the conversion games.</li>
+        <li><b>Public sector matters.</b> Boomi has IRAP / Federal eligibility chatter. If the recruiter mentions gov accounts (Services NSW, ATO, DTA, federal agencies), you should know it's a real ANZ pillar.</li>
+        <li><b>Travel reality:</b> ANZ SE patches usually mean Melbourne ↔ Sydney monthly, occasional Brisbane / Auckland / Perth. Signal you're fine with that.</li>
+        <li><b>MuleSoft is the elephant.</b> ANZ is a strong MuleSoft market via Salesforce. Don't bash it. Frame as "independent control plane" vs "Salesforce-locked".</li>
+        <li><b>Boomi ANZ HQ:</b> Sydney (North Sydney / CBD historically). Melbourne is a satellite. Be clear you're not asking for a Melbourne office.</li>
+        <li><b>Time zones:</b> Boomi global HQ is Chesterbrook PA (US Eastern). Some calls will be early-morning AEST. Don't flag this as a problem.</li>
+        <li><b>Tall poppy reality:</b> the 90-second narrative needs the "100+ POCs" number, but say it as fact, not boast. ANZ recruiters react badly to American-style chest-puffing.</li>
+      </ul>
+    </section>
+
+    <section class="card" id="anchors">
+      <h2>Anchor facts to drop naturally</h2>
+      <table>
+        <thead><tr><th>Fact</th><th>Where to drop it</th></tr></thead>
+        <tbody>
+          <tr><td>30,000+ customers (Q1 2026)</td><td>Why Boomi (Q2)</td></tr>
+          <tr><td>11 years Gartner iPaaS MQ Leader</td><td>Why Boomi (Q2)</td></tr>
+          <tr><td>Post-IPO (NASDAQ: BMI, 2025)</td><td>Comp discussion (Q5)</td></tr>
+          <tr><td>Rivery acquisition (Dec 2024) — CDC + modern data integration</td><td>Why Boomi (Q2) or your Q1 to them</td></tr>
+          <tr><td>AgentStudio — control plane for AI agents</td><td>Why Boomi (Q2) and your Q1 to them</td></tr>
+          <tr><td>Steve Lucas — CEO, ex-Marketo, ex-Adobe</td><td>Why Boomi (Q2), via the 2026 quote</td></tr>
+          <tr><td>"Connection layer to control layer"</td><td>Anywhere AgentStudio comes up</td></tr>
+          <tr><td>Francisco Partners + TPG ownership</td><td>Only if comp / equity comes up in depth</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="card" id="avoid">
+      <h2>Don't say this</h2>
+      <div class="danger">
+        <ul class="clean">
+          <li>"I'm flexible on comp" with no number.</li>
+          <li>"MuleSoft sucks" / any competitor bashing by name.</li>
+          <li>Bluffing Boomi product knowledge — they will catch it and tell the HM.</li>
+          <li>"I'm not really technical" / any false-modesty hedge.</li>
+          <li>"I just got made redundant" without immediately pivoting to what you built since.</li>
+          <li>Questions about WFH, leave, perks, share-purchase plan — save for the offer stage.</li>
+          <li>USD numbers, US benchmarks, "my American friend at Boomi earns…"</li>
+          <li>Long pauses after their questions — better to say "good question, let me think for a second" than dead air.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="card" id="close">
+      <h2>The closing line</h2>
+      <p class="qmeta">When they wrap up and walk you through next steps.</p>
+      <div class="answer script">
+        "Really enjoyed this — thanks for the context on the ANZ team. To recap on my side: Melbourne-based citizen, primary archetype match, OTE expectation around 220 AUD, and I'm <strong>spinning up a Boomi trial this week</strong> so I can speak to the platform concretely when I meet the hiring manager. What's the best timeline for the next round?"
+      </div>
+      <p class="micro"><b>Why it works:</b> mirrors back the recap (SE skill), reinforces the trial commitment, asks the action-forcing question. Don't end on "thanks again" — end on a question that requires an answer.</p>
+    </section>
+
+    <section class="card">
+      <h2>Within 24 hours — follow-up note</h2>
+      <p class="qmeta">Send to the recruiter via email or LinkedIn. Three sentences, casual.</p>
+      <div class="quote">
+        Thanks for the time today — really enjoyed hearing about the ANZ SC team's focus on AgentStudio adoption. Looking forward to the next conversation. In the meantime I'm spinning up a Boomi trial so I can speak more concretely to the platform when we next chat.
+      </div>
+    </section>
+
+    <p class="footer-note">Boomi recruiter screen prep · Niroo Arjuna · generated 2026-05-25 · <a href="boomi-presales-solutions-engineer.md" style="color: var(--boomi);">full prep doc</a></p>
+
+  </main>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Pendo Next Round — Sales + Technical (Niroo Arjuna)</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --primary: 222 47% 23%;
+    --primary-foreground: 0 0% 98%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 217 91% 60%;
+    --border: 240 5.9% 90%;
+    --radius: 0.6rem;
+  }
+  body { font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background: hsl(240 5% 97%); color: hsl(var(--foreground)); }
+  .card { background: hsl(var(--card)); border: 1px solid hsl(var(--border)); border-radius: var(--radius); box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.05); }
+  .badge { display: inline-flex; align-items: center; gap: .25rem; border-radius: 9999px; padding: 0.15rem 0.65rem; font-size: 0.72rem; font-weight: 600; border: 1px solid hsl(var(--border)); }
+  .badge-primary { background: hsl(var(--primary)); color: hsl(var(--primary-foreground)); border-color: transparent; }
+  .badge-accent { background: hsl(217 91% 95%); color: hsl(217 91% 35%); border-color: hsl(217 91% 85%); }
+  .badge-warn { background: hsl(38 92% 95%); color: hsl(38 92% 32%); border-color: hsl(38 92% 82%); }
+  .badge-success { background: hsl(142 71% 95%); color: hsl(142 71% 27%); border-color: hsl(142 71% 78%); }
+  .badge-rose { background: hsl(345 80% 96%); color: hsl(345 80% 38%); border-color: hsl(345 80% 88%); }
+  h2 { scroll-margin-top: 5rem; }
+  h3 { scroll-margin-top: 5rem; }
+  code { background: hsl(240 5% 93%); padding: 0.1rem 0.35rem; border-radius: 0.3rem; font-size: 0.85em; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+  .quote { border-left: 3px solid hsl(var(--accent)); background: hsl(217 91% 98%); padding: 0.75rem 1rem; border-radius: 0 0.4rem 0.4rem 0; font-style: italic; color: hsl(222 30% 25%); }
+  table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+  th, td { text-align: left; padding: 0.55rem 0.7rem; border-bottom: 1px solid hsl(var(--border)); vertical-align: top; }
+  th { background: hsl(240 5% 96%); font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.02em; color: hsl(var(--muted-foreground)); }
+  td code { white-space: nowrap; }
+  .nav a { color: hsl(var(--muted-foreground)); font-size: 0.82rem; font-weight: 500; padding: 0.25rem 0.5rem; border-radius: 0.35rem; }
+  .nav a:hover { color: hsl(var(--foreground)); background: hsl(240 5% 94%); }
+  ul.tight li { margin-bottom: 0.3rem; }
+</style>
+</head>
+<body class="antialiased">
+
+<header class="sticky top-0 z-20 backdrop-blur bg-white/85 border-b border-[hsl(var(--border))]">
+  <div class="max-w-4xl mx-auto px-5 py-3 flex flex-wrap items-center gap-x-4 gap-y-1 nav">
+    <span class="font-bold text-[hsl(var(--primary))] mr-2">Pendo · Next Round</span>
+    <a href="#tldr">TL;DR</a>
+    <a href="#sales">1 · Sales (30m)</a>
+    <a href="#tech">2 · Technical (45m)</a>
+    <a href="#sandbox">The Sandbox</a>
+    <a href="#checklist">Checklist</a>
+    <a href="#moments">Win Moments</a>
+  </div>
+</header>
+
+<main class="max-w-4xl mx-auto px-5 py-8 space-y-6">
+
+  <!-- Title -->
+  <section class="card p-6">
+    <div class="flex flex-wrap items-center gap-2 mb-3">
+      <span class="badge badge-primary">Senior Customer Engineer · ANZ</span>
+      <span class="badge badge-success">Past HM ✓</span>
+      <span class="badge badge-accent">2 interviews to schedule</span>
+    </div>
+    <h1 class="text-2xl font-bold mb-2">Next Round Prep — Sales + Technical</h1>
+    <p class="text-[hsl(var(--muted-foreground))] mb-4">Pre-sales &amp; post-sales CE role at Pendo. You're through the hiring manager (Hiltsje Smilde). Two interviews left, booked via the mLoop scheduler.</p>
+    <div class="grid sm:grid-cols-2 gap-3">
+      <div class="rounded-lg border border-[hsl(var(--border))] p-4">
+        <div class="badge badge-rose mb-2">30 min</div>
+        <p class="font-semibold">Cross-functional partner in Sales</p>
+        <p class="text-sm text-[hsl(var(--muted-foreground))]">Pre-sales approach, experience, commercial experience.</p>
+      </div>
+      <div class="rounded-lg border border-[hsl(var(--border))] p-4">
+        <div class="badge badge-accent mb-2">45 min</div>
+        <p class="font-semibold">Sr. Customer Engineer</p>
+        <p class="text-sm text-[hsl(var(--muted-foreground))]">Technical + post-sales. DOM, selectors, dev tools, tagging. <em>Not a coding exercise.</em></p>
+      </div>
+    </div>
+    <p class="text-sm mt-4">Sandbox to practise on: <a class="text-[hsl(var(--accent))] underline" href="https://crm.pendoexperience.io/">crm.pendoexperience.io</a> — Pendo pre-installed. <strong>Probed live 2026-06-04</strong> (real findings in §The Sandbox).</p>
+  </section>
+
+  <!-- TLDR -->
+  <section id="tldr" class="card p-6">
+    <h2 class="text-lg font-bold mb-3">TL;DR — what each interview actually tests</h2>
+    <table>
+      <thead><tr><th>Interview</th><th>Surface question</th><th>What they're really scoring</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Sales (30m)</strong></td><td>"Tell me about your pre-sales approach"</td><td>Can I drop you into a live deal and trust you to carry the technical win without babysitting? Do you get the commercial side?</td></tr>
+        <tr><td><strong>Sr CE (45m)</strong></td><td>"Tag this feature / inspect this issue"</td><td>Can you sit in a customer's app, open dev tools, and not panic? Do you <em>understand</em> the DOM or did you memorise a demo?</td></tr>
+      </tbody>
+    </table>
+    <p class="mt-3 text-sm">The Sales round wants a <strong>partner</strong>. The CE round wants someone <strong>unfakeable on fundamentals</strong>. Prep them differently.</p>
+  </section>
+
+  <!-- PART 1 SALES -->
+  <section id="sales" class="card p-6 space-y-4">
+    <div class="flex items-center gap-2"><span class="badge badge-rose">Part 1</span><h2 class="text-xl font-bold">Sales Cross-Functional · 30 min</h2></div>
+    <p class="text-sm text-[hsl(var(--muted-foreground))]">A peer from the AE/Sales org checking the CE they'll be paired with is a force multiplier. Keep it commercial. Lead with outcomes and dollars, not features.</p>
+
+    <div>
+      <h3 class="font-semibold mb-2">Your one-paragraph pre-sales philosophy <span class="text-xs text-[hsl(var(--muted-foreground))]">(memorise the shape)</span></h3>
+      <div class="quote">"My job in pre-sales isn't to demo features — it's to de-risk the technical decision so the deal can close. I run discovery first, find the one or two things that have to be true for them to buy, and build the demo or POC around proving exactly those. I qualify hard and early, because a POC that drags is a deal that dies. And I stay close to the AE on commercials — I never want to be the engineer who technically wins the eval and then gets surprised by the price."</div>
+    </div>
+
+    <div>
+      <h3 class="font-semibold mb-2">Likely questions + angles</h3>
+      <table>
+        <thead><tr><th>#</th><th>Question</th><th>Angle / story</th></tr></thead>
+        <tbody>
+          <tr><td>S1</td><td>"Walk me through your pre-sales approach."</td><td>Discovery → technical win criteria → tailored POC → clean technical close. Proof: <strong>inforcer M365 demo</strong>.</td></tr>
+          <tr><td>S2</td><td>"Tell me about a deal you helped win."</td><td><strong>inforcer — Carrying the Technical Win to Signature</strong> (new story-bank entry). You ran the eval <em>and</em> read the real blocker.</td></tr>
+          <tr><td>S3</td><td>"How do you partner with an AE in a contested deal?"</td><td>AE owns commercials + champion; you own technical proof + multi-threaded technical buyers. You feed the AE risk signals: "security team is the real blocker, not price."</td></tr>
+          <tr><td>S4</td><td>"When do you say no to a deal technically?"</td><td>Kill criteria: no clear technical win condition, no real environment access, no engaged champion, or a genuine capability gap. Walking away protects everyone's time.</td></tr>
+          <tr><td>S5</td><td>"How do you handle a feature gap on a live deal?"</td><td>Don't over-promise roadmap. Reframe to job-to-be-done, show the supported path, log the gap, bring Product in. Story: <strong>UbiPark — influencing roadmap</strong>.</td></tr>
+          <tr><td>S6</td><td>"How do you talk about ROI / business value?"</td><td>Translate usage → money. Story: <strong>UbiPark — Melbourne Airport ROI</strong>. Low adoption week 4 predicted churn month 6.</td></tr>
+          <tr><td>S7</td><td>"Why Pendo, commercially?"</td><td>Adoption data is the leading indicator of churn (CS) <em>and</em> expansion (Sales). Land = analytics; expand = guides + platform. It's land-and-expand.</td></tr>
+          <tr><td>S8</td><td>"CE vs CSM/AE to you?"</td><td>The CE owns technical trust across the whole lifecycle. You don't see the SE/CSM boundary as a hard line — which is why the hybrid CE role fits.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="grid sm:grid-cols-2 gap-4">
+      <div>
+        <h3 class="font-semibold mb-2">Commercial vocabulary</h3>
+        <ul class="tight text-sm list-disc pl-5">
+          <li>Land &amp; expand, net revenue retention, time-to-value</li>
+          <li>Technical win, champion / economic buyer, mutual close plan</li>
+          <li>POC exit criteria, quota-carrying vs quota-supporting</li>
+          <li>Pendo nouns: <strong>Subscription</strong>, adoption, <strong>Guides</strong>, tagged Pages &amp; Features</li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="font-semibold mb-2">Sharp questions to ask the AE</h3>
+        <ul class="tight text-sm list-disc pl-5">
+          <li>"When a CE is doing their job well in a Pendo deal, what do you <em>not</em> have to worry about?"</li>
+          <li>"Most common reason a technically-strong eval still doesn't close in ANZ?"</li>
+          <li>"How is the CE-to-AE ratio set, and how's pre-sales vs post-sales install base split?"</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- PART 2 TECHNICAL -->
+  <section id="tech" class="card p-6 space-y-5">
+    <div class="flex items-center gap-2"><span class="badge badge-accent">Part 2</span><h2 class="text-xl font-bold">Sr CE Technical · 45 min</h2></div>
+    <p class="text-sm text-[hsl(var(--muted-foreground))]">Expect a shared screen on the CRM sandbox + "tag this feature," "why might this selector break," "this guide isn't showing — debug it." <strong>Open dev tools without being asked. That alone signals comfort.</strong></p>
+
+    <div>
+      <h3 class="font-semibold mb-1">2.1 · The DOM <span class="badge badge-warn ml-1">knock-out criterion</span></h3>
+      <p class="text-sm text-[hsl(var(--muted-foreground))] mb-2">The recruiter literally named "basic concepts about the DOM." Have these crisp:</p>
+      <ul class="tight text-sm list-disc pl-5">
+        <li><strong>What it is:</strong> the browser's live, in-memory tree of the page. Every element — a <code>&lt;div&gt;</code>, a <code>&lt;button&gt;</code>, a table row — is a node. HTML is the static source the server sends; the DOM is the living version the browser builds, and JS (and Pendo) read/change <em>the DOM</em>, not the original HTML.</li>
+        <li><strong>Why "live" matters:</strong> this CRM is a single-page app. Click "Accounts" and the URL + content change <em>without a full reload</em> — JS swaps DOM nodes. That's exactly why Pendo needs page-load signals on route changes (your App Router <code>pendo.pageLoad()</code> gotcha): there's no browser navigation event to hang off.</li>
+        <li><strong>Elements have:</strong> a tag, an <code>id</code> (unique), <code>class</code>es (reusable), <code>data-*</code> attributes (custom data), text. These are the hooks selectors grab.</li>
+      </ul>
+    </div>
+
+    <div>
+      <h3 class="font-semibold mb-2">2.2 · Selectors — how Pendo finds an element</h3>
+      <table>
+        <thead><tr><th>Selector</th><th>Example</th><th>Matches</th></tr></thead>
+        <tbody>
+          <tr><td>Tag</td><td><code>button</code></td><td>every button</td></tr>
+          <tr><td>Class</td><td><code>.btn-primary</code></td><td>elements with that class</td></tr>
+          <tr><td>ID</td><td><code>#save-account</code></td><td>the one element with that id</td></tr>
+          <tr><td>Attribute</td><td><code>[data-pendo-id="save"]</code></td><td>elements with that attribute/value</td></tr>
+          <tr><td>Descendant</td><td><code>.toolbar button</code></td><td>buttons anywhere inside <code>.toolbar</code></td></tr>
+          <tr><td>Child</td><td><code>.toolbar &gt; button</code></td><td>buttons directly inside</td></tr>
+          <tr><td>Position</td><td><code>tr:nth-child(2)</code></td><td>the 2nd row</td></tr>
+        </tbody>
+      </table>
+      <p class="text-sm mt-2"><strong>Specificity:</strong> <code>id</code> beats <code>class</code> beats <code>tag</code>. Prefer the most stable, specific <em>and</em> human-meaningful hook.</p>
+      <p class="text-sm mt-2 font-semibold">Why selectors break (say this unprompted — the senior signal):</p>
+      <ul class="tight text-sm list-disc pl-5">
+        <li><strong>Hashed class names</strong> — CSS Modules / styled-components / Tailwind JIT emit <code>css-1a2b3c</code>; they change every build, Feature silently stops matching.</li>
+        <li><strong>Position-based</strong> (<code>nth-child</code>) breaks the moment layout reorders.</li>
+        <li><strong>Dynamic ids</strong> with a record id (<code>#account-4821</code>) won't match the next record.</li>
+      </ul>
+      <p class="text-sm mt-2"><strong>The fix you'd teach a customer's devs:</strong> add stable, semantic <code>data-pendo-id</code> attributes on the elements that matter. Five-minute PR, survives redesigns, self-documents. The single most valuable thing a CE teaches a new customer's engineers.</p>
+      <p class="text-sm mt-2"><strong>Pages vs Features:</strong> Pages are matched by <strong>URL rules</strong> (<code>/accounts/*</code>); Features by <strong>element selectors</strong>. Pages = where users go; Features = what they click.</p>
+    </div>
+
+    <div>
+      <h3 class="font-semibold mb-2">2.3 · The install script</h3>
+      <ul class="tight text-sm list-disc pl-5">
+        <li>One JS snippet in <code>&lt;head&gt;</code>, loads the <strong>agent</strong> asynchronously (never blocks the page).</li>
+        <li>Call <code>pendo.initialize({ visitor:{id}, account:{id} })</code> once you know the user. <strong>Visitor id is mandatory</strong> — no id, no events.</li>
+        <li>From then the agent <strong>passively auto-captures</strong> every page view + click, and serves Guides. No need to decide in advance what to track.</li>
+        <li><strong>Snippet vs Track Events API:</strong> agent = UI-driven (client-side); Track API = no-UI events (server-side, batch backfills), fired explicitly.</li>
+      </ul>
+    </div>
+
+    <div class="rounded-lg border border-[hsl(217_91%_85%)] bg-[hsl(217_91%_98%)] p-4">
+      <h3 class="font-semibold mb-2">2.4 · The Microdemo concept — <em>capture everything, tag later</em> <span class="badge badge-accent">the differentiator</span></h3>
+      <p class="text-sm">From install, Pendo records <em>all</em> page + click activity. Tag a Feature next month → you get historical data back to install date. Event-based tools (Mixpanel/Amplitude) only give you data for events you instrumented <em>before</em> the user acted.</p>
+      <div class="quote mt-2">"With Pendo you instrument the app once, then ask questions later. With event-based analytics you have to predict every question before you ship. That's why a CE can walk into a customer 90 days post-install and immediately produce adoption data on a feature nobody thought to track on day one."</div>
+    </div>
+
+    <div>
+      <h3 class="font-semibold mb-2">2.5 · Browser dev tools — open these on camera</h3>
+      <div class="grid sm:grid-cols-2 gap-3 text-sm">
+        <div class="rounded-lg border border-[hsl(var(--border))] p-3"><p class="font-semibold mb-1">Elements</p>Read the DOM tree, find your element, check for a stable <code>id</code>/<code>data-*</code> vs only hashed classes. "Copy selector" = brittle starting point; narrate that you'd harden it.</div>
+        <div class="rounded-lg border border-[hsl(var(--border))] p-3"><p class="font-semibold mb-1">Console</p><code>window.pendo</code> · <code>pendo.validateInstall()</code> · <code>pendo.getVersion()</code> · <code>pendo.getVisitorId()</code> · <code>pendo.getAccountId()</code> · <code>document.querySelector('sel')</code> · <code>pendo.flushNow()</code></div>
+        <div class="rounded-lg border border-[hsl(var(--border))] p-3"><p class="font-semibold mb-1">Network</p>Filter <code>pendo</code>: <code>data.pendo.io/data/...</code> (incl. <code>ptm.gif</code> beacon) = events going out, 200s = healthy. Guide requests = content loading. No requests → not installed / initialize never ran.</div>
+        <div class="rounded-lg border border-[hsl(var(--border))] p-3"><p class="font-semibold mb-1">Application / Storage</p>Visitor id + "guide already seen" state live here — useful for "why does this guide keep showing / never show."</div>
+      </div>
+    </div>
+
+    <div>
+      <h3 class="font-semibold mb-2">2.6 · Debugging playbook — "this guide isn't appearing"</h3>
+      <ol class="tight text-sm list-decimal pl-5">
+        <li><strong>Agent loaded?</strong> <code>window.pendo</code> defined? Snippet request 200?</li>
+        <li><strong>Initialize ran with a real visitor?</strong> <code>pendo.getVisitorId()</code> — real id or anonymous?</li>
+        <li><strong>Visitor in the guide's segment?</strong> Segments evaluate periodically, not instantly — a fresh publish/segment-change lags a few minutes.</li>
+        <li><strong>Activation selector still matches?</strong> <code>document.querySelector(...)</code> — did a hashed class break the anchor?</li>
+        <li><strong>Published &amp; scheduled for now?</strong> And has this visitor already dismissed it (Storage)?</li>
+        <li><strong>Network:</strong> is the guide payload loading at all?</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- SANDBOX -->
+  <section id="sandbox" class="card p-6 space-y-4">
+    <div class="flex items-center gap-2"><span class="badge badge-success">Probed live · 2026-06-04</span><h2 class="text-xl font-bold">2.7 · The actual sandbox — what's really in there</h2></div>
+    <p class="text-sm">I drove a headless browser into <code>crm.pendoexperience.io</code> and inspected the real DOM. It's <strong>acmeCRM</strong>, built with <strong>Material-UI (MUI) + Emotion</strong> CSS-in-JS. Pendo is fully live: agent <strong>v2.327</strong>, session replay on, guides + Resource Center firing. Sandbox visitor <code>Erika…@DenebCorp.com</code>, account <strong>Deneb Corp</strong> — so the Console commands below return <em>real</em> values you can show on screen.</p>
+
+    <div>
+      <h3 class="font-semibold mb-2">Routes (tag as Pages by URL rule)</h3>
+      <ul class="tight text-sm list-disc pl-5">
+        <li><code>/</code> → Dashboard (Forecast chart, Quota Attainment, Pipeline donut, Open Opportunities)</li>
+        <li><code>/accounts</code> · <code>/contacts</code> · <code>/opportunities</code> → list views</li>
+        <li><code>/opportunities/{id}/details</code> → detail (wildcard: <code>/opportunities/*/details</code>)</li>
+        <li>plus a "Mobile" nav item</li>
+      </ul>
+    </div>
+
+    <div>
+      <h3 class="font-semibold mb-2">The selector lesson is handed to you on a plate</h3>
+      <table>
+        <thead><tr><th>Element</th><th>Real selector</th><th>Verdict — say this out loud</th></tr></thead>
+        <tbody>
+          <tr><td>"ADD NEW" button</td><td><code>id="add-new"</code></td><td><span class="badge badge-success">tag on this</span> Clean, semantic, stable id. Textbook good anchor.</td></tr>
+          <tr><td>Profile button</td><td><code>id="profile-button"</code></td><td><span class="badge badge-success">tag on this</span> Same — stable, meaningful id.</td></tr>
+          <tr><td>Generic buttons (Cancel, submit, Sort)</td><td><code>MuiButton-root MuiButton-contained</code></td><td><span class="badge badge-warn">don't</span> <em>Every</em> contained button shares this — Feature would over-match. Anchor on stable parent + structure, or ask for a <code>data-pendo-id</code>.</td></tr>
+          <tr><td>Row "Menu" buttons</td><td><code>id=":rj:"</code>, <code>id=":rp:"</code></td><td><span class="badge badge-rose">trap</span> React <code>useId</code> — regenerates every render. Never tag a colon-wrapped id. Great unprompted call-out.</td></tr>
+          <tr><td>Emotion styles</td><td><code>css-1a2b3c</code></td><td><span class="badge badge-rose">trap</span> Hashed CSS-in-JS, changes every build. Classic "why did my Feature stop matching."</td></tr>
+          <tr><td><code>_pendo-badge_…</code>, Resource Center</td><td><code>data-layout="badgeResourceCenter"</code></td><td><span class="badge badge-accent">recognise</span> Pendo's own injected elements, not the app's. Knowing the difference is a senior tell.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div>
+      <p class="font-semibold text-sm mb-1">The kill line for the tagging exercise:</p>
+      <div class="quote">"Good news — whoever built this gave the primary actions real ids: <code>#add-new</code>, <code>#profile-button</code>. I'd tag straight onto those. But look at these row menu buttons — <code>id=':rj:'</code> — that's a React <code>useId</code>, it regenerates every render, so tagging on it would silently break. And the styling is Emotion, so the <code>css-</code> hashes are useless as anchors. This is exactly the conversation I'd have with a customer's dev team: 'give me a handful of <code>data-pendo-id</code> attributes on the actions that matter and your analytics never break again.'"</div>
+    </div>
+
+    <div class="grid sm:grid-cols-2 gap-4">
+      <div>
+        <h3 class="font-semibold mb-2">Console commands that return real values here</h3>
+        <ul class="tight text-sm list-disc pl-5">
+          <li><code>window.pendo</code> → defined</li>
+          <li><code>pendo.getVersion()</code> → <code>"2.327.0_prod-io"</code></li>
+          <li><code>pendo.getVisitorId()</code> → a real visitor email</li>
+          <li><code>pendo.getAccountId()</code> → <code>"Deneb Corp"</code></li>
+          <li><code>pendo.validateInstall()</code> → built-in health check</li>
+          <li><code>document.querySelector('#add-new')</code> → returns the node</li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="font-semibold mb-2">Network evidence of a healthy install</h3>
+        <ul class="tight text-sm list-disc pl-5">
+          <li><code>cdn.pendo.io/agent/static/&lt;guid&gt;/pendo.js</code> → agent loading</li>
+          <li>repeated <code>app.pendo.io/data/ptm.gif?…</code> → event beacons firing</li>
+          <li><code>guide.json</code> + <code>guide.gif</code> → guides loading</li>
+          <li><code>rec</code> + <code>recordingconf</code> → session replay enabled</li>
+        </ul>
+        <p class="text-sm mt-2 italic">Point at the <code>ptm.gif</code> stream: "That's the agent shipping page and feature events back to Pendo in real time — that's what 'capturing analytics' looks like on the wire."</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHECKLIST -->
+  <section id="checklist" class="card p-6">
+    <h2 class="text-lg font-bold mb-3">Pre-interview checklist (night before)</h2>
+    <ul class="tight text-sm space-y-1">
+      <li>☐ Open <code>crm.pendoexperience.io</code> in Chrome. Click every nav item. Inspect 5–6 elements; note stable <code>id</code>/<code>data-*</code> vs hashed classes.</li>
+      <li>☐ Console on that site: run <code>window.pendo</code>, <code>pendo.getVersion()</code>, <code>pendo.validateInstall()</code>. See what a real install reports.</li>
+      <li>☐ Network tab, reload, filter <code>pendo</code> — watch the agent load + beacons fire. Know what healthy looks like.</li>
+      <li>☐ Re-read §2.1–2.3 out loud once. If you can explain the DOM + why selectors break to a non-techie, you've cleared the bar.</li>
+      <li>☐ Pendo workspace logged in; Lumen Health (<code>lumen-health-niroo.vercel.app</code>) ready as your own proof-of-build.</li>
+      <li>☐ Loom link on clipboard for the "I already built this" moment.</li>
+      <li>☐ Sales round: 3 commercial stories cold (inforcer demo, inforcer commercial close, UbiPark ROI) + 3 questions for the AE.</li>
+      <li>☐ CE round: debugging playbook (§2.6) memorised as an ordered list.</li>
+      <li>☐ LinkedIn-stalk both interviewers once names confirmed; one genuine observation each.</li>
+    </ul>
+  </section>
+
+  <!-- MOMENTS -->
+  <section id="moments" class="card p-6">
+    <h2 class="text-lg font-bold mb-3">The two moments that win these rounds</h2>
+    <div class="grid sm:grid-cols-2 gap-4">
+      <div class="rounded-lg border border-[hsl(345_80%_88%)] bg-[hsl(345_80%_98%)] p-4">
+        <div class="badge badge-rose mb-2">Sales round</div>
+        <p class="text-sm">"I don't just win the technical eval — I tell the AE what's <em>actually</em> blocking the deal." Be the partner who reads the commercial room.</p>
+      </div>
+      <div class="rounded-lg border border-[hsl(217_91%_85%)] bg-[hsl(217_91%_98%)] p-4">
+        <div class="badge badge-accent mb-2">CE round</div>
+        <p class="text-sm">Open dev tools unprompted, type <code>pendo.validateInstall()</code> from memory, say why a hashed-class selector breaks. The difference between someone who <em>demoed</em> Pendo once and someone who <em>understands</em> it.</p>
+      </div>
+    </div>
+    <p class="text-xs text-[hsl(var(--muted-foreground))] mt-4">Cross-refs: pendo-senior-customer-engineer-anz.md (full intel) · pendo-micro-demo-workflow.md (Lumen Health Loom) · pendo-hm-hiltsje-smilde.html (HM round) · story-bank.md. Sandbox findings probed 2026-06-04 — confirm nothing changed before the call.</p>
+  </section>
+
+</main>
+</body>
+</html>

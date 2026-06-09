@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Pendo Micro Demo Workflow — Niroo Arjuna</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --primary: 222 47% 23%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 240 4.8% 95.9%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 217 91% 60%;
+    --border: 240 5.9% 90%;
+    --radius: 0.5rem;
+  }
+  body {
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: hsl(var(--background));
+    color: hsl(var(--foreground));
+  }
+  .card {
+    background: hsl(var(--card));
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--radius);
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.03);
+  }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 9999px;
+    padding: 0.125rem 0.625rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    border: 1px solid hsl(var(--border));
+  }
+  .badge-primary { background: hsl(var(--primary)); color: hsl(var(--primary-foreground)); border-color: transparent; }
+  .badge-muted { background: hsl(var(--muted)); color: hsl(var(--muted-foreground)); }
+  .badge-accent { background: hsl(217 91% 95%); color: hsl(217 91% 35%); border-color: hsl(217 91% 85%); }
+  .badge-warn { background: hsl(38 92% 95%); color: hsl(38 92% 35%); border-color: hsl(38 92% 85%); }
+  .badge-success { background: hsl(142 71% 95%); color: hsl(142 71% 30%); border-color: hsl(142 71% 80%); }
+  .tab-btn {
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: hsl(var(--muted-foreground));
+    transition: all 0.15s;
+  }
+  .tab-btn:hover { color: hsl(var(--foreground)); }
+  .tab-btn.active {
+    background: hsl(var(--card));
+    color: hsl(var(--foreground));
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  }
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    transition: background 0.15s;
+    cursor: pointer;
+  }
+  .check-item:hover { background: hsl(var(--muted)); }
+  .check-item input[type="checkbox"] {
+    margin-top: 0.25rem;
+    width: 1.125rem;
+    height: 1.125rem;
+    border-radius: 0.25rem;
+    accent-color: hsl(var(--primary));
+    flex-shrink: 0;
+  }
+  .check-item.checked .check-text { text-decoration: line-through; color: hsl(var(--muted-foreground)); }
+  .progress-bar {
+    height: 0.5rem;
+    background: hsl(var(--muted));
+    border-radius: 9999px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, hsl(217 91% 60%), hsl(222 47% 35%));
+    transition: width 0.3s ease;
+  }
+  .copy-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.375rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    background: hsl(var(--muted));
+    color: hsl(var(--foreground));
+    border: 1px solid hsl(var(--border));
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .copy-btn:hover { background: hsl(var(--border)); }
+  .copy-btn.copied { background: hsl(142 71% 90%); color: hsl(142 71% 25%); border-color: hsl(142 71% 75%); }
+  details > summary { cursor: pointer; list-style: none; }
+  details > summary::-webkit-details-marker { display: none; }
+  details[open] .chevron { transform: rotate(90deg); }
+  .chevron { transition: transform 0.2s; }
+  .kbd {
+    font-family: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, monospace;
+    font-size: 0.8125rem;
+    background: hsl(var(--muted));
+    padding: 0.125rem 0.375rem;
+    border-radius: 0.25rem;
+    border: 1px solid hsl(var(--border));
+  }
+  .timeline-dot {
+    width: 0.75rem;
+    height: 0.75rem;
+    border-radius: 9999px;
+    background: hsl(var(--primary));
+    flex-shrink: 0;
+    margin-top: 0.375rem;
+  }
+  table.compare th, table.compare td { padding: 0.625rem 0.875rem; text-align: left; font-size: 0.875rem; }
+  table.compare thead { background: hsl(var(--muted)); }
+  table.compare tr { border-bottom: 1px solid hsl(var(--border)); }
+  table.compare tr:last-child { border-bottom: none; }
+  .script-segment {
+    border-left: 3px solid hsl(var(--accent));
+    padding: 0.25rem 0 0.25rem 1rem;
+    margin-bottom: 0.75rem;
+  }
+  .script-quote {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    font-style: italic;
+    color: hsl(var(--foreground));
+  }
+  .stage-direction {
+    font-size: 0.8125rem;
+    color: hsl(217 91% 45%);
+    font-style: normal;
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+  }
+</style>
+</head>
+<body>
+
+<div class="max-w-5xl mx-auto px-6 py-8">
+
+  <!-- HEADER -->
+  <header class="mb-8">
+    <div class="flex items-center justify-between mb-3">
+      <div class="flex items-center gap-2">
+        <span class="badge badge-accent">
+          <i data-lucide="circle-play" class="w-3 h-3 mr-1"></i>
+          Loom Recording
+        </span>
+        <span class="badge badge-muted">90 seconds</span>
+        <span class="badge badge-muted">Pendo Senior CE — ANZ</span>
+      </div>
+      <span class="text-xs text-slate-500">Niroo Arjuna · 2026-05-15</span>
+    </div>
+    <h1 class="text-3xl font-bold tracking-tight mb-2">Pendo Micro Demo Workflow</h1>
+    <p class="text-slate-600">Onboarding "Lumen Health" — a runnable, evidence-based demo built from Pendo's own Customer Success playbook.</p>
+  </header>
+
+  <!-- PROGRESS -->
+  <div class="card p-5 mb-6">
+    <div class="flex items-center justify-between mb-3">
+      <div>
+        <h3 class="font-semibold text-sm">Workflow progress</h3>
+        <p class="text-xs text-slate-500">Tick items as you complete them. Saved automatically in this browser.</p>
+      </div>
+      <div class="text-right">
+        <div class="text-2xl font-bold tabular-nums" id="progress-count">0 / 0</div>
+        <div class="text-xs text-slate-500">items complete</div>
+      </div>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+    </div>
+    <div class="flex justify-end mt-3">
+      <button onclick="resetProgress()" class="text-xs text-slate-500 hover:text-slate-900 underline">Reset progress</button>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="bg-slate-100 p-1 rounded-lg inline-flex gap-1 mb-6 flex-wrap">
+    <button class="tab-btn active" data-tab="setup">
+      <i data-lucide="list-checks" class="w-4 h-4 inline mr-1.5"></i>Setup
+    </button>
+    <button class="tab-btn" data-tab="clickpath">
+      <i data-lucide="mouse-pointer-click" class="w-4 h-4 inline mr-1.5"></i>Click-Path
+    </button>
+    <button class="tab-btn" data-tab="script">
+      <i data-lucide="film" class="w-4 h-4 inline mr-1.5"></i>Script
+    </button>
+    <button class="tab-btn" data-tab="recording">
+      <i data-lucide="video" class="w-4 h-4 inline mr-1.5"></i>Recording Day
+    </button>
+    <button class="tab-btn" data-tab="tiers">
+      <i data-lucide="layers" class="w-4 h-4 inline mr-1.5"></i>Free vs Paid
+    </button>
+    <button class="tab-btn" data-tab="sources">
+      <i data-lucide="link" class="w-4 h-4 inline mr-1.5"></i>Sources
+    </button>
+  </div>
+
+  <!-- TAB: SETUP -->
+  <section id="tab-setup" class="tab-content">
+    <div class="card p-6 mb-4">
+      <h2 class="text-xl font-semibold mb-1">24-Hour Setup Checklist</h2>
+      <p class="text-sm text-slate-600 mb-5">Complete these the day before recording. Pendo's data backfill needs ~1 hour minimum.</p>
+
+      <div class="space-y-1">
+        <h3 class="text-sm font-semibold text-slate-700 mt-4 mb-2 flex items-center gap-2">
+          <i data-lucide="user-plus" class="w-4 h-4"></i>1. Create the workspace
+        </h3>
+        <label class="check-item" data-key="setup-1">
+          <input type="checkbox">
+          <div class="check-text text-sm">Sign up for <strong>Pendo Free</strong> at <a href="https://www.pendo.io/pendo-free/" class="text-blue-600 hover:underline" target="_blank">pendo.io/pendo-free</a></div>
+        </label>
+        <label class="check-item" data-key="setup-2">
+          <input type="checkbox">
+          <div class="check-text text-sm"><strong>CRITICAL:</strong> activate the 30-day full-feature trial offered <em>at registration, before installing the snippet</em>. Post-install only a 14-day trial is offered.</div>
+        </label>
+
+        <h3 class="text-sm font-semibold text-slate-700 mt-4 mb-2 flex items-center gap-2">
+          <i data-lucide="code-2" class="w-4 h-4"></i>2. Build the sample app
+        </h3>
+        <label class="check-item" data-key="setup-3">
+          <input type="checkbox">
+          <div class="check-text text-sm">Fork a small open-source React/Next.js dashboard template</div>
+        </label>
+        <label class="check-item" data-key="setup-4">
+          <input type="checkbox">
+          <div class="check-text text-sm">Rename routes to look like a healthcare SaaS: <span class="kbd">/login</span>, <span class="kbd">/dashboard</span>, <span class="kbd">/patient-portal</span></div>
+        </label>
+        <label class="check-item" data-key="setup-5">
+          <input type="checkbox">
+          <div class="check-text text-sm">Drop in Pendo snippet from <span class="kbd">Settings → Subscription Settings</span></div>
+        </label>
+        <label class="check-item" data-key="setup-6">
+          <input type="checkbox">
+          <div class="check-text text-sm"><strong>CRITICAL:</strong> define <span class="kbd">visitor.id</span> and <span class="kbd">account.id</span> <em>before</em> <span class="kbd">pendo.initialize()</span> runs, or no events fire</div>
+        </label>
+        <label class="check-item" data-key="setup-7">
+          <input type="checkbox">
+          <div class="check-text text-sm">Deploy to Vercel (~5 min) so it has a real URL Pendo can tag against</div>
+        </label>
+
+        <h3 class="text-sm font-semibold text-slate-700 mt-4 mb-2 flex items-center gap-2">
+          <i data-lucide="database" class="w-4 h-4"></i>3. Seed real data
+        </h3>
+        <label class="check-item" data-key="setup-8">
+          <input type="checkbox">
+          <div class="check-text text-sm">Click around the sample app for <strong>30–60 minutes</strong> the day before recording</div>
+        </label>
+        <label class="check-item" data-key="setup-9">
+          <input type="checkbox">
+          <div class="check-text text-sm">Use 2–3 different browser profiles (incognito + Chrome + Safari) so visitor count &gt; 1</div>
+        </label>
+
+        <h3 class="text-sm font-semibold text-slate-700 mt-4 mb-2 flex items-center gap-2">
+          <i data-lucide="tag" class="w-4 h-4"></i>4. Pre-tag (do NOT tag live on camera)
+        </h3>
+        <label class="check-item" data-key="setup-10">
+          <input type="checkbox">
+          <div class="check-text text-sm">Tag Pages: <strong>My Visits</strong> (<span class="kbd">/dashboard/overview</span>), <strong>Patient Portal</strong> (<span class="kbd">/dashboard/patient-portal</span>) — no Login page (public demo)</div>
+        </label>
+        <label class="check-item" data-key="setup-11">
+          <input type="checkbox">
+          <div class="check-text text-sm">Tag Feature: name it <strong>"Open Patient Portal"</strong> in Pendo even though the visible button reads <strong>"View Summary"</strong> — Feature names = user intent, not button copy</div>
+        </label>
+
+        <h3 class="text-sm font-semibold text-slate-700 mt-4 mb-2 flex items-center gap-2">
+          <i data-lucide="file-edit" class="w-4 h-4"></i>5. Pre-build artifacts as drafts
+        </h3>
+        <label class="check-item" data-key="setup-12">
+          <input type="checkbox">
+          <div class="check-text text-sm">NPS survey built and <strong>Save Draft</strong> (do not Publish)</div>
+        </label>
+        <label class="check-item" data-key="setup-13">
+          <input type="checkbox">
+          <div class="check-text text-sm">Tooltip Guide built and <strong>Save Draft</strong></div>
+        </label>
+        <label class="check-item" data-key="setup-14">
+          <input type="checkbox">
+          <div class="check-text text-sm">Segment created: <strong>"Patient Portal not used in last 7 days"</strong></div>
+        </label>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB: CLICK-PATH -->
+  <section id="tab-clickpath" class="tab-content hidden">
+
+    <!-- Segment A -->
+    <details class="card p-5 mb-3" open>
+      <summary class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <span class="badge badge-primary">A</span>
+          <div>
+            <div class="font-semibold">Tag Feature + Pages</div>
+            <div class="text-xs text-slate-500">Script timing: 0:22 – 0:34 · 12 seconds</div>
+          </div>
+        </div>
+        <i data-lucide="chevron-right" class="chevron w-5 h-5 text-slate-400"></i>
+      </summary>
+      <div class="mt-4 pt-4 border-t border-slate-200 space-y-4">
+        <div>
+          <h4 class="font-medium text-sm mb-2">Tag Pages</h4>
+          <ol class="text-sm space-y-1.5 text-slate-700 list-decimal list-inside ml-2">
+            <li><span class="kbd">Product → Pages → Tag Pages</span> (top-right button)</li>
+            <li>Enter URL → name Page (e.g., "Patient Portal")</li>
+            <li>Visual Design Studio loads → confirm URL rule → <strong>Save</strong></li>
+          </ol>
+        </div>
+        <div>
+          <h4 class="font-medium text-sm mb-2">Tag Feature</h4>
+          <ol class="text-sm space-y-1.5 text-slate-700 list-decimal list-inside ml-2">
+            <li><span class="kbd">Product → Features → Tag Features</span> (top-right)</li>
+            <li>Enter URL of the Page hosting the patient-portal button</li>
+            <li>Choose <strong>Tag side-by-side</strong> (better for demo)</li>
+            <li>Click the patient-portal button in the live preview</li>
+            <li>Use up/down arrows top-right of Studio to walk DOM tree if needed</li>
+            <li>Under <strong>Feature Element Matching</strong>, accept <strong>Suggested Match</strong></li>
+            <li>Name: <strong>"Open Patient Portal"</strong> → Save</li>
+          </ol>
+        </div>
+        <div class="bg-slate-50 border border-slate-200 rounded-md p-3">
+          <div class="flex items-start gap-2">
+            <i data-lucide="eye" class="w-4 h-4 text-slate-500 mt-0.5"></i>
+            <div class="text-sm">
+              <div class="font-medium mb-1">What viewer sees</div>
+              <p class="text-slate-600">Pendo Visual Design Studio with the Lumen Health app rendered in main panel, right-side panel showing CSS selector rule, highlight box around tagged button.</p>
+            </div>
+          </div>
+        </div>
+        <div class="bg-amber-50 border border-amber-200 rounded-md p-3">
+          <div class="flex items-start gap-2">
+            <i data-lucide="alert-triangle" class="w-4 h-4 text-amber-600 mt-0.5"></i>
+            <div class="text-sm">
+              <div class="font-medium mb-1">Honest gotcha to mention on-camera</div>
+              <p class="text-slate-700 italic">"CSS-class selectors break when devs change classnames — in a real onboarding I'd walk the dev team through Pendo's <span class="kbd">data-pendo</span> attribute pattern. Notice the visible button text is 'View Summary' but I'm naming the Feature 'Open Patient Portal' — that's intentional. Feature names should describe user intent, not button copy. If marketing renames the button next quarter, my Path report doesn't break."</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <!-- Segment B -->
+    <details class="card p-5 mb-3">
+      <summary class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <span class="badge badge-primary">B</span>
+          <div>
+            <div class="font-semibold">Paths report</div>
+            <div class="text-xs text-slate-500">Script timing: 0:34 – 0:56 · 22 seconds</div>
+          </div>
+        </div>
+        <i data-lucide="chevron-right" class="chevron w-5 h-5 text-slate-400"></i>
+      </summary>
+      <div class="mt-4 pt-4 border-t border-slate-200 space-y-4">
+        <ol class="text-sm space-y-1.5 text-slate-700 list-decimal list-inside ml-2">
+          <li><span class="kbd">Analytics → Reports → Create report → Path</span></li>
+          <li><strong>Activity source:</strong> Select event → "Open Patient Portal" Feature click</li>
+          <li><strong>Anchor direction:</strong> dropdown → switch from "Starting from" to <strong>"Leading to"</strong></li>
+          <li><strong>Segment:</strong> Everyone (or "Active in last 30 days")</li>
+          <li><strong>Date range:</strong> Last 30 days → Run</li>
+        </ol>
+        <div class="bg-slate-50 border border-slate-200 rounded-md p-3">
+          <div class="flex items-start gap-2">
+            <i data-lucide="eye" class="w-4 h-4 text-slate-500 mt-0.5"></i>
+            <div class="text-sm">
+              <div class="font-medium mb-1">What viewer sees</div>
+              <p class="text-slate-600">Sankey-style flow diagram with Page-to-Page transitions, percentages on each branch.</p>
+            </div>
+          </div>
+        </div>
+        <div class="bg-red-50 border border-red-200 rounded-md p-3">
+          <div class="flex items-start gap-2">
+            <i data-lucide="alert-octagon" class="w-4 h-4 text-red-600 mt-0.5"></i>
+            <div class="text-sm">
+              <div class="font-medium mb-1 text-red-900">Honest call-out — DO NOT fabricate stats</div>
+              <p class="text-slate-700">"10-second bounce" is <strong>NOT a native Paths metric</strong>. Read real numbers off the chart. If you need time-to-bounce, pair Paths + Funnel.</p>
+              <p class="mt-2 text-slate-700 italic">Recommended framing: "Paths shows me where they fall off — looks like [READ ACTUAL %] never reach the portal. I'd pair this with a Funnel for time-to-convert if I wanted the bounce-time number."</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <!-- Segment C -->
+    <details class="card p-5 mb-3">
+      <summary class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <span class="badge badge-primary">C</span>
+          <div>
+            <div class="font-semibold">Tooltip Guide</div>
+            <div class="text-xs text-slate-500">Script timing: 0:56 – 1:14 · 18 seconds</div>
+          </div>
+        </div>
+        <i data-lucide="chevron-right" class="chevron w-5 h-5 text-slate-400"></i>
+      </summary>
+      <div class="mt-4 pt-4 border-t border-slate-200 space-y-4">
+        <ol class="text-sm space-y-1.5 text-slate-700 list-decimal list-inside ml-2">
+          <li><span class="kbd">Guides → + Create Guide</span> (top-right)</li>
+          <li>Choose <strong>Layout → Tooltip</strong> from gallery</li>
+          <li>Step 1 panel: <strong>Page Location</strong> = Dashboard <em>(fire it before users reach the portal)</em></li>
+          <li><strong>Anchor element:</strong> click the patient-portal button — tooltip pins to it</li>
+          <li>Edit copy: <em>"New: Patient Portal — see your test results in one place →"</em></li>
+          <li><strong>Activation card:</strong> Automatic on page load, or Automatic with Badge</li>
+          <li><strong>Segment:</strong> select "Patient Portal not used in 7 days"</li>
+          <li><strong>Schedule:</strong> Start date = today → <strong>Save Draft</strong></li>
+        </ol>
+        <div class="bg-slate-50 border border-slate-200 rounded-md p-3">
+          <div class="flex items-start gap-2">
+            <i data-lucide="eye" class="w-4 h-4 text-slate-500 mt-0.5"></i>
+            <div class="text-sm">
+              <div class="font-medium mb-1">What viewer sees</div>
+              <p class="text-slate-600">Pendo Designer with the Lumen Health app rendered live, tooltip overlaid on patient-portal button, right-side panel with Activation/Segment/Schedule cards.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <!-- Segment D -->
+    <details class="card p-5 mb-3">
+      <summary class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <span class="badge badge-primary">D</span>
+          <div>
+            <div class="font-semibold">NPS survey</div>
+            <div class="text-xs text-slate-500">Script timing: 1:14 – 1:22 · 8 seconds</div>
+          </div>
+        </div>
+        <i data-lucide="chevron-right" class="chevron w-5 h-5 text-slate-400"></i>
+      </summary>
+      <div class="mt-4 pt-4 border-t border-slate-200 space-y-4">
+        <ol class="text-sm space-y-1.5 text-slate-700 list-decimal list-inside ml-2">
+          <li><span class="kbd">NPS → + Create NPS Survey</span> → opens 4-step wizard</li>
+          <li><strong>Step 1 Content:</strong> customize 0–10 question + follow-up text</li>
+          <li><strong>Step 2 Segment:</strong> "Create new segment" → rule: Feature "Open Patient Portal" used ≥ 1 time in last 14 days</li>
+          <li><strong>Step 3 Schedule:</strong> Start now, recurring every 90 days</li>
+          <li><strong>Step 4 Review</strong> → Save Draft</li>
+        </ol>
+        <div class="bg-emerald-50 border border-emerald-200 rounded-md p-3">
+          <div class="flex items-start gap-2">
+            <i data-lucide="star" class="w-4 h-4 text-emerald-700 mt-0.5"></i>
+            <div class="text-sm">
+              <div class="font-medium mb-1 text-emerald-900">Strongest single line in the demo</div>
+              <p class="text-slate-700 italic">"Pendo's own guidance is to target NPS at visitors with first visit &gt;30 days ago. I'm loosening that here for early-signal feedback right after a feature launch — that's the trade-off I'd discuss with the customer's CS lead."</p>
+              <p class="mt-2 text-slate-700">Reading and intentionally diverging from a Pendo-published best practice = the most senior thing you can do in 90 seconds.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- TAB: SCRIPT -->
+  <section id="tab-script" class="tab-content hidden">
+    <div class="card p-6 mb-4">
+      <div class="flex items-start justify-between mb-4">
+        <div>
+          <h2 class="text-xl font-semibold mb-1">90-Second Script</h2>
+          <p class="text-sm text-slate-600">Total runtime target: 92 seconds. If over, cut "Different fix, visible in the data" line in Paths.</p>
+        </div>
+        <button class="copy-btn" onclick="copyFullScript(this)">
+          <i data-lucide="copy" class="w-3.5 h-3.5"></i>Copy full script
+        </button>
+      </div>
+
+      <div class="space-y-5">
+        <!-- Open -->
+        <div class="script-segment">
+          <div class="flex items-center justify-between mb-2">
+            <div class="flex items-center gap-2">
+              <span class="badge badge-accent">Open</span>
+              <span class="text-xs text-slate-500">12 seconds</span>
+            </div>
+            <button class="copy-btn" onclick="copySegment(this, 'open')">
+              <i data-lucide="copy" class="w-3 h-3"></i>Copy
+            </button>
+          </div>
+          <p class="script-quote" id="seg-open">Hey Pendo team, I'm Niroo, applying for the Senior Customer Engineer role in ANZ. The thing I love about Pendo is that it's the flight recorder for product decisions. Most product teams are flying blind on adoption. Pendo gives them the black box. My job as a CE is to make sure customers know how to read it.</p>
+        </div>
+
+        <!-- Customer setup -->
+        <div class="script-segment">
+          <div class="flex items-center justify-between mb-2">
+            <div class="flex items-center gap-2">
+              <span class="badge badge-accent">Customer Setup</span>
+              <span class="text-xs text-slate-500">10 seconds</span>
+            </div>
+            <button class="copy-btn" onclick="copySegment(this, 'customer')">
+              <i data-lucide="copy" class="w-3 h-3"></i>Copy
+            </button>
+          </div>
+          <div class="stage-direction">[Switch to Pendo workspace, "Lumen Health" workspace name visible]</div>
+          <p class="script-quote" id="seg-customer">Quick scenario: Lumen Health is a post-visit patient companion — patients log in to read the plain-language summary of their consultation. 8,000 MAU. They bought Pendo because adoption of the summary view is flat, and the VP of Product needs a number by end of month.</p>
+        </div>
+
+        <!-- Tag -->
+        <div class="script-segment">
+          <div class="flex items-center justify-between mb-2">
+            <div class="flex items-center gap-2">
+              <span class="badge badge-accent">Tag</span>
+              <span class="text-xs text-slate-500">12 seconds</span>
+            </div>
+            <button class="copy-btn" onclick="copySegment(this, 'tag')">
+              <i data-lucide="copy" class="w-3 h-3"></i>Copy
+            </button>
+          </div>
+          <div class="stage-direction">[Show Product → Features view with "Open Patient Portal" Feature visible]</div>
+          <p class="script-quote" id="seg-tag">Day one, I tag the summary button as a Feature — I'll call it "Open Patient Portal" in Pendo regardless of the visible button text — plus the My Visits and Patient Portal pages. Two minutes of setup, no engineering ticket. From here every interaction is on the record.</p>
+        </div>
+
+        <!-- Paths -->
+        <div class="script-segment">
+          <div class="flex items-center justify-between mb-2">
+            <div class="flex items-center gap-2">
+              <span class="badge badge-accent">Paths</span>
+              <span class="text-xs text-slate-500">22 seconds</span>
+            </div>
+            <button class="copy-btn" onclick="copySegment(this, 'paths')">
+              <i data-lucide="copy" class="w-3 h-3"></i>Copy
+            </button>
+          </div>
+          <div class="stage-direction">[Open Paths report, "Leading to Open Patient Portal", Last 30 days]</div>
+          <p class="script-quote" id="seg-paths">By day seven, I run a Path report leading to the portal. [READ ACTUAL %] of users never reach the feature. The ones who do, drop off here [point at node]. So the VP doesn't have an adoption problem — they have a discoverability problem. Different fix, visible in the data.</p>
+        </div>
+
+        <!-- Guide -->
+        <div class="script-segment">
+          <div class="flex items-center justify-between mb-2">
+            <div class="flex items-center gap-2">
+              <span class="badge badge-accent">Guide</span>
+              <span class="text-xs text-slate-500">18 seconds</span>
+            </div>
+            <button class="copy-btn" onclick="copySegment(this, 'guide')">
+              <i data-lucide="copy" class="w-3 h-3"></i>Copy
+            </button>
+          </div>
+          <div class="stage-direction">[Open Guide Designer with tooltip on My Visits]</div>
+          <p class="script-quote" id="seg-guide">So we ship a Guide — a one-line tooltip on the My Visits page that nudges users toward the summary on their next session. Targeted at users who haven't opened a summary in seven days. No code, no deploy, live in an hour. Two weeks later we re-run the Path report. The lift becomes the number the VP takes to their board.</p>
+        </div>
+
+        <!-- NPS -->
+        <div class="script-segment">
+          <div class="flex items-center justify-between mb-2">
+            <div class="flex items-center gap-2">
+              <span class="badge badge-accent">NPS</span>
+              <span class="text-xs text-slate-500">10 seconds</span>
+            </div>
+            <button class="copy-btn" onclick="copySegment(this, 'nps')">
+              <i data-lucide="copy" class="w-3 h-3"></i>Copy
+            </button>
+          </div>
+          <div class="stage-direction">[Show NPS wizard, Step 2 Segment with feature-usage rule]</div>
+          <p class="script-quote" id="seg-nps">Then we trigger NPS to the users who actually used it. Pendo's guidance says target visitors with 30+ days tenure — I'm loosening that here for early-signal feedback. That's the trade-off I'd discuss with the customer's CS lead. The loop closes.</p>
+        </div>
+
+        <!-- Close -->
+        <div class="script-segment">
+          <div class="flex items-center justify-between mb-2">
+            <div class="flex items-center gap-2">
+              <span class="badge badge-accent">Close</span>
+              <span class="text-xs text-slate-500">8 seconds</span>
+            </div>
+            <button class="copy-btn" onclick="copySegment(this, 'close')">
+              <i data-lucide="copy" class="w-3 h-3"></i>Copy
+            </button>
+          </div>
+          <p class="script-quote" id="seg-close">Picture one of your existing ANZ customers — the one whose CSM is asking what to show in the next QBR. This is the motion I'd run for them on Monday. Looking forward to talking.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB: RECORDING -->
+  <section id="tab-recording" class="tab-content hidden">
+
+    <div class="card p-6 mb-4">
+      <h2 class="text-xl font-semibold mb-4 flex items-center gap-2">
+        <i data-lucide="circle-dot" class="w-5 h-5 text-red-500"></i>Before hitting record
+      </h2>
+      <div class="space-y-1">
+        <label class="check-item" data-key="rec-1"><input type="checkbox"><div class="check-text text-sm">Pendo workspace open, logged in</div></label>
+        <label class="check-item" data-key="rec-2"><input type="checkbox"><div class="check-text text-sm">Lumen Health sample app open at <a href="https://lumen-health-niroo.vercel.app" target="_blank" class="text-blue-600 hover:underline">lumen-health-niroo.vercel.app</a> in second tab — public, no login required</div></label>
+        <label class="check-item" data-key="rec-3"><input type="checkbox"><div class="check-text text-sm">All 4 pre-tagged artifacts visible: Pages, Feature, Guide draft, NPS draft, Segment</div></label>
+        <label class="check-item" data-key="rec-4"><input type="checkbox"><div class="check-text text-sm">Paths report pre-loaded showing real numbers (refresh if stale)</div></label>
+        <label class="check-item" data-key="rec-5"><input type="checkbox"><div class="check-text text-sm">Loom set to face cam <strong>bottom-right</strong>, screen full</div></label>
+        <label class="check-item" data-key="rec-6"><input type="checkbox"><div class="check-text text-sm">Notifications silenced, browser bookmarks bar hidden</div></label>
+        <label class="check-item" data-key="rec-7"><input type="checkbox"><div class="check-text text-sm">Practice run #3 completed and timed under 95s</div></label>
+      </div>
+    </div>
+
+    <div class="card p-6 mb-4">
+      <h2 class="text-xl font-semibold mb-4 flex items-center gap-2">
+        <i data-lucide="video" class="w-5 h-5"></i>During recording
+      </h2>
+      <ul class="space-y-3 text-sm">
+        <li class="flex gap-3"><div class="timeline-dot"></div><div><strong>Click before narrating</strong> — let the action happen, then describe</div></li>
+        <li class="flex gap-3"><div class="timeline-dot"></div><div>Don't say <span class="kbd">"as you can see"</span> or <span class="kbd">"basically"</span> — strip them ruthlessly</div></li>
+        <li class="flex gap-3"><div class="timeline-dot"></div><div>If you fumble a click, keep going. Loom edits are obvious.</div></li>
+        <li class="flex gap-3"><div class="timeline-dot"></div><div><strong>Read real numbers off the chart — never fabricate</strong></div></li>
+      </ul>
+    </div>
+
+    <div class="card p-6 mb-4">
+      <h2 class="text-xl font-semibold mb-4 flex items-center gap-2">
+        <i data-lucide="check-circle" class="w-5 h-5 text-emerald-600"></i>After recording
+      </h2>
+      <div class="space-y-1">
+        <label class="check-item" data-key="post-1"><input type="checkbox"><div class="check-text text-sm">Watch playback at 1x once to confirm timing and clarity</div></label>
+        <label class="check-item" data-key="post-2"><input type="checkbox"><div class="check-text text-sm">Add a chapter at each segment boundary in Loom</div></label>
+        <label class="check-item" data-key="post-3"><input type="checkbox"><div class="check-text text-sm">Set Loom title: <span class="kbd">Niroo Arjuna — Pendo Senior CE ANZ — 90s Onboarding Demo</span></div></label>
+        <label class="check-item" data-key="post-4"><input type="checkbox"><div class="check-text text-sm">Set Loom thumbnail to a frame showing the Paths report (most visually distinctive)</div></label>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB: TIERS -->
+  <section id="tab-tiers" class="tab-content hidden">
+    <div class="card p-6 mb-4">
+      <h2 class="text-xl font-semibold mb-1">Free vs Paid Feature Map</h2>
+      <p class="text-sm text-slate-600 mb-4">All four demo capabilities are accessible on Free or 30-day Trial. Zero risk of demoing a locked feature.</p>
+      <div class="overflow-x-auto">
+        <table class="compare w-full">
+          <thead>
+            <tr>
+              <th>Capability</th>
+              <th>Pendo Free</th>
+              <th>30-day Trial</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Page + Feature tagging</td><td><span class="badge badge-success">Unlimited</span></td><td><span class="badge badge-success">✓</span></td><td>Safe</td></tr>
+            <tr><td>Paths, Funnels, behavior reports</td><td><span class="badge badge-success">✓</span></td><td><span class="badge badge-success">✓</span></td><td>Safe</td></tr>
+            <tr><td>In-app Guides (tooltips)</td><td><span class="badge badge-warn">Pendo-branded</span></td><td><span class="badge badge-success">Unbranded</span></td><td>Trial = cleaner on camera</td></tr>
+            <tr><td>NPS surveys</td><td><span class="badge badge-warn">Pendo-branded</span></td><td><span class="badge badge-success">Unbranded</span></td><td>Trial = cleaner on camera</td></tr>
+            <tr><td>Resource Center</td><td><span class="badge badge-success">Basic</span></td><td><span class="badge badge-success">✓</span></td><td>Safe — mention if time</td></tr>
+            <tr><td>Salesforce / Slack / Segment integrations</td><td><span class="badge" style="background:#fee2e2;color:#991b1b;border-color:#fecaca">Not available</span></td><td><span class="badge badge-success">✓</span></td><td>Don't demo</td></tr>
+            <tr><td>Pendo Feedback module</td><td><span class="badge" style="background:#fee2e2;color:#991b1b;border-color:#fecaca">Not available</span></td><td><span class="badge badge-success">✓</span></td><td>Don't demo</td></tr>
+            <tr><td>API access</td><td><span class="badge" style="background:#fee2e2;color:#991b1b;border-color:#fecaca">Not available</span></td><td><span class="badge badge-success">✓</span></td><td>Don't demo</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card p-6 mb-4">
+      <h2 class="text-xl font-semibold mb-3">Bad demo vs This workflow</h2>
+      <div class="overflow-x-auto">
+        <table class="compare w-full">
+          <thead>
+            <tr><th>BizGuide bad demo</th><th>This workflow</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Walks left-hand menu</td><td>Walks customer journey</td></tr>
+            <tr><td>Empty dashboards, no data</td><td>Pre-seeded with 30+ min of real clicks</td></tr>
+            <tr><td>Configures NPS for "hello"</td><td>Configures NPS for Lumen Health with real segment logic</td></tr>
+            <tr><td>Hedges: "I'm pretty sure this is premium"</td><td>Explicit Free vs Trial map upfront</td></tr>
+            <tr><td>Fabricated specifics ("10-second bounce")</td><td>Reads real Paths % off chart</td></tr>
+            <tr><td>Closes with "leveraging tools you can gain insights"</td><td>Closes inviting hiring manager to picture their own customer</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB: SOURCES -->
+  <section id="tab-sources" class="tab-content hidden">
+    <div class="card p-6 mb-4">
+      <h2 class="text-xl font-semibold mb-1">Verified Sources</h2>
+      <p class="text-sm text-slate-600 mb-4">Every click-path verified against Pendo Help Center docs.</p>
+      <ul class="space-y-2 text-sm">
+        <li class="flex gap-2"><i data-lucide="external-link" class="w-4 h-4 text-slate-400 mt-0.5 flex-shrink-0"></i><a class="text-blue-600 hover:underline" target="_blank" href="https://www.pendo.io/pendo-free/">Pendo Free signup</a></li>
+        <li class="flex gap-2"><i data-lucide="external-link" class="w-4 h-4 text-slate-400 mt-0.5 flex-shrink-0"></i><a class="text-blue-600 hover:underline" target="_blank" href="https://support.pendo.io/hc/en-us/articles/15691778509211">Get started with Pendo</a></li>
+        <li class="flex gap-2"><i data-lucide="external-link" class="w-4 h-4 text-slate-400 mt-0.5 flex-shrink-0"></i><a class="text-blue-600 hover:underline" target="_blank" href="https://support.pendo.io/hc/en-us/articles/360032292151">Page tagging</a></li>
+        <li class="flex gap-2"><i data-lucide="external-link" class="w-4 h-4 text-slate-400 mt-0.5 flex-shrink-0"></i><a class="text-blue-600 hover:underline" target="_blank" href="https://support.pendo.io/hc/en-us/articles/360031950492">Feature tagging</a></li>
+        <li class="flex gap-2"><i data-lucide="external-link" class="w-4 h-4 text-slate-400 mt-0.5 flex-shrink-0"></i><a class="text-blue-600 hover:underline" target="_blank" href="https://support.pendo.io/hc/en-us/articles/360032293971">Visual Design Studio</a></li>
+        <li class="flex gap-2"><i data-lucide="external-link" class="w-4 h-4 text-slate-400 mt-0.5 flex-shrink-0"></i><a class="text-blue-600 hover:underline" target="_blank" href="https://support.pendo.io/hc/en-us/articles/360049997812">Paths report</a></li>
+        <li class="flex gap-2"><i data-lucide="external-link" class="w-4 h-4 text-slate-400 mt-0.5 flex-shrink-0"></i><a class="text-blue-600 hover:underline" target="_blank" href="https://support.pendo.io/hc/en-us/articles/360031863292">Funnels</a></li>
+        <li class="flex gap-2"><i data-lucide="external-link" class="w-4 h-4 text-slate-400 mt-0.5 flex-shrink-0"></i><a class="text-blue-600 hover:underline" target="_blank" href="https://support.pendo.io/hc/en-us/articles/8146679315867">Create a Guide</a></li>
+        <li class="flex gap-2"><i data-lucide="external-link" class="w-4 h-4 text-slate-400 mt-0.5 flex-shrink-0"></i><a class="text-blue-600 hover:underline" target="_blank" href="https://support.pendo.io/hc/en-us/articles/360031864612">Guide settings</a></li>
+        <li class="flex gap-2"><i data-lucide="external-link" class="w-4 h-4 text-slate-400 mt-0.5 flex-shrink-0"></i><a class="text-blue-600 hover:underline" target="_blank" href="https://support.pendo.io/hc/en-us/articles/43643936689691">NPS setup</a></li>
+        <li class="flex gap-2"><i data-lucide="external-link" class="w-4 h-4 text-slate-400 mt-0.5 flex-shrink-0"></i><a class="text-blue-600 hover:underline" target="_blank" href="https://support.pendo.io/hc/en-us/articles/360042446472"><strong>Recipe: Onboard New Users</strong> (THE source for the demo's structure)</a></li>
+        <li class="flex gap-2"><i data-lucide="external-link" class="w-4 h-4 text-slate-400 mt-0.5 flex-shrink-0"></i><a class="text-blue-600 hover:underline" target="_blank" href="https://support.pendo.io/hc/en-us/articles/360031871032">Pendo for Customer Success</a></li>
+        <li class="flex gap-2"><i data-lucide="external-link" class="w-4 h-4 text-slate-400 mt-0.5 flex-shrink-0"></i><a class="text-blue-600 hover:underline" target="_blank" href="https://github.com/pendo-io/RN-demo-app-React-Navigation">React Native sample app</a></li>
+      </ul>
+    </div>
+
+    <div class="card p-6">
+      <h2 class="text-xl font-semibold mb-3 flex items-center gap-2"><i data-lucide="alert-triangle" class="w-5 h-5 text-amber-600"></i>Honest verification gaps</h2>
+      <ul class="space-y-2 text-sm text-slate-700">
+        <li class="flex gap-2"><span class="text-amber-600">•</span><div><strong>"10-second bounce" stat is not a native Paths metric.</strong> Use real numbers off the chart, or pair Paths + Funnel.</div></li>
+        <li class="flex gap-2"><span class="text-amber-600">•</span><div><strong>No first-party hosted Pendo sandbox app for prospects exists.</strong> Bring your own (forked dashboard + Pendo snippet on Vercel).</div></li>
+        <li class="flex gap-2"><span class="text-amber-600">•</span><div><strong>Pendo Free article wasn't directly readable</strong> during research. Confirm Free tier limits at signup.</div></li>
+      </ul>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  // Lucide icons
+  lucide.createIcons();
+
+  // Tab switching
+  const tabs = document.querySelectorAll('.tab-btn');
+  const contents = document.querySelectorAll('.tab-content');
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      contents.forEach(c => c.classList.add('hidden'));
+      tab.classList.add('active');
+      document.getElementById('tab-' + tab.dataset.tab).classList.remove('hidden');
+    });
+  });
+
+  // Checkbox persistence + progress
+  const STORAGE_KEY = 'pendo-demo-workflow-progress';
+  function getProgress() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); }
+    catch (e) { return {}; }
+  }
+  function saveProgress(state) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  }
+  function updateProgressBar() {
+    const all = document.querySelectorAll('.check-item');
+    const checked = document.querySelectorAll('.check-item.checked');
+    const pct = all.length ? Math.round((checked.length / all.length) * 100) : 0;
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('progress-count').textContent = checked.length + ' / ' + all.length;
+  }
+  function initChecks() {
+    const state = getProgress();
+    document.querySelectorAll('.check-item').forEach(item => {
+      const key = item.dataset.key;
+      const cb = item.querySelector('input');
+      if (state[key]) {
+        cb.checked = true;
+        item.classList.add('checked');
+      }
+      cb.addEventListener('change', () => {
+        const s = getProgress();
+        if (cb.checked) {
+          item.classList.add('checked');
+          s[key] = true;
+        } else {
+          item.classList.remove('checked');
+          delete s[key];
+        }
+        saveProgress(s);
+        updateProgressBar();
+      });
+    });
+    updateProgressBar();
+  }
+  function resetProgress() {
+    if (!confirm('Reset all checklist progress?')) return;
+    localStorage.removeItem(STORAGE_KEY);
+    document.querySelectorAll('.check-item').forEach(item => {
+      item.classList.remove('checked');
+      item.querySelector('input').checked = false;
+    });
+    updateProgressBar();
+  }
+  initChecks();
+
+  // Copy buttons
+  function copyText(text, btn) {
+    navigator.clipboard.writeText(text).then(() => {
+      const originalHTML = btn.innerHTML;
+      btn.classList.add('copied');
+      btn.innerHTML = '<i data-lucide="check" class="w-3.5 h-3.5"></i>Copied';
+      lucide.createIcons();
+      setTimeout(() => {
+        btn.classList.remove('copied');
+        btn.innerHTML = originalHTML;
+        lucide.createIcons();
+      }, 1500);
+    });
+  }
+  function copySegment(btn, id) {
+    const text = document.getElementById('seg-' + id).textContent.trim();
+    copyText(text, btn);
+  }
+  function copyFullScript(btn) {
+    const ids = ['open', 'customer', 'tag', 'paths', 'guide', 'nps', 'close'];
+    const text = ids.map(id => document.getElementById('seg-' + id).textContent.trim()).join('\n\n');
+    copyText(text, btn);
+  }
+</script>
+
+</body>
+</html>
