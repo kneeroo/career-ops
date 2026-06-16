@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Boomi SC Demo — Solution Architecture (7 requirements → Boomi patterns)</title>
+<style>
+  :root {
+    --ink:#0f172a; --muted:#475569; --soft:#f1f5f9; --line:#e2e8f0;
+    --boomi:#0c4ee0; --accent-soft:#e0ecff;
+    --sf:#00a1e0; --sf-soft:#e0f5fd;
+    --onprem:#7c3aed; --onprem-soft:#f3e8ff;
+    --order:#ea580c; --status:#059669; --batch:#7c3aed;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:#f8fafc;color:var(--ink);line-height:1.55;}
+  header.hero{background:linear-gradient(135deg,#0c4ee0 0%,#0066ff 60%,#38bdf8 100%);color:#fff;padding:22px 30px;}
+  header.hero h1{margin:0 0 6px;font-size:23px;}
+  header.hero p{margin:0;opacity:.92;font-size:13px;}
+  .wrap{max-width:1320px;margin:0 auto;padding:22px;}
+  .card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;margin-bottom:16px;}
+  .card h2{margin:0 0 4px;font-size:16px;color:var(--boomi);}
+  .card p.sub{margin:2px 0 14px;color:var(--muted);font-size:12px;font-style:italic;}
+  table{width:100%;border-collapse:collapse;font-size:12.5px;margin:6px 0;}
+  th,td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top;}
+  th{background:var(--soft);font-weight:600;color:var(--boomi);}
+  .rtag{display:inline-block;min-width:30px;text-align:center;font-weight:700;color:#fff;border-radius:6px;padding:1px 6px;font-size:11px;}
+  .r-order{background:var(--order);}
+  .r-status{background:var(--status);}
+  .r-batch{background:var(--batch);}
+  .legend{display:flex;gap:18px;flex-wrap:wrap;font-size:12px;margin:8px 0 0;}
+  .legend span{display:inline-flex;align-items:center;gap:6px;}
+  .swatch{width:22px;height:4px;border-radius:2px;display:inline-block;}
+  .note{background:#ecfdf5;color:#047857;border:1px solid #a7f3d0;padding:9px 13px;border-radius:8px;font-size:12px;margin-top:10px;}
+  svg{width:100%;height:auto;display:block;}
+  @media print{body{background:#fff;}.card{break-inside:avoid;}}
+</style>
+</head>
+<body>
+<header class="hero">
+  <h1>Solution Architecture — One Platform, Seven Requirements</h1>
+  <p>Boomi SC presentation round &middot; $150M corporation: homegrown CRM &rarr; Salesforce &middot; Oracle E-Business, WMS, SQL Server warehouse</p>
+</header>
+
+<div class="wrap">
+
+<div class="card">
+  <h2>Conceptual architecture</h2>
+  <p class="sub">Salesforce (cloud, left) &middot; Boomi as the hub (centre, a local Atom inside the firewall) &middot; Oracle / WMS / SQL Server on-premises (right). Three colour-coded flows carry all seven requirements.</p>
+
+  <svg viewBox="0 0 1300 660" role="img" aria-label="Boomi solution architecture diagram">
+    <defs>
+      <marker id="ah-order" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 Z" fill="#ea580c"/></marker>
+      <marker id="ah-status" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 Z" fill="#059669"/></marker>
+      <marker id="ah-batch" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 Z" fill="#7c3aed"/></marker>
+      <marker id="ah-grey" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 Z" fill="#94a3b8"/></marker>
+    </defs>
+
+    <!-- Boomi Control Plane -->
+    <rect x="525" y="20" width="250" height="64" rx="10" fill="#eef2ff" stroke="#0c4ee0" stroke-dasharray="5 4"/>
+    <text x="650" y="46" text-anchor="middle" font-size="14" font-weight="700" fill="#0c4ee0">Boomi Control Plane (cloud)</text>
+    <text x="650" y="66" text-anchor="middle" font-size="11" fill="#475569">build &middot; deploy &middot; manage &middot; metadata only</text>
+    <line x1="650" y1="84" x2="650" y2="150" stroke="#94a3b8" stroke-dasharray="4 4" marker-end="url(#ah-grey)"/>
+    <text x="662" y="120" font-size="10.5" fill="#475569">outbound only &middot; 256-bit</text>
+
+    <!-- Salesforce -->
+    <rect x="40" y="270" width="220" height="160" rx="12" fill="#e0f5fd" stroke="#00a1e0" stroke-width="2"/>
+    <text x="150" y="312" text-anchor="middle" font-size="16" font-weight="700" fill="#0369a1">Salesforce</text>
+    <text x="150" y="334" text-anchor="middle" font-size="11.5" fill="#0f172a">CRM &middot; system of record</text>
+    <text x="150" y="352" text-anchor="middle" font-size="11.5" fill="#0f172a">orders + customer service</text>
+    <text x="150" y="378" text-anchor="middle" font-size="10.5" fill="#475569">(cloud)</text>
+    <text x="150" y="406" text-anchor="middle" font-size="10.5" fill="#475569">reps create orders &middot; CSRs</text>
+    <text x="150" y="421" text-anchor="middle" font-size="10.5" fill="#475569">check status</text>
+
+    <!-- Boomi hub -->
+    <rect x="500" y="150" width="300" height="460" rx="14" fill="#fff" stroke="#0c4ee0" stroke-width="2.5"/>
+    <rect x="500" y="150" width="300" height="40" rx="14" fill="#0c4ee0"/>
+    <text x="650" y="176" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">Boomi Platform &mdash; Local Atom (runtime)</text>
+    <!-- process pills -->
+    <g font-size="11.5">
+      <rect x="520" y="206" width="260" height="46" rx="8" fill="#fff7ed" stroke="#ea580c"/>
+      <text x="532" y="226" font-weight="700" fill="#9a3412">Order Orchestration</text>
+      <text x="532" y="243" fill="#7c2d12" font-size="10.5">real-time &middot; R1 R2 R3 R4</text>
+
+      <rect x="520" y="262" width="260" height="46" rx="8" fill="#fff7ed" stroke="#ea580c"/>
+      <text x="532" y="282" font-weight="700" fill="#9a3412">WMS Dispatch &mdash; queue consumer</text>
+      <text x="532" y="299" fill="#7c2d12" font-size="10.5">async &middot; R4 R5 (buffers maintenance)</text>
+
+      <rect x="520" y="318" width="260" height="44" rx="8" fill="#f1f5f9" stroke="#64748b"/>
+      <text x="532" y="337" font-weight="700" fill="#334155">Approval Reminder</text>
+      <text x="532" y="353" fill="#475569" font-size="10.5">scheduled &middot; R2 (pending emails)</text>
+
+      <rect x="520" y="372" width="260" height="44" rx="8" fill="#ecfdf5" stroke="#059669"/>
+      <text x="532" y="391" font-weight="700" fill="#065f46">Order Status Sync</text>
+      <text x="532" y="407" fill="#047857" font-size="10.5">scheduled &middot; R6 (Oracle + WMS &rarr; SFDC)</text>
+
+      <rect x="520" y="426" width="260" height="46" rx="8" fill="#f5f3ff" stroke="#7c3aed"/>
+      <text x="532" y="446" font-weight="700" fill="#5b21b6">Nightly Balance Load &nbsp;&check; Build A</text>
+      <text x="532" y="463" fill="#6d28d9" font-size="10.5">scheduled batch &middot; R7</text>
+    </g>
+    <text x="650" y="496" text-anchor="middle" font-size="10.5" fill="#475569">shared connections &middot; profiles &middot; maps &middot; sub-processes</text>
+    <rect x="540" y="510" width="220" height="34" rx="8" fill="#fef9c3" stroke="#ca8a04"/>
+    <text x="650" y="532" text-anchor="middle" font-size="11" fill="#854d0e">Queue (Event Streams) &mdash; decouples WMS</text>
+
+    <!-- Firewall / on-prem -->
+    <rect x="1010" y="150" width="250" height="460" rx="14" fill="none" stroke="#7c3aed" stroke-width="2" stroke-dasharray="7 5"/>
+    <text x="1135" y="172" text-anchor="middle" font-size="12" font-weight="700" fill="#6d28d9">On-premises &middot; behind firewall</text>
+
+    <rect x="1030" y="192" width="210" height="78" rx="10" fill="#f5f3ff" stroke="#7c3aed"/>
+    <text x="1135" y="222" text-anchor="middle" font-size="13.5" font-weight="700" fill="#5b21b6">Oracle E-Business</text>
+    <text x="1135" y="242" text-anchor="middle" font-size="10.5" fill="#6d28d9">ERP &middot; orders, invoicing,</text>
+    <text x="1135" y="257" text-anchor="middle" font-size="10.5" fill="#6d28d9">payments, balances</text>
+
+    <rect x="1030" y="300" width="210" height="78" rx="10" fill="#f5f3ff" stroke="#7c3aed"/>
+    <text x="1135" y="330" text-anchor="middle" font-size="13.5" font-weight="700" fill="#5b21b6">WMS</text>
+    <text x="1135" y="350" text-anchor="middle" font-size="10.5" fill="#6d28d9">.NET &middot; custom XML-over-HTTP</text>
+    <text x="1135" y="365" text-anchor="middle" font-size="10.5" fill="#6d28d9">fulfilment + shipping</text>
+
+    <rect x="1030" y="408" width="210" height="78" rx="10" fill="#f5f3ff" stroke="#7c3aed"/>
+    <text x="1135" y="438" text-anchor="middle" font-size="13.5" font-weight="700" fill="#5b21b6">SQL Server</text>
+    <text x="1135" y="458" text-anchor="middle" font-size="10.5" fill="#6d28d9">data warehouse</text>
+    <text x="1135" y="473" text-anchor="middle" font-size="10.5" fill="#6d28d9">reporting + analytics</text>
+
+    <!-- FLOWS: Salesforce <-> Boomi -->
+    <!-- order in -->
+    <line x1="260" y1="300" x2="500" y2="240" stroke="#ea580c" stroke-width="2.5" marker-end="url(#ah-order)"/>
+    <circle cx="372" cy="266" r="12" fill="#ea580c"/><text x="372" y="270" text-anchor="middle" font-size="10.5" font-weight="700" fill="#fff">R1</text>
+    <!-- SO# / status back -->
+    <line x1="500" y1="340" x2="260" y2="400" stroke="#059669" stroke-width="2.5" marker-end="url(#ah-status)"/>
+    <circle cx="356" cy="378" r="12" fill="#0f766e"/><text x="356" y="382" text-anchor="middle" font-size="9.5" font-weight="700" fill="#fff">R3/6</text>
+
+    <!-- FLOWS: Boomi <-> Oracle -->
+    <line x1="800" y1="230" x2="1030" y2="225" stroke="#ea580c" stroke-width="2.5" marker-end="url(#ah-order)"/>
+    <circle cx="915" cy="214" r="12" fill="#ea580c"/><text x="915" y="218" text-anchor="middle" font-size="10.5" font-weight="700" fill="#fff">R3</text>
+    <line x1="1030" y1="250" x2="800" y2="455" stroke="#7c3aed" stroke-width="2.5" marker-end="url(#ah-batch)"/>
+    <circle cx="905" cy="360" r="12" fill="#7c3aed"/><text x="905" y="364" text-anchor="middle" font-size="10.5" font-weight="700" fill="#fff">R7</text>
+
+    <!-- FLOWS: Boomi -> WMS (via queue) -->
+    <line x1="800" y1="320" x2="1030" y2="330" stroke="#ea580c" stroke-width="2.5" marker-end="url(#ah-order)"/>
+    <circle cx="915" cy="318" r="12" fill="#ea580c"/><text x="915" y="322" text-anchor="middle" font-size="9.5" font-weight="700" fill="#fff">R4/5</text>
+    <!-- WMS status back -->
+    <line x1="1030" y1="360" x2="800" y2="388" stroke="#059669" stroke-width="2.2" marker-end="url(#ah-status)"/>
+
+    <!-- FLOWS: Boomi -> SQL Server (load) -->
+    <line x1="800" y1="448" x2="1030" y2="450" stroke="#7c3aed" stroke-width="2.5" marker-end="url(#ah-batch)"/>
+    <circle cx="915" cy="436" r="12" fill="#7c3aed"/><text x="915" y="440" text-anchor="middle" font-size="10.5" font-weight="700" fill="#fff">R7</text>
+
+    <!-- Oracle/WMS status -> Boomi -> SFDC already shown; R6 badge near boomi-sfdc return line covers it -->
+  </svg>
+
+  <div class="legend">
+    <span><span class="swatch" style="background:#ea580c"></span> Real-time order flow (R1–R5)</span>
+    <span><span class="swatch" style="background:#059669"></span> Status sync back to Salesforce (R6)</span>
+    <span><span class="swatch" style="background:#7c3aed"></span> Nightly batch to warehouse (R7)</span>
+  </div>
+</div>
+
+<div class="card">
+  <h2>All 7 requirements → Boomi pattern → process</h2>
+  <p class="sub">This table is the "I understood the whole problem" proof. The diagram shows the topology; this maps every requirement to the pattern that solves it.</p>
+  <table>
+    <tr><th>#</th><th>Requirement (scenario)</th><th>Boomi pattern</th><th>Lives in process</th><th>Trigger</th></tr>
+    <tr><td><span class="rtag r-order">R1</span></td><td>New orders created in Salesforce</td><td>Salesforce connector listen / query — SFDC is the trigger</td><td>Order Orchestration</td><td>Real-time</td></tr>
+    <tr><td><span class="rtag r-order">R2</span></td><td>Orders &gt; $1M need approval; pending ones emailed periodically; status updated in SFDC</td><td><b>Decision</b> on amount + a scheduled Mail job for the reminders</td><td>Order Orchestration (decision) + Approval Reminder (email)</td><td>Real-time + Scheduled</td></tr>
+    <tr><td><span class="rtag r-order">R3</span></td><td>On approval, create in Oracle immediately; return Oracle SO# to SFDC</td><td>Oracle connector + Map, then <b>write-back</b> (Salesforce Update)</td><td>Order Orchestration</td><td>Real-time</td></tr>
+    <tr><td><span class="rtag r-order">R4</span></td><td>Order also sent to WMS (custom XML-over-HTTP)</td><td>HTTP Client + XML profile, published to a queue</td><td>Order Orchestration &rarr; WMS Dispatch</td><td>Real-time / async</td></tr>
+    <tr><td><span class="rtag r-order">R5</span></td><td>WMS down 4 hrs/week, but orders keep arriving</td><td><b>Decouple via queue</b> (Event Streams / Atom Queue); buffer through the window, drain on resume, retry + dead-letter</td><td>WMS Dispatch (queue consumer)</td><td>Async</td></tr>
+    <tr><td><span class="rtag r-status">R6</span></td><td>Order status (Oracle payment + WMS shipping) visible in Salesforce for CSRs</td><td>Aggregate both sources, update SFDC custom fields — bidirectional</td><td>Order Status Sync</td><td>Scheduled / event</td></tr>
+    <tr><td><span class="rtag r-batch">R7</span></td><td>Nightly, 500k+ customer-balance CSV &rarr; data warehouse</td><td>High-volume <b>batch</b>: flat-file, split, validate (Cleanse), route, load</td><td>Nightly Balance Load <b>(Build A — built)</b></td><td>Scheduled nightly</td></tr>
+  </table>
+  <div class="note"><b>The line that lands it:</b> "One platform handles real-time order flow, scheduled batch, human approvals, and a resilient queue for the flaky warehouse — decomposed into independent processes that share common connections, profiles and maps. You're not buying four tools, you're buying one control point for how your business data moves."</div>
+</div>
+
+<div class="card">
+  <h2>Why processes, not one monolith</h2>
+  <p class="sub">Each flow has its own trigger and lifecycle, so it's its own process — independently deployable, testable, monitorable, with isolated blast radius.</p>
+  <table>
+    <tr><th>Process</th><th>Requirements</th><th>Trigger</th><th>Status</th></tr>
+    <tr><td>Order Orchestration</td><td>R1, R2, R3, R4</td><td>Real-time (new SFDC order)</td><td>Build B (next)</td></tr>
+    <tr><td>WMS Dispatch (queue consumer)</td><td>R4, R5</td><td>Async (drains queue)</td><td>Talk — describe the pattern</td></tr>
+    <tr><td>Approval Reminder</td><td>R2</td><td>Scheduled</td><td>Talk</td></tr>
+    <tr><td>Order Status Sync</td><td>R6</td><td>Scheduled</td><td>Talk</td></tr>
+    <tr><td>Nightly Balance Load</td><td>R7</td><td>Scheduled batch</td><td><b>Built &amp; tested (Build A)</b></td></tr>
+  </table>
+  <div class="note"><b>To make it a slide:</b> screenshot the diagram card above (it's already 16:9-ish). Keep the mapping table on a second slide or as the speaker-notes backup. Drop the legacy deck's cloud-to-on-premise topology slide next to it to reinforce the Atom-behind-the-firewall security story.</div>
+</div>
+
+</div>
+</body>
+</html>

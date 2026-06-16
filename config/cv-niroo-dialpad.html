@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Niroo Arjuna &ndash; CV</title>
+<style>
+  @font-face {
+    font-family: 'Space Grotesk';
+    src: url('./fonts/space-grotesk-latin.woff2') format('woff2');
+    font-weight: 300 700;
+    font-style: normal;
+    font-display: swap;
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+
+  @font-face {
+    font-family: 'Space Grotesk';
+    src: url('./fonts/space-grotesk-latin-ext.woff2') format('woff2');
+    font-weight: 300 700;
+    font-style: normal;
+    font-display: swap;
+    unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+
+  @font-face {
+    font-family: 'DM Sans';
+    src: url('./fonts/dm-sans-latin.woff2') format('woff2');
+    font-weight: 100 1000;
+    font-style: normal;
+    font-display: swap;
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+
+  @font-face {
+    font-family: 'DM Sans';
+    src: url('./fonts/dm-sans-latin-ext.woff2') format('woff2');
+    font-weight: 100 1000;
+    font-style: normal;
+    font-display: swap;
+    unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+
+  html {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    line-height: 1.55;
+    color: #222;
+    background: #fff;
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 2px 6px 2px 0;
+  }
+
+  /* HEADER */
+  .cv-header {
+    margin-bottom: 12px;
+    text-align: center;
+  }
+
+  .cv-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 38px;
+    font-weight: 700;
+    color: #000;
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+    margin-bottom: 7px;
+  }
+
+  .cv-contact {
+    font-size: 12px;
+    color: #555;
+    line-height: 1.5;
+    margin-bottom: 10px;
+  }
+
+  .cv-contact a {
+    color: #555;
+    text-decoration: none;
+  }
+
+  .cv-contact .sep {
+    margin: 0 6px;
+    color: #999;
+  }
+
+  .cv-rule {
+    border: none;
+    border-top: 1px solid #555;
+    margin: 0;
+  }
+
+  /* SECTION HEADERS */
+  .section {
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.28em;
+    color: #000;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 3px;
+    margin-bottom: 8px;
+    margin-top: 8px;
+  }
+
+  /* SUMMARY */
+  .summary-text { font-size: 13px; line-height: 1.55; color: #222; }
+  .summary-text a { color: #222; text-decoration: underline; }
+  .summary-bullets li { font-size: 13px; line-height: 1.65; margin-bottom: 5px; }
+
+  /* COMPETENCY TAGS */
+  .competencies { display: flex; flex-wrap: wrap; gap: 4px; }
+  .competency-tag {
+    font-size: 11px;
+    color: #222;
+    background: transparent;
+    border: 1px solid #bbb;
+    border-radius: 0;
+    padding: 3px 10px;
+    white-space: nowrap;
+  }
+
+  /* WORK EXPERIENCE */
+  .job { margin-bottom: 10px; page-break-inside: avoid; }
+  .job-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1px; }
+  .job-company { font-size: 14.5px; font-weight: 700; color: #111; }
+  .job-company .company-descriptor { font-size: 12px; font-weight: 400; color: #555; margin-left: 4px; }
+  .job-date { font-size: 11px; color: #666; white-space: nowrap; flex-shrink: 0; margin-left: 16px; }
+  .job-title { font-size: 12.5px; font-style: italic; font-weight: 400; color: #444; margin-bottom: 4px; }
+  .job-bullets { list-style: none; padding: 0; margin: 0; }
+  .job-bullets li { font-size: 12px; line-height: 1.55; color: #222; padding-left: 16px; position: relative; margin-bottom: 1px; }
+  .job-bullets li::before { content: "\25B8\00A0"; position: absolute; left: 0; top: 0; color: #222; }
+
+  /* PROJECTS */
+  .project { margin-bottom: 8px; page-break-inside: avoid; }
+  .project-header { display: flex; align-items: baseline; gap: 10px; margin-bottom: 3px; }
+  .project-title { font-size: 13px; font-weight: 700; color: #000; }
+  .project-badge {
+    font-size: 10px; color: #555; background: transparent; border: 1px solid #bbb;
+    border-radius: 0; padding: 2px 8px; white-space: nowrap; font-weight: 500;
+  }
+  .project-url { font-size: 11px; color: #555; text-decoration: none; }
+  .project-desc { font-size: 12px; line-height: 1.55; color: #222; margin-bottom: 2px; }
+  .project-stack { font-size: 11px; color: #666; font-style: italic; }
+
+  /* EDUCATION */
+  .edu-item { margin-bottom: 6px; page-break-inside: avoid; }
+  .edu-header { display: flex; justify-content: space-between; align-items: baseline; }
+  .edu-degree { font-size: 13px; font-weight: 700; color: #000; }
+  .edu-year { font-size: 11px; color: #666; white-space: nowrap; flex-shrink: 0; margin-left: 16px; }
+  .edu-institution { font-size: 12px; font-style: italic; color: #555; margin-top: 1px; }
+
+  /* CERTIFICATIONS */
+  .cert-item { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 5px; }
+  .cert-name { font-size: 12px; color: #222; }
+  .cert-org { font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; color: #555; white-space: nowrap; margin-left: 16px; }
+
+  /* SKILLS */
+  .skills-grid { columns: 2; column-gap: 32px; }
+  .skill-row { break-inside: avoid; margin-bottom: 5px; font-size: 12px; color: #333; }
+  .skill-category { font-weight: 700; color: #111; margin-right: 4px; }
+
+  @media print {
+    body { max-width: 100%; }
+    .job, .project, .edu-item { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="cv-header">
+  <div class="cv-name">Niroo Arjuna</div>
+  <div class="cv-contact">
+    niroo.arjuna@gmail.com
+    <span class="sep">|</span>
+    +61 451 425 315
+    <span class="sep">|</span>
+    <a href="https://www.linkedin.com/in/nirooa/">linkedin.com/in/nirooa</a>
+    <span class="sep">|</span>
+    Melbourne, Australia (open to Sydney relocation)
+  </div>
+  <hr class="cv-rule" />
+</header>
+
+<!-- PROFESSIONAL SUMMARY -->
+<section class="section">
+  <div class="section-title">Professional Summary</div>
+  <ul class="job-bullets summary-bullets">
+    <li><strong>Forward-deployed, customer-facing engineer</strong> with 5+ years embedding with strategic enterprise accounts, translating business challenges into working technical solutions across healthtech, IoT, and cloud security.</li>
+    <li><strong>100+ technical deep dives, demos, POCs, and commercial close engagements</strong>, partnering with Account Executives and bridging sales, engineering, and customer success through pre-sales and post-sales.</li>
+    <li><strong>Ships production software independently on the modern AI stack</strong>, building and instrumenting LLM-powered applications on the Anthropic Claude API with Python, TypeScript, and Next.js, deployed live and in public repos.</li>
+    <li><strong>Owns enterprise onboarding end-to-end</strong> for accounts including Monash Health, Melbourne Airport, and CBRE, cutting deployment time by <strong>30%</strong> and lifting retention by <strong>20%</strong> through API integrations and workflow automation.</li>
+    <li>Acts as <strong>voice of customer into product</strong>, turning field patterns into structured briefs that influenced the roadmap; Anthropic AI Fluency certified, comfortable holding a room of senior IT and executive stakeholders.</li>
+  </ul>
+</section>
+
+<!-- CORE COMPETENCIES -->
+<section class="section">
+  <div class="section-title">Core Competencies</div>
+  <div class="competencies">
+    <span class="competency-tag">Forward Deployed Engineering</span>
+    <span class="competency-tag">Customer-Facing Technical Delivery</span>
+    <span class="competency-tag">LLM Application Integration</span>
+    <span class="competency-tag">Anthropic Claude API</span>
+    <span class="competency-tag">Enterprise Onboarding</span>
+    <span class="competency-tag">API &amp; CRM/ERP Integration</span>
+    <span class="competency-tag">Technical Discovery &amp; Demos</span>
+    <span class="competency-tag">Voice of Customer &rarr; Product</span>
+    <span class="competency-tag">Python / JavaScript / TypeScript</span>
+    <span class="competency-tag">Executive Stakeholder Comms</span>
+  </div>
+</section>
+
+<!-- WORK EXPERIENCE -->
+<section class="section">
+  <div class="section-title">Experience</div>
+
+  <div class="job">
+    <div class="job-header">
+      <div class="job-company">inforcer <span class="company-descriptor">(Cloud Security SaaS)</span></div>
+      <div class="job-date">Dec 2025 - Apr 2026</div>
+    </div>
+    <div class="job-title">Pre-Sales Engineer</div>
+    <ul class="job-bullets">
+      <li>Owned the technical path to close for a cloud security platform, partnering with Account Executives on <strong>100+ technical deep dives, demos, POCs, and commercial close engagements</strong> across midmarket and enterprise pipeline</li>
+      <li>Embedded with customer and partner teams to navigate enterprise infrastructure, configuring SSO/SAML, integrations, and security setup, then translating capabilities into business outcomes for technical and non-technical buyers</li>
+      <li>Bridged sales, customer success, and product through pre-sales and post-sales, enabling MSP and channel partners to position and deploy the solution independently</li>
+      <li>Led deep technical discovery and aligned solutions to compliance frameworks including Essential 8 and GDPR, supporting RFP and tender responses with commercial awareness</li>
+    </ul>
+  </div>
+
+  <div class="job">
+    <div class="job-header">
+      <div class="job-company">UbiPark <span class="company-descriptor">(Enterprise IoT / SaaS)</span></div>
+      <div class="job-date">Nov 2023 - Nov 2025</div>
+    </div>
+    <div class="job-title">Product Specialist</div>
+    <ul class="job-bullets">
+      <li>Owned end-to-end enterprise onboarding and technical implementation for Monash Health, Melbourne Airport, Monash University, CBRE, and Charter Hall, including <strong>API integrations and custom workflow automation</strong></li>
+      <li><strong>Reduced onboarding time by 30%</strong> by building reusable deployment templates and automating repetitive workflow steps across enterprise deployments</li>
+      <li><strong>Increased customer retention by 20%</strong> through usage-driven engagement, success planning, and proactive escalation resolution</li>
+      <li>Acted as the primary technical advisor for strategic accounts, partnering with Account Executives on demos and POCs to convert enterprise pipeline</li>
+      <li>Served as voice of customer, surfacing field patterns into structured product briefs that influenced the roadmap</li>
+    </ul>
+  </div>
+
+  <div class="job">
+    <div class="job-header">
+      <div class="job-company">Phocas Software <span class="company-descriptor">(BI &amp; Data Analytics SaaS)</span></div>
+      <div class="job-date">Feb 2021 - Oct 2023</div>
+    </div>
+    <div class="job-title">Implementations Consultant</div>
+    <ul class="job-bullets">
+      <li>Delivered <strong>50+ end-to-end BI implementations</strong> across mid-market and enterprise clients, including data model design and ERP integrations (MYOB)</li>
+      <li><strong>Reduced implementation lead time by 25%</strong> through improved scoping processes and reusable configuration templates adopted across the consulting team</li>
+      <li>Led discovery workshops with C-level and IT stakeholders to define requirements and map solution value before build</li>
+      <li>Supported Sales with technical scoping and project handoffs; maintained post-go-live relationships contributing to renewals and account expansion</li>
+    </ul>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section class="section">
+  <div class="section-title">AI &amp; Engineering Projects</div>
+
+  <div class="project">
+    <div class="project-header">
+      <div class="project-title">Lumen Health: Patient-Facing Post-Visit Companion</div>
+      <span class="project-badge">LLM / Healthtech</span>
+    </div>
+    <div class="project-desc">Designed and shipped a Next.js app using the Anthropic Claude API to translate clinical notes into patient-readable summaries with action items, medication guides, and a glossary. Instrumented end-to-end with product analytics: define the customer surface, ship it, instrument it, prove the loop. <a class="project-url" href="https://lumen-health-niroo.vercel.app">lumen-health-niroo.vercel.app</a></div>
+    <div class="project-stack">Next.js 16 (App Router), TypeScript, Anthropic Claude API, shadcn/ui, Tailwind v4, Pendo, Vercel</div>
+  </div>
+
+  <div class="project">
+    <div class="project-header">
+      <div class="project-title">AI-Queryable Portfolio</div>
+      <span class="project-badge">LLM / Agentic</span>
+    </div>
+    <div class="project-desc">Interactive portfolio where visitors query my experience in natural language against a Claude-powered retrieval layer over my own data. Generates inbound interview requests from site traffic. <a class="project-url" href="https://niroo-arjuna.vercel.app">niroo-arjuna.vercel.app</a></div>
+    <div class="project-stack">React 18, TypeScript, Supabase, Anthropic Claude API, Vercel</div>
+  </div>
+
+  <div class="project">
+    <div class="project-header">
+      <div class="project-title">Dhaniro Mortgage Solutions Website</div>
+      <span class="project-badge">Full Build</span>
+    </div>
+    <div class="project-desc">Built a full production website from scratch for a mortgage broker client with headless CMS, dynamic content, and SEO. Designed, built, and deployed end-to-end. <a class="project-url" href="https://dhaniromortgages.com.au">dhaniromortgages.com.au</a></div>
+    <div class="project-stack">Next.js 15, TypeScript, Tailwind CSS, Sanity, Meta Graph API, Vercel</div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section class="section">
+  <div class="section-title">Education</div>
+  <div class="edu-item">
+    <div class="edu-header">
+      <div class="edu-degree">Bachelor of Business (Accounting)</div>
+    </div>
+    <div class="edu-institution">Monash University</div>
+  </div>
+  <div class="edu-item">
+    <div class="edu-header">
+      <div class="edu-degree">Bachelor of Information Technology (Business Information Systems)</div>
+    </div>
+    <div class="edu-institution">Monash University</div>
+  </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section class="section">
+  <div class="section-title">Certifications</div>
+  <div class="cert-item">
+    <span class="cert-name">AI Fluency Framework &amp; Foundations</span>
+    <span class="cert-org">Anthropic</span>
+  </div>
+  <div class="cert-item">
+    <span class="cert-name">Microsoft 365 Certified: Fundamentals (MS-900)</span>
+    <span class="cert-org">Microsoft</span>
+  </div>
+  <div class="cert-item">
+    <span class="cert-name">Security, Compliance &amp; Identity Fundamentals (SC-900)</span>
+    <span class="cert-org">Microsoft</span>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section class="section">
+  <div class="section-title">Skills</div>
+  <div class="skills-grid">
+    <div class="skill-row"><span class="skill-category">AI / LLM:</span> Anthropic Claude API, LLM app integration, prompt engineering, Claude Code, AI product instrumentation</div>
+    <div class="skill-row"><span class="skill-category">Languages:</span> Python, JavaScript, TypeScript, SQL, HTML/CSS</div>
+    <div class="skill-row"><span class="skill-category">Frameworks &amp; UI:</span> React, Next.js, Tailwind CSS, shadcn/ui</div>
+    <div class="skill-row"><span class="skill-category">Integration &amp; APIs:</span> REST APIs, SSO/SAML/OAuth, SCIM, ERP (MYOB), Postman</div>
+    <div class="skill-row"><span class="skill-category">Data &amp; Backend:</span> Supabase, Sanity, data modelling, BI reporting</div>
+    <div class="skill-row"><span class="skill-category">Methodologies:</span> Solution Selling, Value Selling, Technical Discovery, Voice of Customer</div>
+  </div>
+</section>
+
+</body>
+</html>

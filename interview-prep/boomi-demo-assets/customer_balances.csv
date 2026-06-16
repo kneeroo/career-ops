@@ -1,0 +1,9 @@
+customer_id,customer_name,balance,currency
+1001,Bluestone Manufacturing Pty Ltd,15230.50,AUD
+1002,Yarra Valley Distributors,-420.00,AUD
+1003,Harbour City Supplies Pty Ltd,98250.00,AUD
+1004,Southern Cross Industrial,,AUD
+1005,Outback Mining Services Pty Ltd,72540.75,AUD
+1006,,18900.00,AUD
+1007,Great Dividing Engineering,4500.25,AUD
+1008,Coastal Freight Co Pty Ltd,131000.00,AUD

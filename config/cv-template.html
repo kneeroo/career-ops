@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="{{LANG}}">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>{{NAME}} &ndash; CV</title>
+<style>
+  @font-face {
+    font-family: 'Space Grotesk';
+    src: url('./fonts/space-grotesk-latin.woff2') format('woff2');
+    font-weight: 300 700;
+    font-style: normal;
+    font-display: swap;
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+
+  @font-face {
+    font-family: 'Space Grotesk';
+    src: url('./fonts/space-grotesk-latin-ext.woff2') format('woff2');
+    font-weight: 300 700;
+    font-style: normal;
+    font-display: swap;
+    unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+
+  @font-face {
+    font-family: 'DM Sans';
+    src: url('./fonts/dm-sans-latin.woff2') format('woff2');
+    font-weight: 100 1000;
+    font-style: normal;
+    font-display: swap;
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+
+  @font-face {
+    font-family: 'DM Sans';
+    src: url('./fonts/dm-sans-latin-ext.woff2') format('woff2');
+    font-weight: 100 1000;
+    font-style: normal;
+    font-display: swap;
+    unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+
+  html {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    line-height: 1.55;
+    color: #222;
+    background: #fff;
+    max-width: {{PAGE_WIDTH}};
+    margin: 0 auto;
+    padding: 2px 6px 2px 0;
+  }
+
+  /* ── HEADER ─────────────────────────────────────────────── */
+  .cv-header {
+    margin-bottom: 12px;
+    text-align: center;
+  }
+
+  .cv-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 38px;
+    font-weight: 700;
+    color: #000;
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+    margin-bottom: 7px;
+  }
+
+  .cv-contact {
+    font-size: 12px;
+    color: #555;
+    line-height: 1.5;
+    margin-bottom: 10px;
+  }
+
+  .cv-contact a {
+    color: #555;
+    text-decoration: none;
+  }
+
+  .cv-contact .sep {
+    margin: 0 6px;
+    color: #999;
+  }
+
+  .cv-rule {
+    border: none;
+    border-top: 1px solid #555;
+    margin: 0;
+  }
+
+  /* ── SECTION HEADERS ─────────────────────────────────────── */
+  .section {
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.28em;
+    color: #000;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 3px;
+    margin-bottom: 8px;
+    margin-top: 8px;
+  }
+
+  /* ── SUMMARY ─────────────────────────────────────────────── */
+  .summary-text {
+    font-size: 13px;
+    line-height: 1.55;
+    color: #222;
+  }
+
+  .summary-text a {
+    color: #222;
+    text-decoration: underline;
+  }
+
+  .summary-bullets li {
+    font-size: 13px;
+    line-height: 1.65;
+    margin-bottom: 5px;
+  }
+
+  /* ── COMPETENCY TAGS ─────────────────────────────────────── */
+  .competencies {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  .competency-tag {
+    font-size: 11px;
+    color: #222;
+    background: transparent;
+    border: 1px solid #bbb;
+    border-radius: 0;
+    padding: 3px 10px;
+    white-space: nowrap;
+  }
+
+  /* ── WORK EXPERIENCE ─────────────────────────────────────── */
+  .job {
+    margin-bottom: 10px;
+    page-break-inside: avoid;
+  }
+
+  .job-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 1px;
+  }
+
+  .job-company {
+    font-size: 14.5px;
+    font-weight: 700;
+    color: #111;
+  }
+
+  .job-company .company-descriptor {
+    font-size: 12px;
+    font-weight: 400;
+    color: #555;
+    margin-left: 4px;
+  }
+
+  .job-date {
+    font-size: 11px;
+    color: #666;
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-left: 16px;
+  }
+
+  .job-title {
+    font-size: 12.5px;
+    font-style: italic;
+    font-weight: 400;
+    color: #444;
+    margin-bottom: 4px;
+  }
+
+  .job-bullets {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .job-bullets li {
+    font-size: 12px;
+    line-height: 1.55;
+    color: #222;
+    padding-left: 16px;
+    position: relative;
+    margin-bottom: 1px;
+  }
+
+  .job-bullets li::before {
+    content: "\25B8\00A0";
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: #222;
+  }
+
+  /* ── PROJECTS ────────────────────────────────────────────── */
+  .project {
+    margin-bottom: 8px;
+    page-break-inside: avoid;
+  }
+
+  .project-header {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 3px;
+  }
+
+  .project-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #000;
+  }
+
+  .project-badge {
+    font-size: 10px;
+    color: #555;
+    background: transparent;
+    border: 1px solid #bbb;
+    border-radius: 0;
+    padding: 2px 8px;
+    white-space: nowrap;
+    font-weight: 500;
+  }
+
+  .project-url {
+    font-size: 11px;
+    color: #555;
+    text-decoration: none;
+  }
+
+  .project-desc {
+    font-size: 12px;
+    line-height: 1.55;
+    color: #222;
+    margin-bottom: 2px;
+  }
+
+  .project-stack {
+    font-size: 11px;
+    color: #666;
+    font-style: italic;
+  }
+
+  /* ── EDUCATION ───────────────────────────────────────────── */
+  .edu-item {
+    margin-bottom: 6px;
+    page-break-inside: avoid;
+  }
+
+  .edu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+
+  .edu-degree {
+    font-size: 13px;
+    font-weight: 700;
+    color: #000;
+  }
+
+  .edu-year {
+    font-size: 11px;
+    color: #666;
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-left: 16px;
+  }
+
+  .edu-institution {
+    font-size: 12px;
+    font-style: italic;
+    color: #555;
+    margin-top: 1px;
+  }
+
+  /* ── CERTIFICATIONS ──────────────────────────────────────── */
+  .cert-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 5px;
+  }
+
+  .cert-name {
+    font-size: 12px;
+    color: #222;
+  }
+
+  .cert-org {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+    color: #555;
+    white-space: nowrap;
+    margin-left: 16px;
+  }
+
+  /* ── SKILLS ──────────────────────────────────────────────── */
+  .skills-grid {
+    columns: 2;
+    column-gap: 32px;
+  }
+
+  .skill-row {
+    break-inside: avoid;
+    margin-bottom: 5px;
+    font-size: 12px;
+    color: #333;
+  }
+
+  .skill-category {
+    font-weight: 700;
+    color: #111;
+    margin-right: 4px;
+  }
+
+  /* ── PRINT ───────────────────────────────────────────────── */
+  @media print {
+    body {
+      max-width: 100%;
+    }
+    .job, .project, .edu-item {
+      page-break-inside: avoid;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="cv-header">
+  <div class="cv-name">{{NAME}}</div>
+  <div class="cv-contact">
+    {{EMAIL}}
+    <span class="sep">|</span>
+    {{PHONE}}
+    <span class="sep">|</span>
+    <a href="{{LINKEDIN_URL}}">{{LINKEDIN_DISPLAY}}</a>
+    <span class="sep">|</span>
+    {{LOCATION}}
+  </div>
+  <hr class="cv-rule" />
+</header>
+
+<!-- PROFESSIONAL SUMMARY -->
+<section class="section">
+  <div class="section-title">{{SECTION_SUMMARY}}</div>
+  {{SUMMARY_TEXT}}
+</section>
+
+<!-- CORE COMPETENCIES -->
+<section class="section">
+  <div class="section-title">{{SECTION_COMPETENCIES}}</div>
+  <div class="competencies">
+    {{COMPETENCIES}}
+  </div>
+</section>
+
+<!-- WORK EXPERIENCE -->
+<section class="section">
+  <div class="section-title">{{SECTION_EXPERIENCE}}</div>
+  {{EXPERIENCE}}
+</section>
+
+<!-- PROJECTS -->
+<section class="section">
+  <div class="section-title">{{SECTION_PROJECTS}}</div>
+  {{PROJECTS}}
+</section>
+
+<!-- EDUCATION -->
+<section class="section">
+  <div class="section-title">{{SECTION_EDUCATION}}</div>
+  {{EDUCATION}}
+</section>
+
+<!-- CERTIFICATIONS -->
+<section class="section">
+  <div class="section-title">{{SECTION_CERTIFICATIONS}}</div>
+  {{CERTIFICATIONS}}
+</section>
+
+<!-- SKILLS -->
+<section class="section">
+  <div class="section-title">{{SECTION_SKILLS}}</div>
+  {{SKILLS}}
+</section>
+
+</body>
+</html>

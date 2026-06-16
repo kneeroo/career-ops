@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Pendo Technical Round — Christopher Mahoney (Niroo Arjuna)</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  :root {
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --primary: 222 47% 23%;
+    --primary-foreground: 0 0% 98%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 217 91% 60%;
+    --border: 240 5.9% 90%;
+    --radius: 0.6rem;
+  }
+  body { font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background: hsl(240 5% 97%); color: hsl(var(--foreground)); }
+  .card { background: hsl(var(--card)); border: 1px solid hsl(var(--border)); border-radius: var(--radius); box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.05); }
+  .badge { display: inline-flex; align-items: center; gap: .25rem; border-radius: 9999px; padding: 0.15rem 0.65rem; font-size: 0.72rem; font-weight: 600; border: 1px solid hsl(var(--border)); }
+  .badge-primary { background: hsl(var(--primary)); color: hsl(var(--primary-foreground)); border-color: transparent; }
+  .badge-accent { background: hsl(217 91% 95%); color: hsl(217 91% 35%); border-color: hsl(217 91% 85%); }
+  h2 { scroll-margin-top: 5rem; }
+  code { background: hsl(240 5% 93%); padding: 0.1rem 0.35rem; border-radius: 0.3rem; font-size: 0.85em; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+  .quote { border-left: 3px solid hsl(var(--accent)); background: hsl(217 91% 98%); padding: 0.75rem 1rem; border-radius: 0 0.4rem 0.4rem 0; color: hsl(222 30% 22%); }
+  .q { font-weight: 700; color: hsl(var(--primary)); margin-bottom: 0.4rem; }
+  .nav a { color: hsl(var(--muted-foreground)); font-size: 0.82rem; font-weight: 500; padding: 0.25rem 0.5rem; border-radius: 0.35rem; }
+  .nav a:hover { color: hsl(var(--foreground)); background: hsl(240 5% 94%); }
+  .qa { margin-bottom: 1.25rem; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.875rem; margin-top: 0.5rem; }
+  th, td { text-align: left; padding: 0.5rem 0.7rem; border-bottom: 1px solid hsl(var(--border)); vertical-align: top; }
+  th { background: hsl(240 5% 96%); font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.02em; color: hsl(var(--muted-foreground)); }
+  td code { white-space: nowrap; }
+  ul.tight li { margin-bottom: 0.35rem; }
+  ol.steps li { margin-bottom: 0.4rem; }
+</style>
+</head>
+<body class="antialiased">
+
+<header class="sticky top-0 z-20 backdrop-blur bg-white/85 border-b border-[hsl(var(--border))]">
+  <div class="max-w-4xl mx-auto px-5 py-3 flex flex-wrap items-center gap-x-3 gap-y-1 nav">
+    <span class="font-bold text-[hsl(var(--primary))] mr-1">Tech · Mahoney</span>
+    <a href="#install">My Install</a>
+    <a href="#spec">vs Assistant</a>
+    <a href="#dom">DOM</a>
+    <a href="#selectors">Selectors</a>
+    <a href="#pf">Pages / Features</a>
+    <a href="#script">Install Script</a>
+    <a href="#micro">Capturing Analytics</a>
+    <a href="#verify">Verify Install</a>
+    <a href="#debug">Debug a Guide</a>
+    <a href="#tag">Tagging</a>
+  </div>
+</header>
+
+<main class="max-w-4xl mx-auto px-5 py-8 space-y-6">
+
+  <section class="card p-6">
+    <div class="flex flex-wrap items-center gap-2 mb-2">
+      <span class="badge badge-accent">45 min · Technical Depth &amp; Discovery</span>
+      <span class="badge badge-primary">Thu 11 Jun · 1:15 AEST</span>
+    </div>
+    <h1 class="text-2xl font-bold">Technical Round — Christopher Mahoney</h1>
+    <p class="text-[hsl(var(--muted-foreground))] text-sm mt-1">Sr Customer Engineer · DOM, selectors, tagging, dev tools. Sandbox: <a class="text-[hsl(var(--accent))] underline" href="https://crm.pendoexperience.io/">crm.pendoexperience.io</a></p>
+  </section>
+
+  <section id="install" class="card p-6">
+    <div class="qa">
+      <p class="q">Walk me through how you installed Pendo on a real app.</p>
+      <div class="quote">"I built a Next.js healthcare app, Lumen Health, and installed Pendo on it end to end. There are really four pieces. First, get the agent on the page, the Pendo snippet, a piece of JavaScript that loads Pendo's tracking script; I put it in a component that loads across the whole app and gated it behind an environment variable, so with no API key Pendo just quietly doesn't load. Second, tell Pendo who the user is, it needs a visitor ID to attribute anything. Third, fix page tracking, my app is a single-page app so navigating swaps content without a full reload, and Pendo's auto-tracker listens for page loads, so I added a piece that watches the URL and calls <code>pendo.pageLoad()</code> on every route change, which is what makes the multi-step funnel and path reports work. Fourth, tag the things that matter, I added stable <code>data-pendo-id</code> attributes onto the key buttons and nav links so feature tagging grabs onto something reliable instead of a CSS class that changes every build."</div>
+
+      <p class="text-sm font-semibold mt-4 mb-1">The architecture, three components wired app-wide via <code>providers.tsx</code>:</p>
+      <table>
+        <tbody>
+          <tr><td><code>pendo-snippet.tsx</code></td><td>Loads the agent + identifies the visitor/account.</td></tr>
+          <tr><td><code>pendo-page-tracker.tsx</code></td><td>Fixes SPA page tracking (the App Router gotcha).</td></tr>
+          <tr><td><code>data-pendo-id</code> attributes</td><td>Stable selectors on key UI elements for click tracking.</td></tr>
+        </tbody>
+      </table>
+
+      <p class="text-sm font-semibold mt-4 mb-1">1 · Agent install</p>
+      <ul class="tight list-disc ml-5 text-sm">
+        <li>Standard Pendo snippet injected via Next's <code>&lt;Script strategy='afterInteractive'&gt;</code>, pulling the agent from <code>cdn.pendo.io/agent/static/&lt;apiKey&gt;/pendo.js</code>.</li>
+        <li>API key from <code>process.env.NEXT_PUBLIC_PENDO_API_KEY</code> (the <code>NEXT_PUBLIC_</code> prefix Next requires). If unset, the component renders <code>null</code> and Pendo never loads, gated behind config, safe to ship without a key.</li>
+        <li>A global <code>Window.pendo</code> type is declared so <code>initialize</code>/<code>pageLoad</code>/<code>identify</code> are typed.</li>
+      </ul>
+
+      <p class="text-sm font-semibold mt-4 mb-1">2 · Visitor / account identification</p>
+      <ul class="tight list-disc ml-5 text-sm">
+        <li>In a real production install the visitor ID comes from your auth provider, e.g. Clerk's <code>useUser()</code> gives you the real user ID and email, and the org becomes the account.</li>
+        <li>For this demo I went the other way on purpose: an 8-person <code>PATIENT_ROSTER</code> of fictional AU/NZ patients, each with state, postcode, age and staggered <code>created_at</code> dates, so geo segments, time-on-platform segments, Paths and Funnels have real variety.</li>
+        <li><code>getSessionPatient()</code> randomly assigns one per browser session, persisted in <code>sessionStorage</code> (reload keeps the visitor; a new tab gets a fresh one).</li>
+        <li><code>pendo.initialize()</code> runs in a <code>useEffect</code>, passing that patient as <code>visitor</code> (id, email, name, role, geo, age, <code>is_demo_user</code>) plus a fixed <code>account</code> (<code>lumen-health-demo</code>, plan <code>demo</code>, region <code>ANZ</code>, industry <code>Healthcare</code>).</li>
+      </ul>
+
+      <p class="text-sm font-semibold mt-4 mb-1">3 · SPA page tracking</p>
+      <ul class="tight list-disc ml-5 text-sm">
+        <li>Next's App Router does client-side navigation without full page loads, which Pendo's auto-tracker doesn't catch, so without this it only sees the entry page per session.</li>
+        <li><code>pendo-page-tracker.tsx</code> watches <code>usePathname()</code> and calls <code>window.pendo.pageLoad()</code> on every route change. Renders nothing, pure side effect.</li>
+      </ul>
+
+      <p class="text-sm font-semibold mt-4 mb-1">4 · Tagged elements</p>
+      <ul class="tight list-disc ml-5 text-sm">
+        <li>Stable <code>data-pendo-id</code> hooks on what matters for the funnel: <code>nav-&lt;route&gt;</code> on each sidebar item (<code>app-sidebar.tsx</code>), <code>open-visit</code> (<code>visit-card.tsx</code>), <code>ask-question</code> (<code>ask-question-button.tsx</code>). Intended funnel: the <code>/visits/&lt;visitId&gt;</code> single-visit page.</li>
+      </ul>
+
+      <p class="text-sm mt-4">On load order, if init ever didn't fire: the <code>initialize</code> effect is guarded by <code>if (!PENDO_API_KEY || !window.pendo) return</code>. The agent loads <code>afterInteractive</code>, but the stub <code>window.pendo</code> is created synchronously by the snippet's IIFE, so it exists by the time effects run. If it ever didn't, that ordering is the first place I'd look.</p>
+    </div>
+  </section>
+
+  <section id="spec" class="card p-6">
+    <div class="qa">
+      <p class="q">You used Pendo's AI Setup Assistant. Where did you follow it, and where did you diverge?</p>
+      <div class="quote">"I ran Pendo's AI Setup Assistant prompt inside Claude Code for the mechanical install, and it got the framework detection, the loader, the TypeScript types and the environment setup right. I actually improved on it in two places it couldn't know about: the App Router needs the loader in a Next <code>&lt;Script&gt;</code> component rather than the old <code>_document</code>/<code>_app</code> files, and the single-page-app page tracking needs the <code>usePathname</code> plus <code>pageLoad()</code> approach. The one place I diverged on purpose is the visitor identity. In a real install you'd wire the logged-in user straight from your auth provider, somewhere like Clerk gives you <code>useUser()</code>, so Pendo gets the real user ID and email. But this is a product-analytics demo, and if I'm the only real user the dashboard is empty, so I synthesized eight realistic ANZ patients assigned per session instead, so the Paths, Funnels and geo segments all have variety. So the framework and loader were detected; the visitor data I hand-authored for demo realism. That's the judgment call a CE makes by reading the goal, not just running the tool."</div>
+
+      <p class="text-sm font-semibold mt-4 mb-1">Followed the spec (the mechanical layer):</p>
+      <ul class="tight list-disc ml-5 text-sm">
+        <li><strong>Framework detection → Next.js path.</strong> Spec splits the snippet into <code>_document</code>/<code>_app</code>; those don't exist in App Router, so the loader went into a <code>&lt;Script strategy='afterInteractive'&gt;</code> component, the correct modern adaptation.</li>
+        <li><strong>Snippet preserved verbatim</strong> (Rule 1, never modify the loader).</li>
+        <li><strong>SPA route tracking</strong> via <code>usePathname()</code> + <code>pageLoad()</code>, smarter than the generic spec, which wouldn't know the App Router solution.</li>
+        <li><strong>TS types added</strong> because <code>tsconfig.json</code> was detected (Rule 4).</li>
+        <li><strong>Env handling</strong> using the <code>NEXT_PUBLIC_</code> prefix Next requires, not the spec's example <code>REACT_APP_</code> prefix.</li>
+        <li><strong>snake_case mapping</strong> (<code>full_name</code>, <code>created_at</code>, <code>is_demo_user</code>) per the spec's normalisation rules.</li>
+      </ul>
+
+      <p class="text-sm font-semibold mt-4 mb-1">Diverged on purpose (the data layer):</p>
+      <ul class="tight list-disc ml-5 text-sm">
+        <li>A faithful run would auto-detect the auth provider and map the real authenticated visitor + org. Instead I hand-authored the 8-person roster, flagged <code>is_demo_user</code> / <code>is_demo_account</code>.</li>
+        <li>Init timing follows from that: instead of firing once the real user loads, it fires on an empty-dependency <code>useEffect</code> against a random mock patient, because there's no logged-in user to depend on.</li>
+        <li>Why: a product-analytics demo needs a populated, varied visitor base so Paths, Funnels and geo segments aren't empty. Right for a demo, not the production pattern.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="dom" class="card p-6">
+    <div class="qa">
+      <p class="q">What is the DOM?</p>
+      <div class="quote">"The DOM is the browser's live, in-memory tree of the page. Every element, a div, a button, a table row, is a node in that tree. The HTML is the static source the server sends; the DOM is the living version the browser builds from it, and JavaScript and Pendo read and change the DOM, not the original HTML. That 'live' part matters here because a CRM like the sandbox is a single-page app: when you click Accounts, the content changes without a full page reload, JavaScript just swaps nodes in and out. That's exactly why Pendo needs a page-load signal on route changes, there's no browser navigation event to hang off. Every element has a tag, maybe an id, some classes, optional data attributes and text, and those are the hooks a selector grabs onto."</div>
+    </div>
+  </section>
+
+  <section id="selectors" class="card p-6">
+    <div class="qa">
+      <p class="q">What's a selector, and why might one break?</p>
+      <div class="quote">"A CSS selector is the address of an element in the DOM. Pendo records a selector when you tag a Feature, and when a user clicks something matching it, Pendo fires a Feature event. The rough specificity order is id beats class beats tag, so you want the most stable, meaningful hook. Selectors break for a few predictable reasons: hashed or auto-generated class names like <code>css-1a2b3c</code> from tools like styled-components or Tailwind, which change every build; position-based selectors like <code>nth-child</code> that break the moment the layout reorders; and ids that include a record number, which won't match the next record. The fix I'd advise a customer's dev team is to add stable, semantic <code>data-pendo-id</code> attributes to the elements that matter. It's a five-minute change, it survives redesigns, and it makes tagging self-documenting, that's the single most valuable thing a CE teaches a new customer's engineers."</div>
+
+      <p class="text-sm font-semibold mt-4 mb-1">Selector types (most to least reliable as anchors):</p>
+      <table>
+        <thead><tr><th>Type</th><th>Example</th><th>Matches</th></tr></thead>
+        <tbody>
+          <tr><td>ID</td><td><code>#save-account</code></td><td>The one element with that id. Best anchor.</td></tr>
+          <tr><td>Attribute</td><td><code>[data-pendo-id="save"]</code></td><td>Elements with that attribute/value. Stable, recommended.</td></tr>
+          <tr><td>Class</td><td><code>.btn-primary</code></td><td>All elements with that class. Risky if hashed/shared.</td></tr>
+          <tr><td>Element/tag</td><td><code>button</code></td><td>Every button. Too broad.</td></tr>
+          <tr><td>Descendant / child</td><td><code>.toolbar &gt; button</code></td><td>Buttons inside <code>.toolbar</code>. Useful to scope.</td></tr>
+          <tr><td>Position</td><td><code>tr:nth-child(2)</code></td><td>The 2nd row. Breaks on reorder, avoid.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="pf" class="card p-6">
+    <div class="qa">
+      <p class="q">What's the difference between Pages and Features?</p>
+      <div class="quote">"Pages are matched by URL rules, like <code>/accounts</code> or <code>/opportunities/*/details</code>, that's where users go. Features are matched by element selectors, that's what users click. Pages are the 'where', Features are the 'what'."</div>
+    </div>
+  </section>
+
+  <section id="script" class="card p-6">
+    <div class="qa">
+      <p class="q">What does the install script actually do?</p>
+      <div class="quote">"It's one JavaScript snippet you drop in the head of the page. It loads the Pendo agent asynchronously so it never blocks rendering. Then you call <code>pendo.initialize</code> with a visitor and an account once you know who the logged-in user is, and a visitor id is mandatory, no id, no events. From that moment the agent passively auto-captures every page view and click and serves Guides, so you don't have to decide in advance what to track. The one distinction worth knowing: the agent captures anything that happens in the UI, client-side, whereas the Track Events API is for things with no UI surface, like a server-side or backend event, which you fire explicitly."</div>
+    </div>
+  </section>
+
+  <section id="micro" class="card p-6">
+    <div class="qa">
+      <p class="q">Explain how Pendo captures analytics.</p>
+      <div class="quote">"The key idea is retroactive capture. From the moment the snippet is installed, Pendo records all page and click activity, so when you tag a Feature next month you get historical data going back to the install date. You instrument the app once, then ask questions later. Contrast that with event-based tools like Mixpanel or Amplitude, where you only get data for events you instrumented before the user acted, you have to predict every question up front. That's why a CE can walk into a customer 90 days post-install and immediately produce adoption data on a feature nobody thought to track on day one."</div>
+    </div>
+  </section>
+
+  <section id="verify" class="card p-6">
+    <div class="qa">
+      <p class="q">How would you verify a Pendo install is healthy?</p>
+      <div class="quote">"I'd open dev tools and check it three ways. In the Console I'd run a few commands from memory; on the sandbox they return real values. In the Network tab I'd filter for <code>pendo</code> and confirm the agent is loading and the event beacons are firing. And I'd point at the stream of <code>ptm.gif</code> calls, that's the agent shipping page and feature events back to Pendo in real time, that's what 'capturing analytics' looks like on the wire."</div>
+      <table>
+        <tbody>
+          <tr><td><code>window.pendo</code></td><td>Is the agent loaded?</td></tr>
+          <tr><td><code>pendo.validateInstall()</code></td><td>Built-in install validator.</td></tr>
+          <tr><td><code>pendo.getVersion()</code></td><td>Returns <code>"2.327.0_prod-io"</code></td></tr>
+          <tr><td><code>pendo.getAccountId()</code></td><td>Returns <code>"Deneb Corp"</code></td></tr>
+          <tr><td><code>pendo.getVisitorId()</code></td><td>A real visitor email.</td></tr>
+          <tr><td><code>document.querySelector('#add-new')</code></td><td>Returns the node, proves a selector matches exactly one.</td></tr>
+        </tbody>
+      </table>
+      <p class="text-sm mt-2">Network (filter <code>pendo</code>): <code>cdn.pendo.io/agent/...pendo.js</code> = agent loading · <code>app.pendo.io/data/ptm.gif</code> = event beacons · <code>guide.json</code> = guides.</p>
+    </div>
+  </section>
+
+  <section id="debug" class="card p-6">
+    <div class="qa">
+      <p class="q">A guide isn't appearing. How would you debug it?</p>
+      <div class="quote">"I'd work through it in order."</div>
+      <ol class="steps list-decimal ml-5 text-sm mt-2">
+        <li><strong>Is the agent loaded?</strong> <code>window.pendo</code> defined, and is the snippet request a 200?</li>
+        <li><strong>Did initialize run with a real visitor?</strong> <code>pendo.getVisitorId()</code>, real id or anonymous?</li>
+        <li><strong>Is the visitor in the guide's segment?</strong> Segments evaluate periodically, not instantly, so a just-published guide or changed segment can lag a few minutes.</li>
+        <li><strong>Does the activation selector still match?</strong> <code>document.querySelector(...)</code>, did a hashed class change break the anchor?</li>
+        <li><strong>Is the guide published and scheduled for now</strong>, and has this visitor already dismissed it? (Application/Storage panel.)</li>
+        <li><strong>Network:</strong> is the guide payload loading at all?</li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="tag" class="card p-6">
+    <div class="qa">
+      <p class="q">Tag a feature on the sandbox. Which selectors would you use, and why?</p>
+      <div class="quote">"Good news, whoever built this gave the primary actions real ids: <code>#add-new</code> and <code>#profile-button</code>, I'd tag straight onto those. But look at these row menu buttons, <code>id=':rj:'</code>, that's a React <code>useId</code>, it regenerates every render, so tagging on it would silently break. And the styling is Emotion, so the <code>css-</code> hashes are useless as anchors. This is exactly the conversation I'd have with a customer's dev team: give me a handful of <code>data-pendo-id</code> attributes on the actions that matter and your analytics never break again. I'd also name the Feature by user intent, not button copy, so 'ADD NEW' on <code>/accounts</code> becomes 'Create Account', and if they rename the button my report doesn't break. And I'd tag the Page by URL rule, <code>/opportunities/*/details</code>, not by an element."</div>
+      <table>
+        <thead><tr><th>Element</th><th>Selector</th><th>Verdict</th></tr></thead>
+        <tbody>
+          <tr><td>"ADD NEW" button</td><td><code>#add-new</code></td><td>Tag on this. Clean, stable, semantic id.</td></tr>
+          <tr><td>Profile button</td><td><code>#profile-button</code></td><td>Tag on this. Same.</td></tr>
+          <tr><td>Generic buttons</td><td><code>MuiButton-root</code></td><td>Don't, every button shares it, over-matches.</td></tr>
+          <tr><td>Row menu buttons</td><td><code>id=":rj:"</code></td><td>Trap. React <code>useId</code>, regenerates every render.</td></tr>
+          <tr><td>Styling</td><td><code>css-1a2b3c</code></td><td>Emotion hashes, change every build.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</main>
+</body>
+</html>

@@ -1,0 +1,10 @@
+# Salesforce Developer org credentials for load-sf-opportunities.mjs
+# Copy this file to ".sf-creds" (same folder) and fill in your values.
+# .sf-creds is gitignored — never commit it. Do NOT put real creds in THIS file.
+
+SF_USERNAME=your.username@demo.dev
+
+# Your login password immediately followed by your security token, NO space:
+SF_PASSWORD=yourPasswordYOURSECURITYTOKEN
+
+SF_LOGIN_URL=https://login.salesforce.com
